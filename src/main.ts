@@ -1870,7 +1870,11 @@ function switchView(v){
   try {
     document.querySelectorAll('.view').forEach(x=>x.classList.remove('act'));
     const t=document.getElementById('view-'+v);if(t)t.classList.add('act');
-    document.querySelectorAll('.nav-item').forEach(x=>x.classList.toggle('act',x.dataset.v===v));
+    document.querySelectorAll('.nav-item').forEach(x=>{x.classList.toggle('act',x.dataset.v===v);x.setAttribute('aria-current',x.dataset.v===v?'page':'false');});
+    // close mobile nav when navigating
+    document.querySelector('.leftnav')?.classList.remove('open');
+    document.getElementById('nav-overlay')?.classList.remove('open');
+    document.getElementById('hamburger')?.setAttribute('aria-expanded','false');
     if(v==='home')renderHome();
     if(v==='learn')renderLearnPath();
     if(v==='openings'){
@@ -2084,6 +2088,7 @@ function drawPrac(hints:string[]=[],showSel:string|null=null){
   if(!_prac)return;
   drawEvalBoard('prac-board',_prac.st,{sel:showSel||_prac.sel,hints});
   wireEvalBoard('prac-board',onPracClick);
+  addDragSupport('prac-board',onPracClick);
 }
 
 function onPracClick(s:string){
@@ -2208,6 +2213,7 @@ function renderBoard(){
       el.appendChild(d);
     }
   }
+  addDragSupport('board',onSq);
 }
 
 function onSq(sq){
@@ -3328,7 +3334,8 @@ function buildTacGrid(){
 
 function loadTac(arg){
   const p=(typeof arg==='object'&&arg)?arg:ALL_PUZZLES.find(x=>x.id===arg);if(!p)return;
-  ST.evalTac={st:mkState({...p.pos},p.side),sel:null,puz:p,attempts:0};
+  const freshTac:any={st:mkState({...p.pos},p.side),sel:null,puz:p,attempts:0,history:[]};
+  ST.evalTac=freshTac;
   document.getElementById('t-lbl').textContent=p.type.toUpperCase();
   document.getElementById('t-title').textContent=p.title;
   document.getElementById('t-req').textContent=(p.side==='w'?'White':'Black')+' to play — '+p.desc;
@@ -3345,6 +3352,8 @@ function loadTac(arg){
     },
     ()=>{if(ST.evalTac.puz)loadTac(ST.evalTac.puz);}
   );
+  const undoBtn=document.getElementById('btn-tundo');
+  if(undoBtn)undoBtn.onclick=undoTac;
   switchView('eval-tboard');setTimeout(drawTac,150);
 }
 
@@ -3369,6 +3378,7 @@ function onTacClick(s){
   const lm=legalMoves(st,puz.side);
   const chosen=lm.find(m=>m.from===sel&&m.to===s);
   if(chosen&&chosen.from===puz.solution.from&&chosen.to===puz.solution.to){
+    (ST.evalTac as any).history?.push(st);
     playSound(chosen.cap?'capture':'move');
     ST.evalTac.st=applyMove(st,chosen);ST.evalTac.sel=null;drawTac();
     if(!ST.evalTacSolved.has(puz.id)){ST.evalTacSolved.add(puz.id);ST.streak++;onEvalTacSolved(puz.id,puz.xp);}
@@ -3384,6 +3394,7 @@ function onTacClick(s){
     confetti();toast('✓ Correct! +'+puz.xp+' XP','tgld');
     updateEvalTopStats();buildTacGrid();
   } else if(chosen){
+    (ST.evalTac as any).history?.push(st);
     playSound('lose');
     ST.evalTac.sel=null;ST.streak=0;drawTac();
     setEvalFB('t-fb','ferr','❌ Legal move but not the winning tactic. Think: can you attack two pieces at once? Look for checks, captures, threats.');
@@ -3641,7 +3652,9 @@ function startBot(id){
   document.getElementById('bg-res').classList.remove('show');
   document.getElementById('bg-analysis').style.display='none';
   setFB('bg-fb','','Make your first move — you play White.');
+  resetClock();
   drawBot();switchView('eval-bgame');
+  startClock('w');
 }
 
 function drawBot(hints=[],last=null){
@@ -3681,6 +3694,7 @@ async function onBotClick(s){
   if(isMate(ns)){endBot('w','You won! Checkmate! ♛','Excellent — you checkmated '+ST.evalBot.bot.name+'!');return;}
   if(isDraw(ns)){endBot('d','Draw!','The game ended in a draw.');return;}
   setFB('bg-fb','finf',ST.evalBot.bot.ava+' '+ST.evalBot.bot.name+' thinking (depth '+ST.evalBot.bot.depth+')...');
+  startClock('b');
   setEng(true);
   const bm=await getBotMove(ns,ST.evalBot.bot.depth);
   setEng(false);
@@ -3691,6 +3705,7 @@ async function onBotClick(s){
   if(isMate(ns2)){endBot('b',ST.evalBot.bot.name+' won!','You were checkmated. Review the game log and identify where things went wrong.');return;}
   if(isDraw(ns2)){endBot('d','Draw!','');return;}
   // Material evaluation
+  startClock('w');
   let wmat=0,bmat=0;Object.values(ns2.board).forEach(p=>{const v=VALS[p[1]]||0;p[0]==='w'?wmat+=v:bmat+=v;});
   const diff=wmat-bmat;
   const matStr=Math.abs(diff)<50?'Equal position':diff>0?'You are +'+Math.round(diff/100)+' pawns ahead':'You are '+Math.round(-diff/100)+' pawns behind';
@@ -3699,6 +3714,7 @@ async function onBotClick(s){
 
 function endBot(winner,title,msg){
   ST.evalBot.over=true;
+  stopClock();
   const analysis=gameAnalysis(ST.evalBot.history,ST.evalBot.states,'w');
   const stars=winner==='w'?'⭐⭐⭐':winner==='d'?'⭐⭐':'⭐';
   document.getElementById('bg-stars').textContent=stars;
@@ -3980,6 +3996,82 @@ if ('serviceWorker' in navigator) {
   });
 }
 
+// ── MOBILE NAV ────────────────────────────────────────────────────
+function toggleNav() {
+  const nav = document.querySelector('.leftnav')!;
+  const overlay = document.getElementById('nav-overlay')!;
+  const btn = document.getElementById('hamburger')!;
+  const open = nav.classList.toggle('open');
+  overlay.classList.toggle('open', open);
+  btn.setAttribute('aria-expanded', String(open));
+}
+
+// ── PUZZLE UNDO ───────────────────────────────────────────────────
+function undoTac() {
+  const et = ST.evalTac as any;
+  if (!et || !et.history?.length) return;
+  et.st = et.history.pop();
+  et.moveIdx = Math.max(0, (et.moveIdx || 1) - 1);
+  drawTac();
+  const fb = document.getElementById('t-fb');
+  if (fb) { fb.className = 'fb'; fb.textContent = '↩ Move taken back — try again.'; }
+}
+
+// ── CHESS CLOCK ───────────────────────────────────────────────────
+let _clockInterval: ReturnType<typeof setInterval> | null = null;
+let _clockW = 600;
+let _clockB = 600;
+let _clockTurn: 'w' | 'b' = 'w';
+
+function _fmtClock(s: number): string {
+  const m = Math.floor(Math.abs(s) / 60);
+  const sec = Math.abs(s) % 60;
+  return (s < 0 ? '-' : '') + m + ':' + String(sec).padStart(2, '0');
+}
+
+function _updateClockDisplay() {
+  const wEl = document.getElementById('clock-w-time');
+  const bEl = document.getElementById('clock-b-time');
+  if (wEl) { wEl.textContent = _fmtClock(_clockW); wEl.classList.toggle('low', _clockW < 30); }
+  if (bEl) { bEl.textContent = _fmtClock(_clockB); bEl.classList.toggle('low', _clockB < 30); }
+}
+
+function startClock(turn: 'w' | 'b') {
+  if (_clockInterval) clearInterval(_clockInterval);
+  _clockTurn = turn;
+  const row = document.getElementById('clock-row');
+  if (row) row.style.display = 'flex';
+  document.getElementById('clock-w')?.classList.toggle('active', turn === 'w');
+  document.getElementById('clock-b')?.classList.toggle('active', turn === 'b');
+  _clockInterval = setInterval(() => {
+    if (_clockTurn === 'w') _clockW--; else _clockB--;
+    _updateClockDisplay();
+    const remaining = _clockTurn === 'w' ? _clockW : _clockB;
+    if (remaining <= 0) {
+      clearInterval(_clockInterval!); _clockInterval = null;
+      const loser = _clockTurn === 'w' ? 'You' : ST.evalBot?.bot?.name || 'Bot';
+      setFB('bg-fb', 'ferr', `⏰ ${loser} ran out of time!`);
+      if (_clockTurn === 'w') playSound('lose'); else playSound('win');
+      ST.evalBot.over = true;
+    }
+  }, 1000);
+}
+
+function stopClock() {
+  if (_clockInterval) { clearInterval(_clockInterval); _clockInterval = null; }
+}
+
+function resetClock() {
+  stopClock();
+  _clockW = 600; _clockB = 600;
+  _updateClockDisplay();
+  const row = document.getElementById('clock-row');
+  if (row) row.style.display = 'none';
+}
+
+// ── ACCESSIBILITY: board aria-current on nav ───────────────────────
+// (switchView already sets act class; aria-current added inline below)
+
 // ── EXPOSE GLOBALS FOR onclick= HANDLERS IN index.html ───────────
 // ES modules don't leak to window — wire up manually
 (window as any).pracHint       = pracHint;
@@ -3998,6 +4090,8 @@ if ('serviceWorker' in navigator) {
 (window as any).toggleMute     = toggleMute;
 (window as any).flipBoard      = flipBoard;
 (window as any).startAnalysis  = startAnalysis;
+(window as any).toggleNav      = toggleNav;
+(window as any).undoTac        = undoTac;
 (window as any).ST             = ST;
 
 // ── LOAD PERSISTED PREFERENCES ───────────────────────────────────

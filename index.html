@@ -4,6 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Chess Academy</title>
+<meta name="description" content="The complete chess learning platform — 33 lessons, tactics puzzles, openings lab, endgame drills, and bot play powered by Stockfish 18. Free, offline-capable, no login required.">
+<meta name="keywords" content="chess, learn chess, chess academy, chess puzzles, chess openings, chess tactics, stockfish, chess endgames">
+<meta name="author" content="Chess Academy">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://chess-academy-pi.vercel.app/">
+<meta property="og:title" content="Chess Academy — Learn Chess from Beginner to 1600">
+<meta property="og:description" content="The complete chess learning platform. 33 lessons, 50 puzzles, openings lab, endgame drills, and Stockfish 18 bot play. Free, offline-capable.">
+<meta property="og:image" content="https://chess-academy-pi.vercel.app/icon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chess Academy — Learn Chess from Beginner to 1600">
+<meta name="twitter:description" content="The complete chess learning platform. 33 lessons, 50 puzzles, openings lab, endgame drills, and Stockfish 18 bot play. Free, offline-capable.">
+<meta name="twitter:image" content="https://chess-academy-pi.vercel.app/icon-512.png">
+<link rel="canonical" href="https://chess-academy-pi.vercel.app/">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>♟</text></svg>">
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#c8a95a">
@@ -13,6 +26,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body>
+<a href="#content" class="skip-link">Skip to main content</a>
+<div class="nav-overlay" id="nav-overlay" onclick="toggleNav()"></div>
 
 <!-- ONBOARDING OVERLAY -->
 <div class="onboard-overlay" id="onboard-overlay">
@@ -78,14 +93,15 @@
 <!-- TOPBAR -->
 <header class="topbar">
   <div class="logo"><span class="logo-icon">♟</span>Chess<em>Academy</em></div>
+  <button class="hamburger" id="hamburger" onclick="toggleNav()" aria-label="Toggle navigation" aria-expanded="false">☰</button>
   <div class="top-right">
     <div class="streak-widget"><span class="streak-fire">🔥</span><span class="streak-num" id="streak-num">0</span></div>
     <div class="xp-widget"><span class="xp-icon">⚡</span><span class="xp-num" id="xp-num">0 XP</span></div>
     <div class="lv-pill" id="lv-pill">Level 1</div>
     <div style="font-family:'IBM Plex Mono',monospace;font-size:.63rem;padding:3px 9px;border-radius:9px;border:1px solid var(--bord2);background:var(--s3)" id="eval-stat-bar">⚔️ 0/8  ♔ 0/4</div>
     <div class="skill-badge sk-absolute" id="skill-badge" onclick="showSkillChange()">🐣 Absolute Beginner</div>
-    <button class="theme-toggle" id="mute-btn" onclick="toggleMute()" title="Toggle sound">🔊</button>
-    <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Toggle theme">🌙</button>
+    <button class="theme-toggle" id="mute-btn" onclick="toggleMute()" title="Toggle sound" aria-label="Toggle sound">🔊</button>
+    <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle dark/light theme">🌙</button>
   </div>
 </header>
 
@@ -214,7 +230,7 @@
                   <div class="pb-row"><span class="pb-lbl">Progress</span><span class="pb-pct" id="pb-pct">0 / 0</span></div>
                   <div class="pb-track"><div class="pb-fill" id="pb-fill" style="width:0%"></div></div>
                 </div>
-                <div id="fb-box" class="fb-box">👆 Select a piece to begin.</div>
+                <div id="fb-box" class="fb-box" aria-live="polite">👆 Select a piece to begin.</div>
                 <div class="seq-wrap">
                   <div class="seq-lbl">Move sequence</div>
                   <div class="seq-pills" id="seq-pills"></div>
@@ -318,12 +334,12 @@
       <div class="bc">
         <div class="chdr" style="max-width:100%"><div class="chdr-l" id="t-lbl">FORK</div><div class="chdr-t" id="t-title">Knight Fork</div><div class="chdr-s" id="t-req">White to play</div></div>
         <div class="board" id="t-board"></div>
-        <div class="brow"><button class="btn" id="btn-thint">💡 Hint</button><button class="btn" id="btn-treset">↺ Reset</button><button class="btn" id="btn-tnext" style="display:none">Next →</button><button class="btn" onclick="switchView('eval-puzzles')">← All</button></div>
+        <div class="brow"><button class="btn" id="btn-thint">💡 Hint</button><button class="btn" id="btn-treset">↺ Reset</button><button class="btn" id="btn-tundo">↩ Undo</button><button class="btn" id="btn-tnext" style="display:none">Next →</button><button class="btn" onclick="switchView('eval-puzzles')">← All</button></div>
       </div>
       <div class="ic">
         <div style="font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:700;color:var(--cream);margin-bottom:3px" id="t-pat">Fork</div>
         <div style="font-size:.73rem;color:var(--mute);margin-bottom:11px" id="t-pdesc">Attack two pieces at once.</div>
-        <div class="fb" id="t-fb">👆 Click a piece then its destination square.</div>
+        <div class="fb" id="t-fb" aria-live="polite">👆 Click a piece then its destination square.</div>
         <div class="stats"><div class="stat sg"><span class="sv" id="t-ns">0</span><span class="sl">Solved</span></div><div class="stat"><span class="sv" id="t-na">0</span><span class="sl">Attempts</span></div><div class="stat sn"><span class="sv" id="t-ac">—</span><span class="sl">Accuracy</span></div></div>
         <div style="font-family:'IBM Plex Mono',monospace;font-size:.57rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin-bottom:3px">Mastery</div>
         <div class="pbar"><div class="pbf" id="t-mbar" style="width:0%;background:var(--gold)"></div></div>
@@ -348,7 +364,7 @@
       <div class="ic">
         <div style="font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:700;color:var(--cream);margin-bottom:3px" id="m-ptype">Pattern</div>
         <div style="font-size:.73rem;color:var(--mute);margin-bottom:11px" id="m-pdesc">...</div>
-        <div class="fb" id="m-fb">Find and play checkmate.</div>
+        <div class="fb" id="m-fb" aria-live="polite">Find and play checkmate.</div>
         <div class="stats"><div class="stat sg"><span class="sv" id="m-sol">0</span><span class="sl">Solved</span></div><div class="stat"><span class="sv" id="m-str">0</span><span class="sl">Streak</span></div><div class="stat sn"><span class="sv" id="m-tot">0/7</span><span class="sl">Progress</span></div></div>
         <div class="res" id="m-res"><div class="r-st">⭐⭐⭐</div><div class="r-t" id="m-rt">Checkmate! ♛</div><div class="r-m" id="m-rm"></div></div>
       </div>
@@ -370,7 +386,7 @@
       <div class="ic">
         <div style="font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:700;color:var(--cream);margin-bottom:3px" id="eg-it">K+Q vs K</div>
         <div style="font-size:.73rem;color:var(--mute);margin-bottom:11px" id="eg-id">Use the box method.</div>
-        <div class="fb" id="eg-fb">Make your move. Engine defends optimally.</div>
+        <div class="fb" id="eg-fb" aria-live="polite">Make your move. Engine defends optimally.</div>
         <div class="stats"><div class="stat sg"><span class="sv" id="eg-mv">0</span><span class="sl">Moves</span></div><div class="stat"><span class="sv" id="eg-lm">10</span><span class="sl">Limit</span></div><div class="stat sn"><span class="sv" id="eg-ps">0</span><span class="sl">Passed</span></div></div>
         <div style="font-family:'IBM Plex Mono',monospace;font-size:.57rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin-bottom:3px">Move Log</div>
         <div class="mlog" id="eg-log">—</div>
@@ -392,8 +408,12 @@
         <div class="brow"><button class="btn" id="btn-resign">🏳 Resign</button><button class="btn" id="btn-undo">↩ Undo</button><button class="btn" id="btn-flip" onclick="flipBoard()">⟳ Flip</button><button class="btn" onclick="switchView('eval-bot')">← Bots</button></div>
       </div>
       <div class="ic">
-        <div class="fb" id="bg-fb">Make your first move — you play White.</div>
+        <div class="fb" id="bg-fb" aria-live="polite">Make your first move — you play White.</div>
         <div class="stats"><div class="stat"><span class="sv" id="bg-mv">0</span><span class="sl">Moves</span></div><div class="stat sg"><span class="sv" id="bg-cap">0</span><span class="sl">Captures</span></div><div class="stat sn"><span class="sv" id="bg-chk">0</span><span class="sl">Checks</span></div></div>
+        <div class="clock-row" id="clock-row" style="display:none">
+          <div class="clock-card" id="clock-w"><span class="clock-label">You</span><span class="clock-time" id="clock-w-time">10:00</span></div>
+          <div class="clock-card" id="clock-b"><span class="clock-label">Bot</span><span class="clock-time" id="clock-b-time">10:00</span></div>
+        </div>
         <div style="font-family:'IBM Plex Mono',monospace;font-size:.57rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin-bottom:3px">Move Log</div>
         <div class="mlog" id="bg-log">—</div>
         <div style="font-family:'IBM Plex Mono',monospace;font-size:.57rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin-bottom:4px;margin-top:9px">🎓 Coach (rule-based, exact)</div>
@@ -412,8 +432,8 @@
 </div>
 
 <!-- LESSON MODAL -->
-<div class="lesson-overlay" id="lesson-overlay">
-  <div class="lesson-modal" id="lesson-modal">
+<div class="lesson-overlay" id="lesson-overlay" role="dialog" aria-modal="true" aria-labelledby="lm-title">
+  <div class="lesson-modal" id="lesson-modal" tabindex="-1">
     <button class="lm-close" onclick="closeLesson()" style="position:absolute;top:14px;right:14px">✕</button>
     <div class="lm-header">
       <div class="lm-ico" id="lm-ico"></div>
