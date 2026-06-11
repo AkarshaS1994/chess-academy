@@ -730,3 +730,47 @@ html,body{height:100%;overflow:hidden;font-family:'IBM Plex Sans',sans-serif;bac
 }
 
 .flex-view.act{display:flex!important;flex-direction:column;height:100%}
+
+/* ── LIGHT THEME ─────────────────────────────────────────────── */
+html.light {
+  --bg: #f5f0e8;
+  --s1: #ede6d6;
+  --s2: #e0d6c0;
+  --s3: #d4c8a8;
+  --s4: #c8ba90;
+  --bord: rgba(0,0,0,0.12);
+  --bord2: rgba(0,0,0,0.18);
+  --txt: #1a1612;
+  --mute: #5a4e38;
+  --cream: #2a1f0a;
+  --gold: #8b6914;
+  --goldl: #6a4f10;
+  --goldd: rgba(139,105,20,0.12);
+  --goldb: rgba(139,105,20,0.22);
+}
+html.light .sq.lt { background: #f0d9b5; }
+html.light .sq.dk { background: #b58863; }
+html.light .piece.pw { color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.8); }
+html.light .piece.pb { color: #1a1200; text-shadow: 0 1px 2px rgba(255,255,255,0.3); }
+
+/* ── THEME / MUTE TOGGLE ─────────────────────────────────────── */
+.theme-toggle {
+  background: none;
+  border: 1px solid var(--bord2);
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--txt);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .2s;
+  padding: 0;
+  flex-shrink: 0;
+}
+.theme-toggle:hover { background: var(--s2); }
+
+/* ── DRAG GHOST ──────────────────────────────────────────────── */
+.drag-ghost { user-select: none; line-height: 1; pointer-events: none; }

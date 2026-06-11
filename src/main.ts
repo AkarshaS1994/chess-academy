@@ -675,6 +675,124 @@ const ALL_PUZZLES=[
    solution:{from:'h1',to:'h7'},
    explain:'Rh7+! The rook invades on the 7th rank with check. After Kg8, the rook wins all three pawns. The rook lift is a key technique — activate via the 3rd or 4th rank.',xp:35}
 
+  // ── BACK-RANK THREATS ───────────────────────────────────────────
+ ,{id:'br1',type:'Back-Rank',diff:'easy',title:'Back-Rank Mate Threat',
+   desc:'The black king is stuck on the back rank. Deliver checkmate!',
+   hint:'Move the rook to e8 — the black king has no escape.',
+   pos:{g1:'wK',e1:'wR',g8:'bK',g7:'bP',h7:'bP',f7:'bP'},side:'w',
+   solution:{from:'e1',to:'e8'},
+   explain:'Re8#! The rook slides to e8 giving checkmate. Black\'s own pawns seal off the escape squares. Back-rank mate is one of the most common tactical patterns in chess.',xp:20}
+
+ ,{id:'br2',type:'Back-Rank',diff:'medium',title:'Queen Sacrifice — Back Rank',
+   desc:'Sacrifice the queen to force a back-rank checkmate!',
+   hint:'Qxd8! The rook recaptures — then Rxd8 is checkmate.',
+   pos:{e1:'wK',a1:'wR',d1:'wQ',e8:'bK',a8:'bR',d8:'bR',d7:'bP',e7:'bP',f7:'bP',g7:'bP',h7:'bP'},side:'w',
+   solution:{from:'d1',to:'d8'},
+   explain:'Qxd8+! After Rxd8, play Rxd8# — the second rook delivers checkmate. The queen sacrifice forces Black to weaken their own back rank defence.',xp:30}
+
+  // ── DISCOVERED ATTACKS ──────────────────────────────────────────
+ ,{id:'da1',type:'Discovered Attack',diff:'medium',title:'Discovered Attack — Double Threat',
+   desc:'Move the knight to reveal a bishop attack AND threaten the queen!',
+   hint:'Move the knight away to uncover the bishop\'s diagonal and attack the queen.',
+   pos:{e1:'wK',c3:'wN',f3:'wB',e8:'bK',h5:'bQ',a7:'bP'},side:'w',
+   solution:{from:'c3',to:'e4'},
+   explain:'Ne4! The knight moves away, uncovering the bishop on f3 which now attacks the queen on h5. Black must deal with the queen being attacked — a discovered attack creates two threats at once.',xp:30}
+
+ ,{id:'da2',type:'Discovered Attack',diff:'hard',title:'Discovered Check — Win the Queen',
+   desc:'Move the bishop to give discovered check AND attack the queen!',
+   hint:'The rook on the e-file gives check when the bishop moves — and the bishop attacks the queen.',
+   pos:{e1:'wK',e4:'wR',d3:'wB',e8:'bK',h7:'bQ',c4:'bP'},side:'w',
+   solution:{from:'d3',to:'f5'},
+   explain:'Bf5+! The bishop moves to f5 giving discovered check via the rook on e4. While Black deals with the check, White wins the queen on h7 next. Discovered checks are among the most powerful tactics.',xp:35}
+
+  // ── DEFLECTION ──────────────────────────────────────────────────
+ ,{id:'de1',type:'Deflection',diff:'medium',title:'Deflect the Defender',
+   desc:'Sacrifice to remove the piece guarding against checkmate!',
+   hint:'The rook on f8 is the only defender. Deflect it!',
+   pos:{g1:'wK',h1:'wR',h7:'wQ',g8:'bK',f8:'bR',g7:'bP',h8:'bP'},side:'w',
+   solution:{from:'h1',to:'h8'},
+   explain:'Rxh8+! The rook sacrifice deflects the black rook from f8. After Kxh8 (or Rxh8), Qxg7# delivers checkmate. Deflection removes a key defender to open the mating net.',xp:30}
+
+  // ── DECOY ───────────────────────────────────────────────────────
+ ,{id:'dc1',type:'Decoy',diff:'medium',title:'Decoy the King',
+   desc:'Lure the king to a square where it gets forked!',
+   hint:'Sacrifice the rook to drag the king to h8, then fork with the knight.',
+   pos:{g1:'wK',a1:'wR',g3:'wN',h8:'bK',g8:'bR',g7:'bP',h7:'bP'},side:'w',
+   solution:{from:'a1',to:'h1'},
+   explain:'Rh1+! The rook sacrifices itself to lure the king. After Kxh1... wait — actually look: Rh1+ forces Rxh1, then Nf5+ and Nxh1 wins the rook back with interest. Decoy tactics force pieces to bad squares.',xp:30}
+
+  // ── ZWISCHENZUG ─────────────────────────────────────────────────
+ ,{id:'zw1',type:'Zwischenzug',diff:'hard',title:'In-Between Move',
+   desc:'Before recapturing, find the zwischenzug — the check that wins material!',
+   hint:'Instead of recapturing immediately, give check first to win the queen.',
+   pos:{e1:'wK',d4:'wN',a1:'wR',d8:'bK',d6:'bQ',e5:'bP'},side:'w',
+   solution:{from:'d4',to:'e6'},
+   explain:'Ne6+! Before recapturing on d6, check the king first. After the king moves, you capture the queen with a net gain. The zwischenzug (in-between move) changes the material calculation entirely.',xp:35}
+
+  // ── PINS ────────────────────────────────────────────────────────
+ ,{id:'p3',type:'Pin',diff:'medium',title:'Absolute Pin — Win Material',
+   desc:'The pinned piece cannot move — now exploit it!',
+   hint:'The knight on f6 is pinned to the king. Attack it with the pawn!',
+   pos:{e1:'wK',e4:'wP',g5:'wB',e8:'bK',f6:'bN',g7:'bP',h7:'bP'},side:'w',
+   solution:{from:'e4',to:'e5'},
+   explain:'e5! The pawn attacks the pinned knight on f6. The knight cannot move because it is pinned to the king by the bishop on g5. If the knight moves, the king is in check. White wins the knight for free.',xp:25}
+
+  // ── SKEWERS ─────────────────────────────────────────────────────
+ ,{id:'sk2',type:'Skewer',diff:'medium',title:'Skewer — King and Rook',
+   desc:'Attack the king, force it to move, then take the rook behind it!',
+   hint:'Give check with the bishop — the king must move, exposing the rook.',
+   pos:{e1:'wK',c4:'wB',e8:'bK',e5:'bR',a7:'bP'},side:'w',
+   solution:{from:'c4',to:'f7'},
+   explain:'Bf7+! The bishop gives check, skewering the king in front of the rook on e5. After the king moves, the bishop captures the rook. A skewer is like a backwards pin — the more valuable piece is attacked first.',xp:25}
+
+  // ── KING HUNT ────────────────────────────────────────────────────
+ ,{id:'kh1',type:'King Hunt',diff:'hard',title:'Drive the King Out',
+   desc:'Sacrifice to expose the king, then chase it across the board!',
+   hint:'Qxh7+! Sacrifice the queen to drag the king into the open.',
+   pos:{g1:'wK',d1:'wR',h5:'wQ',f3:'wN',g8:'bK',h7:'bP',g7:'bP',f7:'bP',h8:'bR'},side:'w',
+   solution:{from:'h5',to:'h7'},
+   explain:'Qxh7+! The queen sacrifice drags the king into the open. After Kxh7, Ng5+ Kg6, Rh1 and the king hunt begins. King hunts require precise calculation but are the most brilliant chess combinations.',xp:40}
+
+  // ── INTERFERENCE ─────────────────────────────────────────────────
+ ,{id:'if1',type:'Interference',diff:'hard',title:'Interference — Cut the Defence',
+   desc:'Place a piece on a square that cuts the connection between two black pieces!',
+   hint:'The rook on d5 cuts the diagonal and the file — Black cannot defend both.',
+   pos:{e1:'wK',d1:'wR',e4:'wQ',e8:'bK',c8:'bB',d8:'bR',e7:'bP',d7:'bP'},side:'w',
+   solution:{from:'d1',to:'d5'},
+   explain:'Rd5! The rook on d5 interferes — it blocks the bishop on c8 from defending d8 while cutting the rook\'s lateral movement. Now Qxe7# follows. Interference is a subtle but powerful tactical motif.',xp:35}
+
+  // ── OVERLOAD ─────────────────────────────────────────────────────
+ ,{id:'ol1',type:'Overload',diff:'medium',title:'Overloaded Defender',
+   desc:'The black queen defends both the rook and the mating square. Overload it!',
+   hint:'Attack the queen\'s defensive duties by threatening checkmate AND the rook.',
+   pos:{g1:'wK',g4:'wQ',a1:'wR',g8:'bK',g7:'bQ',h7:'bP',a7:'bR'},side:'w',
+   solution:{from:'g4',to:'d4'},
+   explain:'Qd4+! The queen gives check and threatens Ra8#. The black queen is overloaded — it cannot both block the check AND defend the back rank. An overloaded piece cannot fulfil all its defensive duties simultaneously.',xp:30}
+
+  // ── CLEARANCE ────────────────────────────────────────────────────
+ ,{id:'cl1',type:'Clearance',diff:'hard',title:'Clearance Sacrifice',
+   desc:'Sacrifice a piece to clear a square for your more powerful piece!',
+   hint:'Sacrifice the knight to clear d5 for the bishop — then it delivers checkmate.',
+   pos:{e1:'wK',d5:'wN',f3:'wB',h1:'wR',e8:'bK',d8:'bR',e7:'bP',d7:'bP',f7:'bP'},side:'w',
+   solution:{from:'d5',to:'e7'},
+   explain:'Nxe7+! The knight sacrifices itself on e7 to clear d5 for the bishop. After Rxe7 (forced), Bd5+ — the bishop delivers check with devastating effect. Clearance removes your own pieces from key squares.',xp:35}
+
+  // ── X-RAY ─────────────────────────────────────────────────────────
+ ,{id:'xr1',type:'X-Ray',diff:'hard',title:'X-Ray Attack',
+   desc:'Your queen attacks through the enemy queen — an x-ray tactic!',
+   hint:'Move the queen to d8. It x-rays through the black queen to hit the rook.',
+   pos:{e1:'wK',d1:'wQ',e8:'bK',d7:'bQ',d8:'bR'},side:'w',
+   solution:{from:'d1',to:'d8'},
+   explain:'Qxd8+! The white queen captures on d8, x-raying through the black queen. After Qxd8 (Kxd8 is also met by Qxd8+), White wins decisive material. X-ray tactics see through intervening pieces.',xp:35}
+
+  // ── ZUGZWANG TRICK ──────────────────────────────────────────────
+ ,{id:'zg1',type:'Zugzwang',diff:'hard',title:'Force Zugzwang',
+   desc:'Every black move loses material. Find the move that puts Black in zugzwang!',
+   hint:'The king move to b6 puts Black in zugzwang — any pawn move loses.',
+   pos:{g1:'wK',b6:'wP',c5:'wK',b8:'bK',a7:'bP',c7:'bP'},side:'w',
+   solution:{from:'c5',to:'c6'},
+   explain:'Kc6! Black is now in zugzwang. The black pawns are stuck — advancing either one loses it to the white pawn or king. Zugzwang is when it is your turn but every move makes your position worse.',xp:40}
+
 ];
 
 const MATES=[
@@ -1169,7 +1287,6 @@ const PRACTICE_DATA: Record<string, Array<{title:string;desc:string;board:Record
   mid_strategy:[{title:"Blockade the Passer",desc:"Black has a dangerous passed pawn on d4. Blockade it with your knight!",board:{e1:'wK',e4:'wN',g2:'wP',h2:'wP',e8:'bK',g7:'bP',h7:'bP',d4:'bP'},turn:'w',solution:['e4d2'],hint:"Put the knight directly in front of the passer — it can never be driven away by a pawn!"}],
   mid_calculation:[{title:"Calculate the Forced Mate",desc:"Calculate 3 moves ahead — there is a forced checkmate sequence here!",board:{h1:'wK',g3:'wR',h3:'wR',h7:'bK',g7:'bP',f7:'bP'},turn:'w',solution:['g3g7'],hint:"Look for checks that limit the king's escape. Calculate every king move."}],
   mid_advanced:[{title:"Strategic Knight Maneuver",desc:"Your knight wants to reach d5 — the ideal outpost. Route it there!",board:{e1:'wK',b1:'wN',g2:'wP',h2:'wP',c3:'wP',e4:'wP',e8:'bK',g7:'bP',h7:'bP',c6:'bP',e6:'bP'},turn:'w',solution:['b1c3'],hint:"Maneuver: knight goes b1-c3-d5 over two moves. Take the first step!"}],
-  strat_weapons:[{title:"Strategic Weapons",desc:"Use the open file — double rooks on the d-file to dominate!",board:{g1:'wK',d1:'wR',a1:'wR',g2:'wP',h2:'wP',e8:'bK',g7:'bP',h7:'bP',d6:'bP'},turn:'w',solution:['a1d1'],hint:"Double your rooks on the open d-file for maximum pressure!"}],
 };
 
 const OPS={
@@ -1750,28 +1867,33 @@ function toast(msg,cls=''){
 
 // ── VIEW SWITCHING ─────────────────────────────────────────────
 function switchView(v){
-  document.querySelectorAll('.view').forEach(x=>x.classList.remove('act'));
-  const t=document.getElementById('view-'+v);if(t)t.classList.add('act');
-  document.querySelectorAll('.nav-item').forEach(x=>x.classList.toggle('act',x.dataset.v===v));
-  if(v==='home')renderHome();
-  if(v==='learn')renderLearnPath();
-  if(v==='openings'){
-    // Show card grid, hide board panel
-    const _panel=document.getElementById('op-board-panel');
-    const _grid=document.getElementById('op-grid');
-    const _sh=document.querySelector('#view-openings .section-head');
-    if(_panel)_panel.style.display='none';
-    if(_grid)_grid.style.display='grid';
-    if(_sh)_sh.style.display='block';
-    renderOpGrid();
+  try {
+    document.querySelectorAll('.view').forEach(x=>x.classList.remove('act'));
+    const t=document.getElementById('view-'+v);if(t)t.classList.add('act');
+    document.querySelectorAll('.nav-item').forEach(x=>x.classList.toggle('act',x.dataset.v===v));
+    if(v==='home')renderHome();
+    if(v==='learn')renderLearnPath();
+    if(v==='openings'){
+      const _panel=document.getElementById('op-board-panel');
+      const _grid=document.getElementById('op-grid');
+      const _sh=document.querySelector('#view-openings .section-head');
+      if(_panel)_panel.style.display='none';
+      if(_grid)_grid.style.display='grid';
+      if(_sh)_sh.style.display='block';
+      renderOpGrid();
+    }
+    if(v==='eval-puzzles')buildTacGrid();
+    if(v==='eval-mates')buildMateGrid();
+    if(v==='eval-endgame')buildEgGrid();
+    if(v==='eval-bot')buildBotGrid();
+    if(v==='eval-progress')buildEvalProgress();
+    if(v==='tactics')renderTactics();
+    if(v==='endgames')renderEndgames();
+  } catch(err) {
+    console.error('View render error in "'+v+'":', err);
+    const el=document.getElementById('view-'+v);
+    if(el) el.innerHTML='<div style="padding:40px;color:#c0392b;font-family:monospace;font-size:.85rem">⚠️ Something went wrong loading this view.<br><br><button onclick="location.reload()" style="margin-top:10px;padding:6px 14px;cursor:pointer;border-radius:6px;border:1px solid #c0392b;background:none;color:#c0392b">Reload page</button></div>';
   }
-  if(v==='eval-puzzles')buildTacGrid();
-  if(v==='eval-mates')buildMateGrid();
-  if(v==='eval-endgame')buildEgGrid();
-  if(v==='eval-bot')buildBotGrid();
-  if(v==='eval-progress')buildEvalProgress();
-  if(v==='tactics')renderTactics();
-  if(v==='endgames')renderEndgames();
 }
 
 // ── HOME VIEW ─────────────────────────────────────────────────
@@ -3172,14 +3294,16 @@ function drawEvalBoard(id,st,{sel=null,last=null,hints=[],sz=0}={}){
   }
   el.style.width=(sz*8)+'px';el.style.height=(sz*8)+'px';
   const pos=st.board||st;
-  for(let r=8;r>=1;r--){
-    for(let f=0;f<8;f++){
+  const _ranks=_boardFlipped?[1,2,3,4,5,6,7,8]:[8,7,6,5,4,3,2,1];
+  const _files=_boardFlipped?[7,6,5,4,3,2,1,0]:[0,1,2,3,4,5,6,7];
+  for(const r of _ranks){
+    for(const f of _files){
       const s=FL[f]+r,lt=(f+r)%2===1;
       const d=document.createElement('div');
       d.className='sq '+(lt?'lt':'dk');d.style.cssText=`width:${sz}px;height:${sz}px`;d.dataset.sq=s;
       if(pos[s]){const sp=document.createElement('span');sp.className='piece '+(pos[s][0]==='w'?'pw':'pb');sp.style.fontSize=Math.round(sz*.78)+'px';sp.textContent=UNI[pos[s]]||'';d.appendChild(sp);}
-      if(r===1){const c=document.createElement('span');c.className='cf';c.textContent=FL[f];d.appendChild(c);}
-      if(f===0){const c=document.createElement('span');c.className='cr';c.textContent=r;d.appendChild(c);}
+      if((!_boardFlipped&&r===1)||(_boardFlipped&&r===8)){const c=document.createElement('span');c.className='cf';c.textContent=FL[f];d.appendChild(c);}
+      if((!_boardFlipped&&f===0)||(_boardFlipped&&f===7)){const c=document.createElement('span');c.className='cr';c.textContent=r;d.appendChild(c);}
       if(s===sel)d.classList.add('sel');
       if(last&&(s===last.from||s===last.to))d.classList.add('last');
       if(hints.includes(s))d.classList.add('hnt');
@@ -3227,6 +3351,7 @@ function loadTac(arg){
 function drawTac(hints=[]){
   drawEvalBoard('t-board',ST.evalTac.st,{sel:ST.evalTac.sel,hints});
   wireEvalBoard('t-board',onTacClick);
+  addDragSupport('t-board', onTacClick);
 }
 
 function onTacClick(s){
@@ -3244,6 +3369,7 @@ function onTacClick(s){
   const lm=legalMoves(st,puz.side);
   const chosen=lm.find(m=>m.from===sel&&m.to===s);
   if(chosen&&chosen.from===puz.solution.from&&chosen.to===puz.solution.to){
+    playSound(chosen.cap?'capture':'move');
     ST.evalTac.st=applyMove(st,chosen);ST.evalTac.sel=null;drawTac();
     if(!ST.evalTacSolved.has(puz.id)){ST.evalTacSolved.add(puz.id);ST.streak++;onEvalTacSolved(puz.id,puz.xp);}
     setFB('t-fb','fgld','🏆 '+puz.explain);
@@ -3258,6 +3384,7 @@ function onTacClick(s){
     confetti();toast('✓ Correct! +'+puz.xp+' XP','tgld');
     updateEvalTopStats();buildTacGrid();
   } else if(chosen){
+    playSound('lose');
     ST.evalTac.sel=null;ST.streak=0;drawTac();
     setEvalFB('t-fb','ferr','❌ Legal move but not the winning tactic. Think: can you attack two pieces at once? Look for checks, captures, threats.');
     shake('t-board');updateEvalTopStats();
@@ -3316,6 +3443,7 @@ function loadMate(id){
 function drawMate(hints=[]){
   drawEvalBoard('m-board',ST.evalMate.st,{sel:ST.evalMate.sel,hints});
   wireEvalBoard('m-board',onMateClick);
+  addDragSupport('m-board', onMateClick);
 }
 
 function onMateClick(s){
@@ -3336,6 +3464,7 @@ function onMateClick(s){
   ST.evalMate.st=ns;ST.evalMate.sel=null;ST.evalMate.step++;
   drawMate();
   if(isMate(ns)){
+    playSound('win');
     ST.evalMateSolved++;ST.evalMateStreak++;onEvalMateSolved(puz.xp);
     setFB('m-fb','fgld','♛ Checkmate! '+puz.explain);
     document.getElementById('m-rt').textContent='Checkmate! ♛';
@@ -3349,11 +3478,13 @@ function onMateClick(s){
     if(MATES[idx+1]){nb.onclick=()=>loadMate(MATES[idx+1].id);nb.textContent='Next →';}
     else{nb.onclick=()=>switchView('eval-mates');nb.textContent='All Challenges';}
     confetti();toast('♛ Checkmate! +'+puz.xp+' XP','tgld');saveProgress();
+  } else if(isCheck(ns,ns.turn)){
+    playSound('check');
+    setFB('m-fb','fok','✓ Check! Keep going — find the next forcing move.');
   } else if(ST.evalMate.step>=puz.moves.length){
+    playSound('lose');
     setFB('m-fb','ferr','❌ Not checkmate yet — the king escaped. The sequence must deliver forced mate. Try again.');
     ST.evalMateStreak=0;shake('m-board');
-  } else if(isCheck(ns,ns.turn)){
-    setFB('m-fb','fok','✓ Check! Keep going — find the next forcing move.');
   } else {
     setFB('m-fb','','Move played. Find the next step towards checkmate.');
   }
@@ -3407,7 +3538,7 @@ function loadDrill(id){
 
 function drawEg(hints=[]){
   drawEvalBoard('eg-board',ST.evalEg.st,{sel:ST.evalEg.sel,hints});
-  if(!ST.evalEg.over)wireEvalBoard('eg-board',onEgClick);
+  if(!ST.evalEg.over){wireEvalBoard('eg-board',onEgClick);addDragSupport('eg-board',onEgClick);}
 }
 
 async function onEgClick(s){
@@ -3515,7 +3646,7 @@ function startBot(id){
 
 function drawBot(hints=[],last=null){
   drawEvalBoard('bg-board',ST.evalBot.st,{sel:ST.evalBot.sel,hints,last});
-  if(!ST.evalBot.over)wireEvalBoard('bg-board',onBotClick);
+  if(!ST.evalBot.over){wireEvalBoard('bg-board', (ST.evalBot as any).analysisMode ? onAnalysisClick : onBotClick);addDragSupport('bg-board', (ST.evalBot as any).analysisMode ? onAnalysisClick : onBotClick);}
 }
 
 async function onBotClick(s){
@@ -3536,7 +3667,8 @@ async function onBotClick(s){
   const stB=st;
   const ns=applyMove(st,chosen);
   if(chosen.cap)ST.evalBot.stats.cap++;
-  if(isCheck(ns,'b')){ST.evalBot.stats.chk++;document.getElementById('bg-chk').textContent=ST.evalBot.stats.chk;}
+  playSound(chosen.cap?'capture':'move');
+  if(isCheck(ns,'b')){ST.evalBot.stats.chk++;document.getElementById('bg-chk').textContent=ST.evalBot.stats.chk;playSound('check');}
   const mn=Math.ceil((ST.evalBot.history.length+1)/2);
   ST.evalBot.history.push({...chosen,color:'w',n:mn});
   ST.evalBot.states.push(ns);ST.evalBot.st=ns;ST.evalBot.sel=null;
@@ -3576,7 +3708,10 @@ function endBot(winner,title,msg){
   document.getElementById('bg-res').classList.add('show');
   document.getElementById('btn-newgame').onclick=()=>startBot(ST.evalBot.bot.id);
   setFB('bg-fb',winner==='w'?'fgld':winner==='d'?'finf':'ferr',title);
-  if(winner==='w'){confetti();onBotGameWon(ST.evalBot.bot?ST.evalBot.bot.rating:300);}
+  if(winner==='w'){confetti();onBotGameWon(ST.evalBot.bot?ST.evalBot.bot.rating:300);playSound('win');}
+  else if(winner==='b'){playSound('lose');}
+  const ab = document.getElementById('btn-analyse');
+  if (ab) ab.style.display = 'inline-flex';
   saveProgress();
 }
 
@@ -3592,9 +3727,14 @@ function addCoachNote(n){
 function updateBotLog(){
   const el=document.getElementById('bg-log');
   const pairs=[];
+  const states=ST.evalBot.states;
   for(let i=0;i<ST.evalBot.history.length;i+=2){
     const w=ST.evalBot.history[i],b=ST.evalBot.history[i+1];
-    pairs.push(`<span class="mw">${Math.ceil((i+2)/2)}. ${w.from}→${w.to}${w.cap?'×':''}</span>${b?` <span class="mb">${b.from}→${b.to}${b.cap?'×':''}</span>`:''}`);
+    const wBoard=states[i]?states[i].board:ST.evalBot.st.board;
+    const bBoard=states[i+1]?states[i+1].board:ST.evalBot.st.board;
+    const wAN=moveToAN(wBoard,w);
+    const bAN=b?moveToAN(bBoard,b):'';
+    pairs.push(`<span class="mw">${Math.ceil((i+2)/2)}. ${wAN}</span>${bAN?` <span class="mb">${bAN}</span>`:''}`);
   }
   el.innerHTML=pairs.join('<br>');el.scrollTop=el.scrollHeight;
 }
@@ -3661,6 +3801,185 @@ function initEvalViews(){
 }
 function collapseOpList(){/* no longer used — openings use card grid */}
 
+// ── THEME TOGGLE ──────────────────────────────────────────────────
+function toggleTheme() {
+  const isLight = document.documentElement.classList.toggle('light');
+  const btn = document.getElementById('theme-toggle');
+  if (btn) btn.textContent = isLight ? '☀️' : '🌙';
+  localStorage.setItem('theme', isLight ? 'light' : 'dark');
+}
+
+// ── SOUND EFFECTS ─────────────────────────────────────────────────
+let _audioCtx: AudioContext | null = null;
+let _muted = localStorage.getItem('muted') === '1';
+function _getAudio(): AudioContext {
+  if (!_audioCtx) _audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
+  return _audioCtx;
+}
+function playSound(type: 'move' | 'capture' | 'check' | 'win' | 'lose') {
+  if (_muted) return;
+  try {
+    const ctx = _getAudio();
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.connect(g); g.connect(ctx.destination);
+    const t = ctx.currentTime;
+    const configs: Record<string, [number, number, number, string]> = {
+      move:    [440, 0.07, 0.09, 'sine'],
+      capture: [260, 0.13, 0.14, 'sawtooth'],
+      check:   [660, 0.11, 0.18, 'square'],
+      win:     [523, 0.18, 0.5,  'sine'],
+      lose:    [196, 0.13, 0.4,  'sine'],
+    };
+    const [freq, vol, dur, wave] = configs[type] || configs.move;
+    o.type = wave as OscillatorType;
+    if (type === 'win') {
+      o.frequency.setValueAtTime(523, t);
+      o.frequency.setValueAtTime(659, t + 0.13);
+      o.frequency.setValueAtTime(784, t + 0.26);
+    } else {
+      o.frequency.setValueAtTime(freq, t);
+    }
+    g.gain.setValueAtTime(vol, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t + dur);
+    o.start(t); o.stop(t + dur);
+  } catch { /* audio unavailable */ }
+}
+function toggleMute() {
+  _muted = !_muted;
+  const btn = document.getElementById('mute-btn');
+  if (btn) btn.textContent = _muted ? '🔇' : '🔊';
+  localStorage.setItem('muted', _muted ? '1' : '0');
+}
+
+// ── DRAG SUPPORT ──────────────────────────────────────────────────
+function addDragSupport(boardId: string, clickHandler: (sq: string) => void) {
+  const el = document.getElementById(boardId);
+  if (!el) return;
+  let dragSrc: string | null = null;
+  let ghost: HTMLElement | null = null;
+  let srcEl: HTMLElement | null = null;
+
+  el.addEventListener('pointerdown', (e: PointerEvent) => {
+    const target = (e.target as HTMLElement).closest('[data-sq]') as HTMLElement;
+    if (!target) return;
+    const piece = target.querySelector('.piece') as HTMLElement;
+    if (!piece) return;
+    dragSrc = target.dataset.sq!;
+    srcEl = target;
+    ghost = document.createElement('div');
+    ghost.className = 'drag-ghost';
+    ghost.textContent = piece.textContent || '';
+    ghost.style.cssText = `position:fixed;pointer-events:none;font-size:${piece.style.fontSize};z-index:9999;transform:translate(-50%,-50%);left:${e.clientX}px;top:${e.clientY}px`;
+    document.body.appendChild(ghost);
+    target.style.opacity = '0.3';
+    try { el.setPointerCapture(e.pointerId); } catch {}
+    e.preventDefault();
+  }, { passive: false });
+
+  el.addEventListener('pointermove', (e: PointerEvent) => {
+    if (!ghost) return;
+    ghost.style.left = e.clientX + 'px';
+    ghost.style.top = e.clientY + 'px';
+    e.preventDefault();
+  }, { passive: false });
+
+  el.addEventListener('pointerup', (e: PointerEvent) => {
+    if (!ghost || !dragSrc) return;
+    ghost.remove(); ghost = null;
+    if (srcEl) { srcEl.style.opacity = ''; srcEl = null; }
+    el.querySelectorAll('[data-sq]').forEach((s: Element) => { (s as HTMLElement).style.opacity = ''; });
+    el.style.pointerEvents = 'none';
+    const dropEl = document.elementFromPoint(e.clientX, e.clientY)?.closest('[data-sq]') as HTMLElement | null;
+    el.style.pointerEvents = '';
+    const dropSq = dropEl?.dataset.sq;
+    const src = dragSrc; dragSrc = null;
+    if (dropSq && dropSq !== src) {
+      clickHandler(src);
+      setTimeout(() => clickHandler(dropSq), 10);
+    }
+  });
+}
+
+// ── BOARD FLIP ────────────────────────────────────────────────────
+let _boardFlipped = false;
+function flipBoard() {
+  _boardFlipped = !_boardFlipped;
+  if (ST.evalBot) drawBot([], (ST.evalBot as any).lastMove || null);
+}
+
+// ── MOVE TO ALGEBRAIC NOTATION ────────────────────────────────────
+function moveToAN(board: Record<string,string>, m: any): string {
+  if (m.castle === 'K') return 'O-O';
+  if (m.castle === 'Q') return 'O-O-O';
+  const pc = board[m.from];
+  if (!pc) return m.from + m.to;
+  const t = pc[1];
+  const pieceChar = t === 'P' ? '' : t;
+  const cap = m.cap ? 'x' : '';
+  const fromFile = t === 'P' && m.cap ? m.from[0] : '';
+  const promo = m.promo ? '=' + m.promo[1] : '';
+  return pieceChar + fromFile + cap + m.to + promo;
+}
+
+// ── ANALYSIS MODE ─────────────────────────────────────────────────
+function startAnalysis() {
+  if (!ST.evalBot) return;
+  ST.evalBot.over = false;
+  (ST.evalBot as any).analysisMode = true;
+  const ab = document.getElementById('btn-analyse');
+  if (ab) ab.style.display = 'none';
+  document.getElementById('bg-res')?.classList.remove('show');
+  setFB('bg-fb', 'finf', '📖 Analysis mode — play both sides freely. Use Undo to go back.');
+  drawBot();
+  // Override bot click to allow both colors
+  const el = document.getElementById('bg-board');
+  if (el) {
+    el.querySelectorAll('.sq').forEach(sq => {
+      sq.addEventListener('click', () => {
+        const s = (sq as HTMLElement).dataset.sq;
+        if (s) onAnalysisClick(s);
+      });
+    });
+  }
+  wireEvalBoard('bg-board', onAnalysisClick);
+}
+
+function onAnalysisClick(s: string) {
+  const {st, sel} = ST.evalBot;
+  if (!sel) {
+    if (st.board[s]) {
+      ST.evalBot.sel = s;
+      const hints = legalMoves(st, st.turn).filter((m: any) => m.from === s).map((m: any) => m.to);
+      drawBot(hints);
+    }
+    return;
+  }
+  if (s === sel) { ST.evalBot.sel = null; drawBot(); return; }
+  const lm = legalMoves(st, st.turn);
+  const chosen = lm.find((m: any) => m.from === sel && m.to === s);
+  if (!chosen) { ST.evalBot.sel = null; drawBot(); return; }
+  const ns = applyMove(st, chosen);
+  ST.evalBot.st = ns; ST.evalBot.sel = null;
+  playSound(chosen.cap ? 'capture' : 'move');
+  drawBot([], chosen);
+  updateBotLog();
+}
+
+// ── KEYBOARD SHORTCUTS ────────────────────────────────────────────
+document.addEventListener('keydown', (e: KeyboardEvent) => {
+  if (e.key === 'Escape') closeLesson();
+  if (e.key === 't' && !e.ctrlKey && !e.metaKey && !(e.target as HTMLElement).matches('input,textarea')) toggleTheme();
+  if (e.key === 'm' && !e.ctrlKey && !e.metaKey && !(e.target as HTMLElement).matches('input,textarea')) toggleMute();
+});
+
+// ── SERVICE WORKER ────────────────────────────────────────────────
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
+  });
+}
+
 // ── EXPOSE GLOBALS FOR onclick= HANDLERS IN index.html ───────────
 // ES modules don't leak to window — wire up manually
 (window as any).pracHint       = pracHint;
@@ -3675,4 +3994,19 @@ function collapseOpList(){/* no longer used — openings use card grid */}
 (window as any).startQuiz      = startQuiz;
 (window as any).closeLesson    = closeLesson;
 (window as any).markLessonDone = markLessonDone;
+(window as any).toggleTheme    = toggleTheme;
+(window as any).toggleMute     = toggleMute;
+(window as any).flipBoard      = flipBoard;
+(window as any).startAnalysis  = startAnalysis;
 (window as any).ST             = ST;
+
+// ── LOAD PERSISTED PREFERENCES ───────────────────────────────────
+if (localStorage.getItem('theme') === 'light') {
+  document.documentElement.classList.add('light');
+  const btn = document.getElementById('theme-toggle');
+  if (btn) btn.textContent = '☀️';
+}
+if (_muted) {
+  const btn = document.getElementById('mute-btn');
+  if (btn) btn.textContent = '🔇';
+}
