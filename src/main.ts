@@ -3508,3 +3508,17 @@ function initEvalViews(){
   updateEvalTopStats();
 }
 function collapseOpList(){/* no longer used — openings use card grid */}
+
+// ── EXPOSE GLOBALS FOR onclick= HANDLERS IN index.html ───────────
+// ES modules don't leak to window — wire up manually
+(window as any).selectSkill    = selectSkill;
+(window as any).startWithSkill = startWithSkill;
+(window as any).showSkillChange= showSkillChange;
+(window as any).exportSave     = exportSave;
+(window as any).importSave     = importSave;
+(window as any).switchView     = switchView;
+(window as any).closeOpBoard   = closeOpBoard;
+(window as any).startQuiz      = startQuiz;
+(window as any).closeLesson    = closeLesson;
+(window as any).markLessonDone = markLessonDone;
+(window as any).ST             = ST;

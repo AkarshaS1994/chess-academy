@@ -7,7 +7,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body>
-</head>
 
 <!-- ONBOARDING OVERLAY -->
 <div class="onboard-overlay" id="onboard-overlay">
@@ -109,7 +108,7 @@
       <div class="nav-item" data-v="eval-puzzles"><span class="ni-ico">⚔️</span><div class="ni-txt"><span class="ni-name">Tactics Puzzles</span><span class="ni-sub">Solve on board</span></div><span class="ni-badge si-st" id="s-eval-puzzles">8</span></div>
       <div class="nav-item" data-v="eval-mates"><span class="ni-ico">👑</span><div class="ni-txt"><span class="ni-name">Checkmate Drills</span><span class="ni-sub">Mate in 1, 2, 3</span></div><span class="ni-badge si-st" id="s-eval-mates">7</span></div>
       <div class="nav-item" data-v="eval-endgame"><span class="ni-ico">♔</span><div class="ni-txt"><span class="ni-name">Endgame Drills</span><span class="ni-sub">Board practice vs engine</span></div><span class="ni-badge si-st" id="s-eval-endgame">4</span></div>
-      <div class="nav-item" data-v="eval-bot"><span class="ni-ico">🤖</span><div class="ni-txt"><span class="ni-name">Play vs Bot</span><span class="ni-sub">Minimax engine</span></div></div>
+      <div class="nav-item" data-v="eval-bot"><span class="ni-ico">🤖</span><div class="ni-txt"><span class="ni-name">Play vs Bot</span><span class="ni-sub">Stockfish engine</span></div></div>
       <div class="nav-item" data-v="eval-progress"><span class="ni-ico">📊</span><div class="ni-txt"><span class="ni-name">Mastery Dashboard</span><span class="ni-sub">Full overview</span></div></div>
     </div>
   </nav>
@@ -373,7 +372,7 @@
   </div>
 
   <div class="view flex-view" id="view-eval-bot">
-    <div class="ph"><h1>🤖 Play vs Bot</h1><p>Pure minimax engine — 5 difficulty levels. Zero API calls, zero tokens, works offline. Rule-based coach analyses every single move accurately.</p></div>
+    <div class="ph"><h1>🤖 Play vs Bot</h1><p>Stockfish 18 engine with ELO-limited strength — 5 difficulty levels from 300 to 1500 ELO. Works offline. Rule-based coach analyses every move.</p></div>
     <div class="grid" id="bot-grid"></div>
   </div>
 
@@ -424,12 +423,6 @@
     </div>
   </div>
 </div>
-
-<div class="toast" id="toast"></div>
-
-  
-
-
 
 
 
