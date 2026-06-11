@@ -1133,6 +1133,45 @@ const MODS=[
 
 ];
 
+// ── PRACTICE EXERCISES (one per lesson module) ─────────────────
+const PRACTICE_DATA: Record<string, Array<{title:string;desc:string;board:Record<string,string>;turn:'w'|'b';solution:string[];hint:string;}>> = {
+  pieces:[{title:"Knight Fork!",desc:"Move the white knight to attack both black rooks at once.",board:{e1:'wK',d2:'wN',e8:'bK',a5:'bR',b6:'bR'},turn:'w',solution:['d2c4'],hint:"Look for the square where a knight attacks BOTH enemy rooks simultaneously."}],
+  values:[{title:"Win the Exchange",desc:"Your bishop can capture a much more valuable piece. Find it!",board:{e1:'wK',c5:'wB',e8:'bK',a7:'bR',d6:'bN'},turn:'w',solution:['c5a7'],hint:"Bishops move diagonally. Can you reach the black rook in one move?"}],
+  opprinciples:[{title:"Best Opening Move",desc:"After 1.e4 e5 — develop a piece that attacks the e5 pawn!",board:{e1:'wK',d1:'wQ',a1:'wR',h1:'wR',c1:'wB',f1:'wB',b1:'wN',g1:'wN',a2:'wP',b2:'wP',c2:'wP',d2:'wP',f2:'wP',g2:'wP',h2:'wP',e4:'wP',e8:'bK',d8:'bQ',a8:'bR',h8:'bR',c8:'bB',f8:'bB',b8:'bN',g8:'bN',a7:'bP',b7:'bP',c7:'bP',d7:'bP',f7:'bP',g7:'bP',h7:'bP',e5:'bP'},turn:'w',solution:['g1f3'],hint:"Develop a knight toward the center. Which knight attacks the e5 pawn?"}],
+  tempo:[{title:"Gain a Tempo",desc:"Capture a pawn AND give check at the same time — gaining a free move!",board:{e1:'wK',h1:'wR',c4:'wB',e8:'bK',d6:'bQ',e5:'bP',f7:'bP'},turn:'w',solution:['c4f7'],hint:"Your bishop can take a pawn and deliver check simultaneously."}],
+  repwhite:[{title:"Play the Queen's Gambit",desc:"After 1.d4 d5 — offer the Queen's Gambit pawn!",board:{e1:'wK',d1:'wQ',a1:'wR',h1:'wR',c1:'wB',f1:'wB',b1:'wN',g1:'wN',a2:'wP',b2:'wP',c2:'wP',e2:'wP',f2:'wP',g2:'wP',h2:'wP',d4:'wP',e8:'bK',d8:'bQ',a8:'bR',h8:'bR',c8:'bB',f8:'bB',b8:'bN',g8:'bN',a7:'bP',b7:'bP',c7:'bP',e7:'bP',f7:'bP',g7:'bP',h7:'bP',d5:'bP'},turn:'w',solution:['c2c4'],hint:"Offer a pawn to fight for the center. The Queen's Gambit move is classic!"}],
+  repblack:[{title:"Caro-Kann Defence",desc:"White played 1.e4 — respond with the solid Caro-Kann!",board:{e1:'wK',d1:'wQ',a1:'wR',h1:'wR',c1:'wB',f1:'wB',b1:'wN',g1:'wN',a2:'wP',b2:'wP',c2:'wP',d2:'wP',f2:'wP',g2:'wP',h2:'wP',e4:'wP',e8:'bK',d8:'bQ',a8:'bR',h8:'bR',c8:'bB',f8:'bB',b8:'bN',g8:'bN',a7:'bP',b7:'bP',d7:'bP',e7:'bP',f7:'bP',g7:'bP',h7:'bP'},turn:'b',solution:['c7c6'],hint:"Prepare ...d5 next move. Which pawn move prepares to fight for the centre?"}],
+  tactics_m:[{title:"Spot the Fork",desc:"Move the white knight to attack two black pieces at once!",board:{e1:'wK',f3:'wN',e8:'bK',d6:'bQ',f6:'bR'},turn:'w',solution:['f3e5'],hint:"The knight can jump to a square that attacks the queen AND creates a fork."}],
+  mates:[{title:"Back-Rank Checkmate",desc:"The black king is trapped by its own pawns. Deliver checkmate!",board:{g1:'wK',e1:'wR',g8:'bK',g7:'bP',h7:'bP',f7:'bP',e8:'bR'},turn:'w',solution:['e1e8'],hint:"Your rook can land on a square where the black king has no escape — its own pawns block it!"}],
+  middle_basics:[{title:"Activate Your Worst Piece",desc:"Your rook on a1 is doing nothing. Find the move to make it active!",board:{g1:'wK',a1:'wR',f3:'wN',g2:'wP',h2:'wP',g8:'bK',g7:'bP',h7:'bP',d7:'bP',d4:'bP'},turn:'w',solution:['a1d1'],hint:"Put the rook on an open file where it has maximum influence!"}],
+  middle_threats:[{title:"Double Attack!",desc:"Find the move that attacks the black king AND wins the rook!",board:{e1:'wK',d5:'wQ',a1:'wR',e8:'bK',h8:'bR',g7:'bP',h7:'bP'},turn:'w',solution:['d5g8'],hint:"Your queen can move to a square that checks the king AND attacks the rook."}],
+  middle_planning:[{title:"Improve the Worst Piece",desc:"Your bishop on c1 is completely blocked. Find the best square for it!",board:{g1:'wK',c1:'wB',f3:'wN',g2:'wP',h2:'wP',d3:'wP',e4:'wP',g8:'bK',g7:'bP',h7:'bP',d6:'bP',e5:'bP'},turn:'w',solution:['c1g5'],hint:"Develop the bishop to where it is active and eyes the opponent's position."}],
+  middle_attack:[{title:"Greek Gift Sacrifice",desc:"Sacrifice the bishop to open the king — Bxh7+ is the classic attack!",board:{e1:'wK',d1:'wQ',c4:'wB',f3:'wN',e4:'wP',g8:'bK',g7:'bP',f7:'bP',h7:'bP',f6:'bN',d5:'bP'},turn:'w',solution:['c4h7'],hint:"The bishop sacrifice on h7 draws out the king. Is the king exposed enough?"}],
+  middle_defense:[{title:"Perpetual Check!",desc:"You are losing — but you can draw by checking the king forever. Find it!",board:{h1:'wK',g3:'wQ',h8:'bK',h7:'bP',g7:'bP',a1:'bQ'},turn:'w',solution:['g3h4'],hint:"Find a check the king cannot escape from — you can repeat this forever for a draw."}],
+  middle_200:[{title:"Spot the Hanging Piece",desc:"One of Black's pieces is completely undefended. Capture it for free!",board:{e1:'wK',e4:'wN',a1:'wR',e8:'bK',d6:'bQ',g5:'bB',h7:'bP',g7:'bP'},turn:'w',solution:['e4g5'],hint:"Scan the board: which black piece has no defenders? Take it!"}],
+  pawns:[{title:"Push the Passed Pawn",desc:"Your passed pawn is unstoppable. Push it toward promotion!",board:{e1:'wK',e6:'wP',e8:'bK'},turn:'w',solution:['e6e7'],hint:"A passed pawn with no enemy pawns in front of it must be pushed forward!"}],
+  kingsafe:[{title:"Castle to Safety",desc:"Your king is in the centre — castle to safety before it's too late!",board:{e1:'wK',a1:'wR',h1:'wR',f1:'wB',g1:'wN',d2:'wP',e2:'wP',f2:'wP',g2:'wP',h2:'wP',e8:'bK',a8:'bR',h8:'bR',d7:'bP',e7:'bP',f7:'bP',g7:'bP',h7:'bP',c6:'bB',f6:'bN'},turn:'w',solution:['e1g1'],hint:"Castle kingside! The king moves 2 squares toward the h-rook."}],
+  calc:[{title:"Calculate the Combination",desc:"Find the move that wins material by force — calculate 2 moves ahead!",board:{e1:'wK',e4:'wR',d3:'wB',e8:'bK',e7:'bR',f6:'bN'},turn:'w',solution:['e4e7'],hint:"What happens if you take the rook? Calculate the full sequence before moving!"}],
+  endgames_m:[{title:"Box the King",desc:"Use your queen to cut off the black king — start the box method!",board:{e1:'wK',d4:'wQ',h8:'bK'},turn:'w',solution:['d4d7'],hint:"Place the queen to cut off the king's movement. Shrink the box step by step!"}],
+  planning:[{title:"Rook to the Open File",desc:"The d-file is completely open. Centralise your rook!",board:{g1:'wK',a1:'wR',g2:'wP',h2:'wP',c3:'wP',e3:'wP',g8:'bK',g7:'bP',h7:'bP',c6:'bP',e6:'bP'},turn:'w',solution:['a1d1'],hint:"Open files are highways for rooks. Which file has no pawns on it?"}],
+  psychology:[{title:"Find the Draw",desc:"You are losing badly, but a perpetual check saves the game. Find it!",board:{h1:'wK',e4:'wQ',h8:'bK',g7:'bP',h7:'bP',a8:'bQ',a1:'bR'},turn:'w',solution:['e4h7'],hint:"Give check and see if the king can escape. If not, keep checking — it's a draw!"}],
+  setup:[{title:"Make the First Move",desc:"White always moves first. Play the classical opening pawn move!",board:{e1:'wK',d1:'wQ',a1:'wR',h1:'wR',c1:'wB',f1:'wB',b1:'wN',g1:'wN',a2:'wP',b2:'wP',c2:'wP',d2:'wP',e2:'wP',f2:'wP',g2:'wP',h2:'wP',e8:'bK',d8:'bQ',a8:'bR',h8:'bR',c8:'bB',f8:'bB',b8:'bN',g8:'bN',a7:'bP',b7:'bP',c7:'bP',d7:'bP',e7:'bP',f7:'bP',g7:'bP',h7:'bP'},turn:'w',solution:['e2e4'],hint:"The most popular first move in chess — controls the center with a pawn!"}],
+  stalemate:[{title:"Win Without Stalemate",desc:"You have a queen advantage — but ONE wrong move stalemates Black. Find the safe winning move!",board:{g1:'wK',b6:'wQ',h8:'bK'},turn:'w',solution:['b6b7'],hint:"The black king must keep at least one legal move. Which queen move gives the king space to move but still forces it to the edge?"}],
+  blundercheck:[{title:"Don't Hang Your Queen!",desc:"One of your moves loses the queen immediately. Find the SAFE move instead!",board:{e1:'wK',d1:'wQ',e8:'bK',c2:'bR',g5:'bB'},turn:'w',solution:['d1e2'],hint:"Before moving, check: is your queen safe from the bishop AND the rook on c2?"}],
+  coordination:[{title:"Connect the Rooks",desc:"Your rooks are disconnected. Play the move that connects them!",board:{e1:'wK',a1:'wR',h1:'wR',e2:'wP',f2:'wP',g2:'wP',h2:'wP',b1:'wN',g1:'wN',f1:'wB',c1:'wB',d1:'wQ',e8:'bK',d7:'bP',e7:'bP',f7:'bP',g7:'bP',h7:'bP',a7:'bP',b7:'bP',c7:'bP',a8:'bR',h8:'bR',b8:'bN',g8:'bN',c8:'bB',f8:'bB',d8:'bQ'},turn:'w',solution:['f1e2'],hint:"To connect rooks, clear the back rank. Which piece blocks them?"}],
+  converting:[{title:"Trade Into a Won Endgame",desc:"You are a rook up. Simplify by exchanging queens — then it's a simple technical win!",board:{e1:'wK',e4:'wR',d3:'wQ',a1:'wR',e8:'bK',d6:'bQ',h7:'bP',g7:'bP'},turn:'w',solution:['d3d6'],hint:"Trade queens when you have a large material advantage — the endgame is easier to win!"}],
+  notation_games:[{title:"Morphy's Key Move",desc:"Re-create the key sacrifice from Morphy's Opera Game — take the rook on d7!",board:{e1:'wK',d1:'wR',g5:'wB',e8:'bK',d7:'bR',d8:'bR',c6:'bN'},turn:'w',solution:['d1d7'],hint:"Morphy sacrificed the exchange to destroy coordination. Take the rook on d7!"}],
+  ratings:[{title:"Win Material",desc:"A simple tactic to test your awareness — win the undefended piece!",board:{e1:'wK',c3:'wN',e8:'bK',e5:'bB',h7:'bP',g7:'bP'},turn:'w',solution:['c3e4'],hint:"Which square can your knight move to where it attacks the undefended bishop?"}],
+  advanced_mates:[{title:"Two Bishops Attack",desc:"Drive the lone king to the corner using both bishops!",board:{e1:'wK',d5:'wB',e5:'wB',h8:'bK'},turn:'w',solution:['d5f7'],hint:"Use the bishops to cut off the king's escape routes. Push it toward the corner!"}],
+  advanced_endings:[{title:"Lucena — Build the Bridge",desc:"Play the Lucena winning technique — shelter your king with the rook!",board:{e1:'wK',e7:'wP',g7:'wR',g8:'bK',a8:'bR'},turn:'w',solution:['g7g4'],hint:"The Lucena method: move the rook to the 4th rank to shelter the advancing king!"}],
+  improvement_plan:[{title:"Daily Tactic",desc:"A classic puzzle to sharpen your tactical vision — find the best move!",board:{e1:'wK',f5:'wN',a1:'wR',e8:'bK',d8:'bQ',g7:'bP',h7:'bP'},turn:'w',solution:['f5e7'],hint:"The knight can jump to a square that forks the king and queen!"}],
+  mid_position:[{title:"Occupy the Weak Square",desc:"The d5 square cannot be defended by any black pawn. Occupy it with your knight!",board:{e1:'wK',c3:'wN',g2:'wP',h2:'wP',e4:'wP',e8:'bK',g7:'bP',h7:'bP',e6:'bP',c6:'bP',f6:'bN'},turn:'w',solution:['c3d5'],hint:"A weak square is one no enemy pawn can attack. Centralise your knight there!"}],
+  mid_strategy:[{title:"Blockade the Passer",desc:"Black has a dangerous passed pawn on d4. Blockade it with your knight!",board:{e1:'wK',e4:'wN',g2:'wP',h2:'wP',e8:'bK',g7:'bP',h7:'bP',d4:'bP'},turn:'w',solution:['e4d2'],hint:"Put the knight directly in front of the passer — it can never be driven away by a pawn!"}],
+  mid_calculation:[{title:"Calculate the Forced Mate",desc:"Calculate 3 moves ahead — there is a forced checkmate sequence here!",board:{h1:'wK',g3:'wR',h3:'wR',h7:'bK',g7:'bP',f7:'bP'},turn:'w',solution:['g3g7'],hint:"Look for checks that limit the king's escape. Calculate every king move."}],
+  mid_advanced:[{title:"Strategic Knight Maneuver",desc:"Your knight wants to reach d5 — the ideal outpost. Route it there!",board:{e1:'wK',b1:'wN',g2:'wP',h2:'wP',c3:'wP',e4:'wP',e8:'bK',g7:'bP',h7:'bP',c6:'bP',e6:'bP'},turn:'w',solution:['b1c3'],hint:"Maneuver: knight goes b1-c3-d5 over two moves. Take the first step!"}],
+  strat_weapons:[{title:"Strategic Weapons",desc:"Use the open file — double rooks on the d-file to dominate!",board:{g1:'wK',d1:'wR',a1:'wR',g2:'wP',h2:'wP',e8:'bK',g7:'bP',h7:'bP',d6:'bP'},turn:'w',solution:['a1d1'],hint:"Double your rooks on the open d-file for maximum pressure!"}],
+};
+
 const OPS={
 qgd:{n:"Queen's Gambit",vars:{
   qgd_dec:{name:"QGD — Classical (2…e6)",desc:"Most solid reply — Black builds a strong centre.",moves:[
@@ -1667,6 +1706,7 @@ scandinavian:{
 // ── STATE ─────────────────────────────────────────────────────
 const ST={xp:0,lv:1,streak:0,skillLevel:null,done:new Set(),qzRes:{},varsDone:{},opsDone:new Set(),
   // ── Eval mastery state ──
+  practiceDone:new Set<string>(),
   evalTacSolved:new Set(),evalMateSolved:0,evalMateStreak:0,evalEgPassed:new Set(),
   evalTac:{st:null,sel:null,puz:null,attempts:0},
   evalMate:{st:null,sel:null,puz:null,step:0},
@@ -1849,6 +1889,21 @@ function openLesson(k){
     addLMTab(tabsEl,bodyEl,'Rules','lm-rules',buildRulesHTML(m.data),true);
     addLMTab(tabsEl,bodyEl,'Summary','lm-sum',buildSummaryHTML(m),false);
   }
+  // Practice tab — always add if we have exercises
+  const pracExs=PRACTICE_DATA[k];
+  if(pracExs&&pracExs.length){
+    const done=ST.practiceDone.has(k);
+    addLMTab(tabsEl,bodyEl,'⚡ Practice','lm-practice',buildPracticeHTML(k,pracExs[0],done),false);
+    // Init board when tab is clicked
+    tabsEl.querySelectorAll('.lm-tab').forEach((t,i)=>{
+      if(t.textContent==='⚡ Practice'){
+        t.addEventListener('click',()=>{
+          // slight delay so DOM is visible
+          setTimeout(()=>initPracticeBoard(k,pracExs[0]),80);
+        });
+      }
+    });
+  }
 
   document.getElementById('lesson-overlay').classList.add('show');
 }
@@ -1878,6 +1933,101 @@ function buildTipsHTML(m){
 function buildSummaryHTML(m){
   return `<div class="rl"><div class="ri"><div class="rn">📌</div><div class="rt"><strong>Core Principle</strong><span>${m.desc}</span></div></div></div>
 <div class="book-card" style="margin-top:10px"><div class="bc-ic">📚</div><div><div class="bc-title">Recommended Reading</div><div class="bc-body">For in-depth study: <em>My System</em> (Nimzowitsch), <em>Reassess Your Chess</em> (Silman), <em>Think Like a Grandmaster</em> (Kotov), <em>Complete Endgame Course</em> (Silman).</div></div></div>`;
+}
+
+// ── PRACTICE BOARD ───────────────────────────────────────────
+let _prac: {st:any;sel:string|null;ex:any;modKey:string;solved:boolean}|null=null;
+
+function buildPracticeHTML(modKey:string,ex:any,alreadyDone:boolean):string{
+  const badge=alreadyDone?'<span style="color:var(--grnl);font-size:.75rem;font-weight:600">✓ Already solved</span>':'';
+  return `<div style="display:flex;flex-direction:column;align-items:center;gap:10px;padding:12px 4px">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:700;color:var(--cream)">${ex.title} ${badge}</div>
+    <div style="font-size:.76rem;color:var(--mute);text-align:center;max-width:360px">${ex.desc}</div>
+    <div id="prac-board" style="display:inline-block;border:1px solid var(--bord)"></div>
+    <div id="prac-fb" class="fb" style="min-height:28px;text-align:center;padding:6px 12px;border-radius:7px">👆 Click a piece, then its destination square.</div>
+    <div style="display:flex;gap:8px">
+      <button class="btn" onclick="pracHint()">💡 Hint</button>
+      <button class="btn" onclick="pracReset()">↺ Reset</button>
+    </div>
+    <div id="prac-success" style="display:none;background:var(--grnl);color:#fff;border-radius:8px;padding:10px 16px;font-weight:700;text-align:center">✓ Correct! +10 XP 🎉</div>
+  </div>`;
+}
+
+function initPracticeBoard(modKey:string,ex:any){
+  _prac={st:mkState({...ex.board},ex.turn),sel:null,ex,modKey,solved:false};
+  drawPrac();
+}
+
+function drawPrac(hints:string[]=[],showSel:string|null=null){
+  if(!_prac)return;
+  drawEvalBoard('prac-board',_prac.st,{sel:showSel||_prac.sel,hints});
+  wireEvalBoard('prac-board',onPracClick);
+}
+
+function onPracClick(s:string){
+  if(!_prac||_prac.solved)return;
+  const {st,ex}=_prac;
+  if(!_prac.sel){
+    if(st.board[s]&&st.board[s][0]===ex.turn){
+      _prac.sel=s;
+      const lm=legalMoves(st,ex.turn).filter((m:any)=>m.from===s).map((m:any)=>m.to);
+      drawPrac(lm,s);
+    }
+    return;
+  }
+  // Already have selection — try move
+  if(s===_prac.sel){_prac.sel=null;drawPrac();return;}
+  const target=ex.solution[0]; // e.g. 'd2c4'
+  const moveFrom=target.slice(0,2),moveTo=target.slice(2,4);
+  const legal=legalMoves(st,ex.turn);
+  const mv=legal.find((m:any)=>m.from===_prac!.sel&&m.to===s);
+  if(!mv){
+    // Clicked own piece — reselect
+    if(st.board[s]&&st.board[s][0]===ex.turn){
+      _prac.sel=s;
+      const lm=legal.filter((m:any)=>m.from===s).map((m:any)=>m.to);
+      drawPrac(lm,s);
+      return;
+    }
+    _prac.sel=null;drawPrac();
+    const fb=document.getElementById('prac-fb');if(fb){fb.className='fb finf';fb.textContent='✗ Illegal move — try again.';}
+    return;
+  }
+  if(_prac.sel===moveFrom&&s===moveTo){
+    // Correct!
+    _prac.solved=true;_prac.sel=null;
+    _prac.st=applyMove(st,mv);
+    drawPrac();
+    const fb=document.getElementById('prac-fb');if(fb){fb.className='fb fpos';fb.textContent='✓ Correct! Well played!';}
+    const suc=document.getElementById('prac-success');if(suc)suc.style.display='block';
+    confetti();
+    if(!ST.practiceDone.has(ex.title+_prac.modKey)){
+      ST.practiceDone.add(ex.title+_prac.modKey);
+      addXP(10,'⚡ Practice solved! +10 XP');
+    }
+  }else{
+    _prac.sel=null;drawPrac();
+    const fb=document.getElementById('prac-fb');if(fb){fb.className='fb fneg';fb.textContent='✗ Not the best move — try again!';}
+  }
+}
+
+function pracHint(){
+  if(!_prac)return;
+  const fb=document.getElementById('prac-fb');
+  if(fb){fb.className='fb finf';fb.textContent='💡 '+_prac.ex.hint;}
+  const moveFrom=_prac.ex.solution[0].slice(0,2);
+  _prac.sel=moveFrom;
+  const lm=legalMoves(_prac.st,_prac.ex.turn).filter((m:any)=>m.from===moveFrom).map((m:any)=>m.to);
+  drawPrac(lm,moveFrom);
+}
+
+function pracReset(){
+  if(!_prac)return;
+  _prac.st=mkState({..._prac.ex.board},_prac.ex.turn);
+  _prac.sel=null;_prac.solved=false;
+  const fb=document.getElementById('prac-fb');if(fb){fb.className='fb';fb.textContent='👆 Click a piece, then its destination square.';}
+  const suc=document.getElementById('prac-success');if(suc)suc.style.display='none';
+  drawPrac();
 }
 
 function closeLesson(){document.getElementById('lesson-overlay').classList.remove('show');}
@@ -2615,6 +2765,7 @@ function _buildSaveData(){
     done:[...ST.done],qzRes:ST.qzRes,varsDone:ST.varsDone,
     opsDone:[...ST.opsDone],totalCorrect:ST.totalCorrect,totalQ:ST.totalQ,
     lastVisit:Date.now(),achievements:ST.achievements||[],
+    practiceDone:[...(ST.practiceDone||[])],
     evalTacSolved:[...(ST.evalTacSolved||[])],
     evalMateSolved:ST.evalMateSolved||0,evalMateStreak:ST.evalMateStreak||0,
     evalEgPassed:[...(ST.evalEgPassed||[])],
@@ -2632,6 +2783,7 @@ function _applySaveData(d){
   ST.varsDone=d.varsDone||{};ST.opsDone=new Set(d.opsDone||[]);
   ST.totalCorrect=d.totalCorrect||0;ST.totalQ=d.totalQ||0;
   ST.achievements=d.achievements||[];
+  ST.practiceDone=new Set(d.practiceDone||[]);
   ST.evalTacSolved=new Set(d.evalTacSolved||[]);
   ST.evalMateSolved=d.evalMateSolved||0;ST.evalMateStreak=d.evalMateStreak||0;
   ST.evalEgPassed=new Set(d.evalEgPassed||[]);
@@ -3511,6 +3663,8 @@ function collapseOpList(){/* no longer used — openings use card grid */}
 
 // ── EXPOSE GLOBALS FOR onclick= HANDLERS IN index.html ───────────
 // ES modules don't leak to window — wire up manually
+(window as any).pracHint       = pracHint;
+(window as any).pracReset      = pracReset;
 (window as any).selectSkill    = selectSkill;
 (window as any).startWithSkill = startWithSkill;
 (window as any).showSkillChange= showSkillChange;
