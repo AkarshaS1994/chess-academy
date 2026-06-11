@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "skipLibCheck": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "allowJs": true,
+    "resolveJsonModule": true
+  },
+  "include": ["src", "vite.config.ts"]
+}

@@ -1,0 +1,30 @@
+{
+  "name": "chess-academy",
+  "version": "1.0.0",
+  "description": "Chess Academy — Complete learning platform",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AkarshaS1994/chess-academy.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AkarshaS1994/chess-academy/issues"
+  },
+  "homepage": "https://github.com/AkarshaS1994/chess-academy#readme",
+  "dependencies": {
+    "stockfish": "^18.0.7"
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.3",
+    "typescript": "^6.0.3",
+    "vite": "^8.0.16"
+  }
+}
