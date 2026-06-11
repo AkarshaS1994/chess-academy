@@ -1,0 +1,122 @@
+/* ── BUTTONS ── */
+/* Merged from two definitions — using the more complete variant */
+.btn{padding:8px 16px;border:1px solid var(--bord2);border-radius:7px;background:var(--s3);color:var(--txt);cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.04em;text-transform:uppercase;transition:all .14s}
+.btn:hover{border-color:var(--gold);color:var(--gold)}
+.btn-gold,.btng{background:var(--gold);color:#1a1208;border-color:var(--gold);font-weight:600}
+.btn-gold:hover,.btng:hover{background:var(--goldl);color:#1a1208}
+.btn-grn{background:rgba(61,158,106,.18);border-color:rgba(61,158,106,.4);color:var(--grnl)}
+.btn-grn:hover{background:rgba(61,158,106,.28)}
+.btn-lg{padding:11px 24px;font-size:.78rem;border-radius:9px}
+
+/* ── FEEDBACK BOXES ── */
+.fb-box{border-radius:8px;padding:11px 13px;font-size:.78rem;line-height:1.5;border:1px solid var(--bord);background:var(--s2);min-height:50px;transition:all .22s;margin-bottom:12px}
+.fb-ok,.fok{background:var(--grnd);border-color:rgba(61,148,101,.35);color:var(--grnl)}
+.fb-err,.ferr{background:var(--redd);border-color:rgba(192,72,64,.35);color:var(--redl)}
+.fb-inf,.finf{background:rgba(72,120,200,.1);border-color:rgba(72,120,200,.3);color:#88b4e8}
+.fb-gld,.fgld{background:var(--goldd);border-color:rgba(200,169,90,.35);color:var(--goldl)}
+/* .fb is the compact variant used in board panels */
+.fb{padding:10px 12px;border-radius:7px;font-size:.77rem;line-height:1.5;border:1px solid var(--bord);background:var(--s2);min-height:46px;transition:all .2s;margin-bottom:10px}
+
+/* ── CONCEPT GRID (inside lesson modal) ── */
+.cg{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cc{background:var(--s3);border:1px solid var(--bord);border-radius:10px;padding:14px;transition:all .2s;cursor:default}
+.cc:hover{border-color:var(--bord2);background:var(--s4)}
+.cc-h{display:flex;align-items:center;gap:7px;margin-bottom:7px}
+.cc-ic{font-size:1.1rem}
+.cc-nm{font-size:.8rem;font-weight:600;color:var(--cream)}
+.cc-tx{font-size:.73rem;color:var(--mute);line-height:1.5}
+
+/* ── RULE LIST ── */
+.rl,.rlist{display:flex;flex-direction:column;gap:8px}
+.ri,.ritem{display:flex;gap:10px;background:var(--s3);border-radius:8px;padding:10px 12px;border-left:2px solid var(--gold)}
+.rn,.rnum{font-family:'IBM Plex Mono',monospace;font-size:.64rem;color:var(--gold);min-width:22px;flex-shrink:0;margin-top:1px}
+.rt,.rtxt strong{display:block;font-size:.8rem;color:var(--cream);margin-bottom:2px}
+.rt span,.rtxt span{font-size:.72rem;color:var(--mute);line-height:1.48}
+
+/* ── BOOK / TIP / INFO / WARN BOXES ── */
+.book-card{background:var(--s3);border:1px solid var(--bord);border-radius:8px;padding:12px 14px;display:flex;gap:10px;margin-top:10px}
+.bc-ic{font-size:1.4rem;flex-shrink:0}
+.bc-title{font-size:.8rem;font-weight:600;color:var(--cream)}
+.bc-body{font-size:.72rem;color:var(--txt);margin-top:4px;line-height:1.48;border-top:1px solid var(--bord);padding-top:5px}
+.tip-box,.tbox{background:var(--grnd);border:1px solid rgba(61,148,101,.25);border-radius:8px;padding:10px 13px;margin-top:10px}
+.tip-box h4,.tbox h4{font-size:.74rem;font-weight:600;color:var(--grnl);margin-bottom:4px}
+.tip-box p,.tbox p{font-size:.72rem;color:var(--txt);line-height:1.48}
+.warn-box,.mbox{background:var(--redd);border:1px solid rgba(192,72,64,.25);border-radius:8px;padding:10px 13px;margin-top:10px}
+.warn-box h4,.mbox h4{font-size:.74rem;font-weight:600;color:var(--redl);margin-bottom:4px}
+.warn-box p,.mbox p{font-size:.72rem;color:var(--txt);line-height:1.48}
+.info-box,.ibox{background:var(--blud);border:1px solid rgba(72,120,200,.25);border-radius:8px;padding:10px 13px;margin-top:10px}
+.info-box h4,.ibox h4{font-size:.74rem;font-weight:600;color:#80a8e8;margin-bottom:4px}
+.info-box p,.ibox p{font-size:.72rem;color:var(--txt);line-height:1.48}
+
+/* ── PROGRESS BLOCK (openings sidebar) ── */
+.prog-block{background:var(--s2);border:1px solid var(--bord);border-radius:8px;padding:12px;margin-bottom:12px}
+.pb-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.pb-lbl{font-family:'IBM Plex Mono',monospace;font-size:.62rem;color:var(--mute);text-transform:uppercase;letter-spacing:.08em}
+.pb-pct{font-family:'IBM Plex Mono',monospace;font-size:.62rem;color:var(--gold)}
+.pb-track{height:5px;background:var(--s4);border-radius:3px;overflow:hidden}
+.pb-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--goldl));border-radius:3px;transition:width .4s ease}
+
+/* ── SEQUENCE PILLS (openings) ── */
+.seq-wrap{margin-bottom:12px}
+.seq-lbl{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin-bottom:5px}
+.seq-pills{display:flex;flex-wrap:wrap;gap:3px}
+.spill{font-family:'IBM Plex Mono',monospace;font-size:.64rem;padding:2px 6px;border-radius:3px;background:var(--s2);border:1px solid var(--bord);color:var(--mute);transition:all .2s}
+.spill.sd{color:var(--gold);border-color:rgba(200,169,90,.3);background:var(--goldd)}
+.spill.sc{color:var(--cream);border-color:var(--gold);background:rgba(200,169,90,.18)}
+
+/* ── OPENINGS INFO TABS ── */
+.iz-tabs{display:flex;border-top:1px solid var(--bord);flex-shrink:0;background:var(--s2)}
+.iz-tab{flex:1;padding:10px 4px;cursor:pointer;font-size:.66rem;font-family:'IBM Plex Mono',monospace;color:var(--mute);border-top:2px solid transparent;transition:all .14s;text-align:center;text-transform:uppercase;letter-spacing:.05em}
+.iz-tab:hover{color:var(--txt)}.iz-tab.on{color:var(--gold);border-top-color:var(--gold)}
+.iz-panel{display:none;padding:14px 18px;font-size:.75rem;line-height:1.6;color:var(--mute);flex:1;overflow-y:auto}
+.iz-panel.on{display:block}
+
+/* ── OPENING COMPLETE BANNER ── */
+.op-complete-banner{
+  display:none;margin:12px;padding:16px;border-radius:10px;text-align:center;
+  background:linear-gradient(135deg,rgba(61,148,101,.15),rgba(200,169,90,.08));
+  border:1px solid rgba(200,169,90,.3);
+}
+.op-complete-banner.show{display:block}
+.op-complete-banner h3{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--gold);margin-bottom:4px}
+.op-complete-banner p{font-size:.75rem;color:var(--mute)}
+
+/* ── ONBOARDING OVERLAY ── */
+.onboard-overlay{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:2000;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(12px)}
+.onboard-card{background:var(--s2);border:1px solid var(--bord2);border-radius:20px;width:94%;max-width:560px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.8),0 0 0 1px rgba(200,169,90,.12);animation:modalIn .4s cubic-bezier(.34,1.56,.64,1)}
+.ob-header{padding:32px 32px 20px;text-align:center;background:linear-gradient(180deg,var(--s3),var(--s2));position:relative}
+.ob-header::after{content:'';position:absolute;bottom:0;left:20%;right:20%;height:1px;background:linear-gradient(90deg,transparent,var(--goldb),transparent)}
+.ob-crown{font-size:2.8rem;margin-bottom:10px;display:block}
+.ob-title{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:700;color:var(--cream);line-height:1.2}
+.ob-sub{font-size:.82rem;color:var(--mute);margin-top:6px;line-height:1.6}
+.ob-body{padding:24px 28px}
+.ob-question{font-size:.88rem;font-weight:600;color:var(--cream);margin-bottom:14px;text-align:center}
+.ob-levels{display:flex;flex-direction:column;gap:8px}
+.ob-level{display:flex;align-items:center;gap:14px;padding:12px 16px;border:1.5px solid var(--bord2);border-radius:10px;cursor:pointer;transition:all .18s;background:var(--s3)}
+.ob-level:hover{border-color:var(--gold);background:var(--s4);transform:translateX(3px)}
+.ob-level.selected{border-color:var(--gold);background:var(--goldd);box-shadow:0 0 0 1px var(--goldb)}
+.ob-level-ico{font-size:1.5rem;width:36px;text-align:center;flex-shrink:0}
+.ob-level-body{flex:1}
+.ob-level-name{font-size:.88rem;font-weight:600;color:var(--cream);display:block}
+.ob-level-desc{font-size:.72rem;color:var(--mute);display:block;margin-top:2px}
+.ob-level-range{font-family:'IBM Plex Mono',monospace;font-size:.62rem;color:var(--gold);display:block;margin-top:3px}
+.ob-footer{padding:0 28px 24px;display:flex;flex-direction:column;gap:10px}
+.ob-start-btn{width:100%;padding:14px;border-radius:10px;background:var(--gold);border:none;color:#1a1208;font-size:.88rem;font-weight:700;font-family:'IBM Plex Sans',sans-serif;cursor:pointer;transition:all .18s;opacity:.5;pointer-events:none}
+.ob-start-btn.ready{opacity:1;pointer-events:all}
+.ob-start-btn.ready:hover{background:var(--goldl);transform:translateY(-1px)}
+.ob-skip{text-align:center;font-size:.72rem;color:var(--mute);cursor:pointer;text-decoration:underline}
+.ob-skip:hover{color:var(--txt)}
+
+/* ── PUZZLE/EVAL GRID CARD ── */
+.gc{background:var(--s2);border:1px solid var(--bord);border-radius:9px;padding:13px;cursor:pointer;transition:all .16s}
+.gc:hover{border-color:var(--bord2);background:var(--s3);transform:translateY(-1px)}.gc.done{border-color:rgba(61,148,101,.4)}
+.gc-d{font-family:'IBM Plex Mono',monospace;font-size:.57rem;letter-spacing:.09em;text-transform:uppercase;margin-bottom:5px}
+.de{color:var(--grnl)}.dm{color:var(--gold)}.dh{color:var(--redl)}
+.gc-t{font-family:'Cormorant Garamond',serif;font-size:.95rem;font-weight:700;color:var(--cream);margin-bottom:2px}
+.gc-s{font-size:.7rem;color:var(--mute);line-height:1.4;margin-bottom:7px}
+.gc-tags{display:flex;gap:3px;flex-wrap:wrap}
+.gct{font-family:'IBM Plex Mono',monospace;font-size:.56rem;padding:1px 5px;border-radius:3px;background:var(--s4);color:var(--mute);border:1px solid var(--bord)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(192px,1fr));gap:9px;padding:16px}
+.ph{padding:14px 20px 10px;border-bottom:1px solid var(--bord);flex-shrink:0}
+.ph h1{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;color:var(--cream)}
+.ph p{font-size:.75rem;color:var(--mute);margin-top:3px;line-height:1.5}

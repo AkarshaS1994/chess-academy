@@ -1387,17 +1387,65 @@ function minimax(st,depth,alpha,beta,maxing){
   return best;
 }
 
-function getBotMove(st,depth){
-  return new Promise(resolve=>{
-    setTimeout(()=>{
-      try{
-        const {move}=minimax(st,depth,-Infinity,Infinity,st.turn==='w');
-        resolve(move);
-      }catch(e){
-        const ms=legalMoves(st);resolve(ms.length?ms[0]:null);
-      }
-    },10);
+// ── STOCKFISH 18 WASM ENGINE ──────────────────────────────────
+let _sfW=null,_sfR=false,_sfQ=[],_sfRes=null;
+function _sfInit(){return new Promise((resolve,reject)=>{
+  try{
+    _sfW=new Worker('./stockfish.worker.js#./stockfish.js,worker');
+    _sfW.onmessage=e=>{
+      const l=String(e.data);
+      if(l==='readyok'){_sfR=true;while(_sfQ.length)_sfW.postMessage(_sfQ.shift());resolve();}
+      if(_sfRes&&l.startsWith('bestmove')){const u=l.split(' ')[1];_sfRes(u&&u!=='(none)'?u:null);_sfRes=null;}
+    };
+    _sfW.onerror=e=>{console.warn('Stockfish init error',e);reject(e);};
+    _sfW.postMessage('uci');_sfW.postMessage('isready');
+  }catch(e){reject(e);}
+});}
+function _sfSend(cmd){if(_sfW&&_sfR)_sfW.postMessage(cmd);else _sfQ.push(cmd);}
+function boardToFen(st){
+  const F='abcdefgh';let fen='';
+  for(let r=8;r>=1;r--){let e=0;
+    for(let f=0;f<8;f++){const p=st.board[F[f]+r];
+      if(!p){e++;continue;}if(e){fen+=e;e=0;}
+      const ch={K:'K',Q:'Q',R:'R',B:'B',N:'N',P:'P'}[p[1]];
+      fen+=p[0]==='w'?ch:ch.toLowerCase();}
+    if(e)fen+=e;if(r>1)fen+='/';
+  }
+  const c=st.cast,cs=(c.wK?'K':'')+(c.wQ?'Q':'')+(c.bK?'k':'')+(c.bQ?'q':'')||'-';
+  return fen+' '+st.turn+' '+cs+' '+(st.ep||'-')+' '+(st.half||0)+' 1';
+}
+async function _sfMove(st,elo,mt){
+  if(!_sfW){try{await _sfInit();}catch{return null;}}
+  const fen=boardToFen(st);
+  return new Promise(res=>{
+    _sfRes=uci=>{
+      if(!uci){res(null);return;}
+      const from=uci.slice(0,2),to=uci.slice(2,4);
+      const promo=uci[4]?(st.board[from]?.[0]||'w')+uci[4].toUpperCase():null;
+      const legal=legalMoves(st,st.turn);
+      res(legal.find(m=>m.from===from&&m.to===to&&(!promo||m.promo===promo))||null);
+    };
+    _sfSend('ucinewgame');
+    _sfSend('setoption name UCI_LimitStrength value true');
+    _sfSend('setoption name UCI_Elo value '+elo);
+    _sfSend('position fen '+fen);
+    _sfSend('go movetime '+mt);
   });
+}
+function _mmFallback(st,depth){
+  return new Promise(res=>setTimeout(()=>{
+    try{const{move}=minimax(st,depth,-Infinity,Infinity,st.turn==='w');res(move);}
+    catch(e){const ms=legalMoves(st);res(ms.length?ms[0]:null);}
+  },10));
+}
+function getBotMove(st,depth){
+  const eloMap={1:300,2:600,3:900,4:1300};
+  const elo=eloMap[depth]||600;
+  if(elo>=600){
+    const mt=depth>=4?1500:800;
+    return _sfMove(st,elo,mt).then(mv=>mv||_mmFallback(st,depth)).catch(()=>_mmFallback(st,depth));
+  }
+  return _mmFallback(st,depth);
 }
 
 // ── RULE-BASED COACH ─────────────────────────────────────────
@@ -4769,17 +4817,65 @@ function minimax(st,depth,alpha,beta,maxing){
   return best;
 }
 
-function getBotMove(st,depth){
-  return new Promise(resolve=>{
-    setTimeout(()=>{
-      try{
-        const {move}=minimax(st,depth,-Infinity,Infinity,st.turn==='w');
-        resolve(move);
-      }catch(e){
-        const ms=legalMoves(st);resolve(ms.length?ms[0]:null);
-      }
-    },10);
+// ── STOCKFISH 18 WASM ENGINE ──────────────────────────────────
+let _sfW=null,_sfR=false,_sfQ=[],_sfRes=null;
+function _sfInit(){return new Promise((resolve,reject)=>{
+  try{
+    _sfW=new Worker('./stockfish.worker.js#./stockfish.js,worker');
+    _sfW.onmessage=e=>{
+      const l=String(e.data);
+      if(l==='readyok'){_sfR=true;while(_sfQ.length)_sfW.postMessage(_sfQ.shift());resolve();}
+      if(_sfRes&&l.startsWith('bestmove')){const u=l.split(' ')[1];_sfRes(u&&u!=='(none)'?u:null);_sfRes=null;}
+    };
+    _sfW.onerror=e=>{console.warn('Stockfish init error',e);reject(e);};
+    _sfW.postMessage('uci');_sfW.postMessage('isready');
+  }catch(e){reject(e);}
+});}
+function _sfSend(cmd){if(_sfW&&_sfR)_sfW.postMessage(cmd);else _sfQ.push(cmd);}
+function boardToFen(st){
+  const F='abcdefgh';let fen='';
+  for(let r=8;r>=1;r--){let e=0;
+    for(let f=0;f<8;f++){const p=st.board[F[f]+r];
+      if(!p){e++;continue;}if(e){fen+=e;e=0;}
+      const ch={K:'K',Q:'Q',R:'R',B:'B',N:'N',P:'P'}[p[1]];
+      fen+=p[0]==='w'?ch:ch.toLowerCase();}
+    if(e)fen+=e;if(r>1)fen+='/';
+  }
+  const c=st.cast,cs=(c.wK?'K':'')+(c.wQ?'Q':'')+(c.bK?'k':'')+(c.bQ?'q':'')||'-';
+  return fen+' '+st.turn+' '+cs+' '+(st.ep||'-')+' '+(st.half||0)+' 1';
+}
+async function _sfMove(st,elo,mt){
+  if(!_sfW){try{await _sfInit();}catch{return null;}}
+  const fen=boardToFen(st);
+  return new Promise(res=>{
+    _sfRes=uci=>{
+      if(!uci){res(null);return;}
+      const from=uci.slice(0,2),to=uci.slice(2,4);
+      const promo=uci[4]?(st.board[from]?.[0]||'w')+uci[4].toUpperCase():null;
+      const legal=legalMoves(st,st.turn);
+      res(legal.find(m=>m.from===from&&m.to===to&&(!promo||m.promo===promo))||null);
+    };
+    _sfSend('ucinewgame');
+    _sfSend('setoption name UCI_LimitStrength value true');
+    _sfSend('setoption name UCI_Elo value '+elo);
+    _sfSend('position fen '+fen);
+    _sfSend('go movetime '+mt);
   });
+}
+function _mmFallback(st,depth){
+  return new Promise(res=>setTimeout(()=>{
+    try{const{move}=minimax(st,depth,-Infinity,Infinity,st.turn==='w');res(move);}
+    catch(e){const ms=legalMoves(st);res(ms.length?ms[0]:null);}
+  },10));
+}
+function getBotMove(st,depth){
+  const eloMap={1:300,2:600,3:900,4:1300};
+  const elo=eloMap[depth]||600;
+  if(elo>=600){
+    const mt=depth>=4?1500:800;
+    return _sfMove(st,elo,mt).then(mv=>mv||_mmFallback(st,depth)).catch(()=>_mmFallback(st,depth));
+  }
+  return _mmFallback(st,depth);
 }
 
 // ── RULE-BASED COACH ─────────────────────────────────────────

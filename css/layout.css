@@ -1,0 +1,155 @@
+/* ── APP SHELL ── */
+.app{display:grid;grid-template-rows:auto 1fr auto;height:100vh;overflow:hidden}
+
+/* ── TOP HEADER ── */
+.topbar{
+  display:flex;align-items:center;padding:0 20px;
+  background:var(--s1);border-bottom:1px solid var(--bord);
+  height:56px;gap:16px;flex-shrink:0;z-index:100;
+}
+.logo{font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:700;color:var(--gold);letter-spacing:.02em;display:flex;align-items:center;gap:8px;white-space:nowrap}
+.logo-icon{font-size:1.2rem}
+.logo em{color:var(--cream);font-style:normal;font-weight:400}
+.top-right{margin-left:auto;display:flex;align-items:center;gap:12px}
+.xp-widget{display:flex;align-items:center;gap:8px;background:var(--s3);border:1px solid var(--bord);padding:6px 12px;border-radius:20px}
+.xp-icon{font-size:.8rem}
+.xp-num{font-family:'IBM Plex Mono',monospace;font-size:.75rem;color:var(--gold);font-weight:500}
+.streak-widget{display:flex;align-items:center;gap:5px;background:var(--s3);border:1px solid var(--bord);padding:6px 12px;border-radius:20px}
+.streak-fire{font-size:.85rem}
+.streak-num{font-family:'IBM Plex Mono',monospace;font-size:.75rem;color:#f09030;font-weight:500}
+.lv-pill{background:linear-gradient(135deg,var(--gold),var(--goldl));color:#1a1208;font-size:.7rem;font-weight:600;padding:4px 10px;border-radius:12px;font-family:'IBM Plex Mono',monospace}
+
+/* ── MAIN BODY ── */
+.body{display:flex;overflow:hidden;flex:1}
+
+/* ── LEFT NAV ── */
+.leftnav{
+  width:220px;flex-shrink:0;background:var(--s1);border-right:1px solid var(--bord);
+  display:flex;flex-direction:column;padding:16px 0;overflow-y:auto;
+}
+.nav-section{padding:0 0 8px}
+.nav-label{font-family:'IBM Plex Mono',monospace;font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:var(--mute);padding:10px 16px 4px}
+.nav-item{
+  display:flex;align-items:center;gap:10px;padding:9px 16px;cursor:pointer;
+  border-left:2px solid transparent;transition:all .15s;position:relative;
+}
+.nav-item:hover{background:var(--s2);border-left-color:var(--bord2)}
+.nav-item.act{background:var(--s2);border-left-color:var(--gold)}
+.nav-item .ni-ico{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
+.nav-item .ni-txt{flex:1}
+.nav-item .ni-name{font-size:.82rem;font-weight:500;color:var(--cream);display:block}
+.nav-item .ni-sub{font-size:.65rem;color:var(--mute);display:block;margin-top:1px}
+.nav-item .ni-badge{font-family:'IBM Plex Mono',monospace;font-size:.58rem;background:var(--goldd);border:1px solid var(--goldb);color:var(--gold);padding:1px 5px;border-radius:3px}
+.nav-divider{height:1px;background:var(--bord);margin:6px 12px}
+
+/* ── CONTENT ── */
+.content{flex:1;overflow-y:auto;position:relative}
+
+/* ── VIEWS ── */
+.view{display:none;animation:fadeIn .25s ease}
+.view.act{display:block}
+.view.act.flex-view{display:flex}
+.openings-wrap,.eval-wrap,.eg-wrap,.tact-wrap,.challenge-wrap{height:100%;overflow:hidden}
+
+/* ── SAVE BAR ── */
+.save-bar{display:flex;align-items:center;justify-content:space-between;padding:8px 22px;background:var(--s2);border-bottom:1px solid var(--bord);gap:8px;flex-wrap:wrap;flex-shrink:0}
+.save-bar-label{font-family:"IBM Plex Mono",monospace;font-size:.62rem;color:var(--mute)}
+.save-bar-btns{display:flex;gap:6px}
+.save-btn{font-size:.65rem!important;padding:4px 10px!important}
+
+/* ── SKILL BADGE in topbar ── */
+.skill-badge{font-family:'IBM Plex Mono',monospace;font-size:.63rem;padding:3px 9px;border-radius:10px;border:1px solid var(--bord2);cursor:pointer;transition:all .15s;white-space:nowrap}
+.skill-badge:hover{border-color:var(--gold);color:var(--gold)}
+.sk-absolute{background:rgba(72,120,200,.12);color:#80a8e8;border-color:rgba(72,120,200,.3)}
+.sk-beginner{background:rgba(61,148,101,.12);color:var(--grnl);border-color:rgba(61,148,101,.3)}
+.sk-improving{background:rgba(200,169,90,.12);color:var(--gold);border-color:rgba(200,169,90,.3)}
+.sk-intermediate{background:rgba(192,72,64,.12);color:var(--redl);border-color:rgba(192,72,64,.3)}
+.sk-advanced{background:rgba(138,96,200,.12);color:#b090e0;border-color:rgba(138,96,200,.3)}
+
+/* ── SKILL PATH CARDS ── */
+.skill-path-card{background:linear-gradient(135deg,var(--s3),rgba(200,169,90,.05));border:1px solid var(--goldb);border-radius:12px;padding:18px 20px;margin-bottom:18px}
+.spc-label{font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.spc-title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;color:var(--cream);margin-bottom:4px}
+.spc-desc{font-size:.78rem;color:var(--mute);line-height:1.55;margin-bottom:12px}
+.spc-steps{display:flex;flex-direction:column;gap:6px}
+.spc-step{display:flex;gap:10px;align-items:flex-start;font-size:.77rem;color:var(--txt);line-height:1.5}
+.spc-step-num{font-family:'IBM Plex Mono',monospace;font-size:.65rem;color:var(--gold);min-width:22px;flex-shrink:0;margin-top:1px}
+.habit-strip{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.habit-chip{font-family:'IBM Plex Mono',monospace;font-size:.62rem;padding:3px 9px;border-radius:12px;background:var(--s4);border:1px solid var(--bord2);color:var(--mute)}
+.habit-chip.active{background:var(--goldd);border-color:var(--goldb);color:var(--gold)}
+
+/* ── PRIORITY MODULE HIGHLIGHT ── */
+.lnode{position:relative}
+.lnode.priority{border-color:rgba(200,169,90,.5);background:linear-gradient(135deg,var(--s3),rgba(200,169,90,.06))}
+.lnode.priority::before{content:'🎯 START HERE';position:absolute;top:-1px;right:10px;font-family:'IBM Plex Mono',monospace;font-size:.55rem;background:var(--gold);color:#1a1208;padding:2px 7px;border-radius:0 0 5px 5px;letter-spacing:.06em}
+
+/* ── EVALUATE NAV ── */
+.nav-item[data-v="eval-puzzles"] .ni-ico,
+.nav-item[data-v="eval-mates"] .ni-ico,
+.nav-item[data-v="eval-endgame"] .ni-ico,
+.nav-item[data-v="eval-bot"] .ni-ico,
+.nav-item[data-v="eval-progress"] .ni-ico{color:var(--gold)}
+
+/* ── EVAL BOARD LAYOUT ── */
+.eval-layout{display:grid;grid-template-columns:auto 1fr;height:calc(100vh - 52px);overflow:hidden}
+.eval-bcol{display:flex;flex-direction:column;align-items:center;padding:18px 16px;gap:11px;overflow-y:auto;flex-shrink:0}
+.eval-icol{background:var(--s1);border-left:1px solid var(--bord);padding:16px;overflow-y:auto;min-width:268px;max-width:305px}
+
+/* ── MASTERY BADGE ── */
+.lnode.mastery-tested{border-color:rgba(61,148,101,.45)!important}
+.lnode.mastery-tested::after{content:'✓ Tested';position:absolute;top:-1px;left:10px;font-family:'IBM Plex Mono',monospace;font-size:.55rem;background:var(--grn);color:#fff;padding:2px 7px;border-radius:0 0 5px 5px;letter-spacing:.06em}
+
+/* ── XP FLASH ── */
+.xp-flash{position:fixed;top:60px;right:20px;font-family:'IBM Plex Mono',monospace;font-size:.78rem;color:var(--gold);background:var(--goldd);border:1px solid var(--goldb);padding:5px 12px;border-radius:20px;animation:xpf .9s ease forwards;pointer-events:none;z-index:500}
+
+/* ── EVAL MENU CARDS ── */
+.eval-mc{display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--s2);border:1px solid var(--bord);border-radius:9px;transition:all .13s}
+.eval-mc:not(.eval-locked){cursor:pointer}
+.eval-mc:not(.eval-locked):hover{background:var(--s3);border-color:var(--bord2)}
+.eval-locked{opacity:.5}
+.emc-ico{font-size:1.3rem;flex-shrink:0;width:32px;text-align:center}
+.emc-body{flex:1;min-width:0}
+.emc-title{font-family:'Cormorant Garamond',serif;font-size:.9rem;font-weight:700;color:var(--cream)}
+.emc-sub{font-size:.65rem;color:var(--mute)}
+.emc-arrow{color:var(--gold);font-size:1.1rem;flex-shrink:0}
+
+/* ── RESPONSIVE OVERRIDES ── */
+@media(max-width:600px){#home-eval-section{grid-template-columns:1fr!important}}
+
+/* Opening panel */
+.openings-wrap{transition:grid-template-columns 0.2s ease}
+#op-list{transition:opacity 0.15s ease}
+
+/* Openings view fill */
+#view-openings.act{display:flex;flex-direction:column;height:100%;overflow:hidden}
+#view-openings .openings-wrap{display:grid;grid-template-columns:240px 1fr;flex:1;min-height:0;overflow:hidden}
+
+/* Eval views fill */
+#view-eval-puzzles.act,#view-eval-tboard.act,#view-eval-mates.act,
+#view-eval-mboard.act,#view-eval-endgame.act,#view-eval-egboard.act,
+#view-eval-bot.act,#view-eval-bgame.act,#view-eval-progress.act{
+  display:flex;flex-direction:column;height:100%;overflow:hidden
+}
+
+/* Opening cards grid */
+.op-wrap{padding:16px 18px 24px;max-width:900px;overflow-y:auto;height:100%;box-sizing:border-box}
+.op-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-bottom:24px}
+.op-card2{background:var(--s2);border:1px solid var(--bord);border-radius:12px;padding:18px;cursor:pointer;transition:all .2s;position:relative}
+.op-card2:hover{background:var(--s3);border-color:var(--gold);transform:translateY(-2px)}
+.op-card2.op-done{border-color:rgba(61,148,101,.4)}
+.op-card2.op-locked2{opacity:.45;cursor:not-allowed}
+.op-cat-title{font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);margin:18px 0 8px;grid-column:1/-1}
+.op2-name{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:700;color:var(--cream);margin-bottom:4px}
+.op2-eco{font-family:'IBM Plex Mono',monospace;font-size:.6rem;color:var(--mute);margin-bottom:6px}
+.op2-badge{display:inline-flex;align-items:center;font-family:'IBM Plex Mono',monospace;font-size:.58rem;padding:2px 8px;border-radius:8px;background:var(--s3)}
+.op2-badge.tag-beginner{color:#7ec8a0;background:rgba(61,148,101,.15)}
+.op2-badge.tag-intermediate{color:var(--gold);background:rgba(200,169,90,.15)}
+.op2-badge.tag-advanced{color:#c07070;background:rgba(192,72,64,.15)}
+.op2-done{font-size:.65rem;color:var(--grnl);margin-top:6px}
+.op-board-header{display:flex;align-items:center;gap:12px;padding:14px 22px 10px;border-bottom:1px solid var(--bord);flex-shrink:0}
+
+.flex-view.act{display:flex!important;flex-direction:column;height:100%}
+
+@media(max-width:640px){
+  .ic{min-width:0;max-width:100%;border-left:none;border-top:1px solid var(--bord)}
+}
