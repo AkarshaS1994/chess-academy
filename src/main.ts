@@ -371,6 +371,22 @@ function coachMove(stBefore,stAfter,move,moveNum,c,history){
     if(cnt>=2){notes.push({t:'tip',msg:`Tip: Doubled pawns on ${f}-file — a structural weakness. Avoid creating more.`});break;}
   }
 
+  // 8. HP Wizard flavor quip (appended, chess note always comes first)
+  const HP_QUIPS=[
+    'Even Ron knows: a hanging piece is like an unguarded Horcrux — doomed!',
+    'As Dumbledore said: "It is our choices that show what we truly are." Choose your moves wisely.',
+    'McGonagall: "Five points from your position for leaving that piece undefended."',
+    'Hermione: "I read about this in Magical Theory of Chess — always watch your back rank!"',
+    'The Sorting Hat has spoken: this move reveals your true chess character.',
+    'Accio initiative! Develop your pieces and seize the centre.',
+    'Like casting Expecto Patronum — a good plan drives away all threats.',
+    'Even Dobby could see that piece was hanging. Dobby is free — and so is your opponent to take it!',
+    'The chess clock is like an hourglass — every second counts in the endgame.',
+  ];
+  if(moveNum%4===0&&notes.length===0){
+    notes.push({t:'tip',msg:'',hp:HP_QUIPS[moveNum%HP_QUIPS.length]});
+  }
+
   return notes;
 }
 
@@ -929,16 +945,21 @@ const EG_DRILLS=[
 ];
 
 const BOTS=[
-  {id:'b300',name:'Blunder Bobby',rating:300,ava:'🐣',depth:1,
-   desc:'Misses hanging pieces regularly. Perfect for complete beginners learning piece safety.'},
-  {id:'b600',name:'Developer Dan',rating:600,ava:'🌱',depth:2,
-   desc:'Develops pieces and castles. Good for practising basic opening principles.'},
-  {id:'b900',name:'Tactical Tanya',rating:900,ava:'⚔️',depth:3,
-   desc:'Spots forks and pins reliably. Tests whether you keep your pieces defended.'},
-  {id:'b1200',name:'Positional Pete',rating:1200,ava:'🏛️',depth:4,
-   desc:'Controls the centre and builds patiently. Tests your strategic understanding.'},
-  {id:'b1500',name:'Master Emma',rating:1500,ava:'♔',depth:4,
-   desc:'Strongest built-in opponent. Uses deep search — every inaccuracy is punished. Good preparation for online play.'},
+  {id:'b300',name:'Ron Weasley',rating:300,ava:'🧡',depth:1,
+   desc:'Ron is enthusiastic but moves impulsively — misses hanging pieces and blunders often. Perfect for learning piece safety and basic tactics.',
+   hp:'Ron charges in without a plan, just like his wizard chess style. A great first opponent.'},
+  {id:'b600',name:'Neville Longbottom',rating:600,ava:'🌿',depth:2,
+   desc:'Neville develops his pieces and sometimes castles, but loses track of threats. Good for practising opening principles.',
+   hp:'Neville has improved enormously — he develops and defends, but coordination still eludes him.'},
+  {id:'b900',name:'Viktor Krum',rating:900,ava:'🦅',depth:3,
+   desc:'Krum plays tactically — spots forks and pins reliably. Tests whether you keep your pieces defended.',
+   hp:'The Durmstrang champion plays sharp, aggressive chess. Watch your hanging pieces.'},
+  {id:'b1200',name:'Professor McGonagall',rating:1200,ava:'🎓',depth:4,
+   desc:'McGonagall controls the centre and builds patiently. Tests your positional understanding and long-term planning.',
+   hp:'Transfiguration demands precision. The Professor will punish every structural weakness.'},
+  {id:'b1500',name:'Albus Dumbledore',rating:1500,ava:'🌟',depth:4,
+   desc:'Dumbledore is the strongest opponent — deep calculation, no inaccuracy goes unpunished. Excellent preparation for online play.',
+   hp:'The greatest wizard of the age. Defeating Dumbledore earns you a place in chess history.'},
 ];
 
 // ═══════════════════════════════════════════════════════════════
@@ -1901,6 +1922,50 @@ function switchView(v){
 }
 
 // ── HOME VIEW ─────────────────────────────────────────────────
+// ── DAILY PUZZLE / HOUSE CUP ────────────────────────────────────
+function getDailyPuzzleIdx(): number {
+  const d = new Date();
+  const seed = d.getFullYear()*10000 + (d.getMonth()+1)*100 + d.getDate();
+  return seed % ALL_PUZZLES.length;
+}
+
+function injectDailyCard(wrap: Element) {
+  if(document.getElementById('daily-card'))return;
+  const idx=getDailyPuzzleIdx();
+  const puzz=ALL_PUZZLES[idx];
+  const todayKey='daily_'+new Date().toDateString();
+  const done=!!localStorage.getItem(todayKey);
+  const card=document.createElement('div');
+  card.className='daily-card'+(done?' done':'');
+  card.id='daily-card';
+  card.innerHTML=`<div class="dc-icon">🎩</div>
+    <div class="dc-body">
+      <div class="dc-label">Daily Challenge — Wizard's Puzzle</div>
+      <div class="dc-title">${puzz.name||'Checkmate Pattern'}</div>
+      <div class="dc-status">${done?'✅ Completed today':'Solve to earn +25 XP & 🔥 streak bonus'}</div>
+    </div>
+    <div class="dc-streak">🔥 ${ST.streak}</div>`;
+  card.addEventListener('click',()=>{
+    if(done){toast('✅ Already solved today — come back tomorrow!','tok');return;}
+    ST._dailyPuzzleKey=todayKey;
+    ST._dailyPuzzleIdx=idx;
+    switchView('eval-puzzles');
+    setTimeout(()=>loadTac(ALL_PUZZLES[idx]),200);
+  });
+  const cc=document.getElementById('continue-card');
+  if(cc)cc.parentElement!.insertBefore(card,cc);
+  // House cup
+  if(!document.getElementById('house-cup-bar')){
+    const cup=document.createElement('div');cup.className='house-cup';cup.id='house-cup-bar';
+    const house=ST.xp>=1000?'Gryffindor':ST.xp>=500?'Ravenclaw':ST.xp>=200?'Hufflepuff':'Slytherin';
+    const houseIcon={Gryffindor:'🦁',Ravenclaw:'🦅',Hufflepuff:'🦡',Slytherin:'🐍'}[house];
+    cup.innerHTML=`<div class="house-cup-icon">${houseIcon}</div>
+      <div class="house-cup-pts">${ST.xp} pts</div>
+      <div style="flex:1;font-size:.75rem;color:var(--txt)">${house} — House Cup rank by XP</div>`;
+    if(cc)cc.parentElement!.insertBefore(cup,card);
+  }
+}
+
 function renderHome(){
   const _s=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
   _s('stat-xp',ST.xp);
@@ -1914,6 +1979,7 @@ function renderHome(){
   const ccf=document.getElementById('cc-fill');if(ccf)ccf.style.width=pct+'%';
   _s('cc-pct',pct+'% complete');
   const cc=document.getElementById('continue-card');if(cc)cc.onclick=()=>openLesson(next.k);
+  const hw=document.querySelector('.home-wrap');if(hw)injectDailyCard(hw);
   const ql=document.getElementById('quick-lessons');
   if(ql){ql.innerHTML='';MODS.slice(0,5).forEach(m=>{
     const done=ST.done.has(m.k);const d=document.createElement('div');d.className='ql-item';
@@ -2720,7 +2786,10 @@ function selectSkill(el) {
   selectedSkill = el.dataset.skill;
   const btn = document.getElementById('ob-start-btn');
   btn.classList.add('ready');
-  btn.textContent = 'Start as ' + SKILL_DATA[selectedSkill].name + ' →';
+  btn.textContent = '🎩 The Hat Has Spoken — Begin!';
+  // Show Sorting Hat speech
+  const speech = document.getElementById('hat-speech');
+  if(speech && el.dataset.hat) speech.textContent = el.dataset.hat;
 }
 
 function startWithSkill(mode) {
@@ -3009,18 +3078,20 @@ function _doImport(code){
 
 // ── ACHIEVEMENT SYSTEM ────────────────────────────────────────
 const ACHIEVEMENTS = [
-  {id:'first_lesson', icon:'🎓', name:'First Step', desc:'Complete your first lesson', check:()=>ST.done.size>=1},
-  {id:'five_lessons', icon:'📚', name:'Student', desc:'Complete 5 lessons', check:()=>ST.done.size>=5},
-  {id:'all_l1', icon:'🌱', name:'Foundations Complete', desc:'Complete all Level 1 modules', check:()=>MODS.filter(m=>m.level===1).every(m=>ST.done.has(m.k))},
-  {id:'quiz_l1', icon:'✅', name:'Level 1 Graduate', desc:'Pass the Level 1 quiz', check:()=>ST.qzRes[1]===true},
-  {id:'quiz_l2', icon:'⚔️', name:'Level 2 Graduate', desc:'Pass the Level 2 quiz', check:()=>ST.qzRes[2]===true},
-  {id:'quiz_l3', icon:'👑', name:'Level 3 Graduate', desc:'Pass the Level 3 quiz', check:()=>ST.qzRes[3]===true},
-  {id:'first_opening', icon:'🏁', name:'Opening Explorer', desc:'Master your first opening', check:()=>ST.opsDone.size>=1},
-  {id:'all_openings', icon:'📖', name:'Opening Scholar', desc:'Master 5 openings', check:()=>ST.opsDone.size>=5},
-  {id:'xp_500', icon:'⚡', name:'500 Club', desc:'Earn 500 XP', check:()=>ST.xp>=500},
-  {id:'xp_1000', icon:'🔥', name:'1000 Club', desc:'Earn 1000 XP', check:()=>ST.xp>=1000},
-  {id:'streak_7', icon:'🔥', name:'Week Streak', desc:'7-day learning streak', check:()=>ST.streak>=7},
-  {id:'all_done', icon:'🏆', name:'Chess Academy Graduate', desc:'Complete all 34 modules', check:()=>ST.done.size>=34},
+  {id:'first_lesson', icon:'🎓', name:'First Step', desc:'Complete your first lesson', hp:'You received your Hogwarts letter — the journey begins!', check:()=>ST.done.size>=1},
+  {id:'five_lessons', icon:'📚', name:'Wizard Student', desc:'Complete 5 lessons', hp:'Five subjects mastered — Hermione would be impressed.', check:()=>ST.done.size>=5},
+  {id:'all_l1', icon:'🌱', name:'First Year Honours', desc:'Complete all Level 1 modules', hp:'You passed your First Year with flying colours — Dumbledore nods approvingly.', check:()=>MODS.filter(m=>m.level===1).every(m=>ST.done.has(m.k))},
+  {id:'quiz_l1', icon:'✅', name:'OWL Passed', desc:'Pass the Level 1 quiz', hp:'Your Ordinary Wizarding Level in Chess is certified!', check:()=>ST.qzRes[1]===true},
+  {id:'quiz_l2', icon:'⚔️', name:'N.E.W.T. Achieved', desc:'Pass the Level 2 quiz', hp:'Nastily Exhausting Wizarding Test — conquered! Even McGonagall smiles.', check:()=>ST.qzRes[2]===true},
+  {id:'quiz_l3', icon:'👑', name:'Hogwarts Champion', desc:'Pass the Level 3 quiz', hp:'You have won the Triwizard Chess Tournament. Eternal glory awaits.', check:()=>ST.qzRes[3]===true},
+  {id:'first_opening', icon:'🏁', name:'Opening Spell Cast', desc:'Master your first opening', hp:'Incendio! Your first opening blazes a trail on the board.', check:()=>ST.opsDone.size>=1},
+  {id:'all_openings', icon:'📖', name:'Marauder\'s Map Mastered', desc:'Master 5 openings', hp:'I solemnly swear I am up to no good — and crushing openings.', check:()=>ST.opsDone.size>=5},
+  {id:'xp_500', icon:'⚡', name:'500 House Points', desc:'Earn 500 XP', hp:'500 points to Gryffindor! The house cup is within reach.', check:()=>ST.xp>=500},
+  {id:'xp_1000', icon:'🔥', name:'Fiendfyre Master', desc:'Earn 1000 XP', hp:'1000 points — the entire common room erupts in celebration!', check:()=>ST.xp>=1000},
+  {id:'streak_7', icon:'🔥', name:'Daily Prophet Feature', desc:'7-day learning streak', hp:'Seven consecutive days — the Daily Prophet wants an interview.', check:()=>ST.streak>=7},
+  {id:'beat_ron', icon:'🧡', name:'Defeated Ron', desc:'Win a game vs Ron Weasley', hp:'Ron stares at the board, confused. "How did you do that?"', check:()=>(ST.botWins?.b300||0)>=1},
+  {id:'beat_dumbledore', icon:'🌟', name:'Defeated Dumbledore', desc:'Win a game vs Dumbledore', hp:'Dumbledore closes his eyes and smiles. "Remarkable. Truly remarkable."', check:()=>(ST.botWins?.b1500||0)>=1},
+  {id:'all_done', icon:'🏆', name:'Chess Academy Graduate', desc:'Complete all modules', hp:'You have mastered Wizard\'s Chess. A new hero of Hogwarts is born.', check:()=>ST.done.size>=34},
 ];
 
 function checkAchievements() {
@@ -3029,7 +3100,10 @@ function checkAchievements() {
     if (!ST.achievements.includes(a.id) && a.check()) {
       ST.achievements.push(a.id);
       confetti();
-      toast(`🏆 Achievement: ${a.icon} ${a.name}!`, 't-gld');
+      const msg = a.hp
+        ? `${a.icon} ${a.name}\n<span class="hp-quip">${a.hp}</span>`
+        : `🏆 Achievement: ${a.icon} ${a.name}!`;
+      toast(msg, 't-gld');
       saveProgress();
     }
   });
@@ -3042,8 +3116,17 @@ function checkAchievements() {
 // Extend to 10 levels with better thresholds
 const XPT_NEW = [0, 50, 150, 300, 500, 750, 1050, 1400, 1800, 2300, 3000];
 const LEVEL_TITLES = [
-  'Novice', 'Apprentice', 'Student', 'Learner', 'Improving',
-  'Club Player', 'Tactician', 'Strategist', 'Expert', 'Master', 'Academy Graduate'
+  'First Year',        // Lv 1 — just arrived at Hogwarts (Novice)
+  'Second Year',       // Lv 2 — learning spells (Apprentice)
+  'Third Year',        // Lv 3 — elective subjects (Student)
+  'Fourth Year',       // Lv 4 — Triwizard year (Learner)
+  'Fifth Year',        // Lv 5 — OWLs preparation (Improving)
+  'Sixth Year',        // Lv 6 — N.E.W.T. advanced (Club Player)
+  'Head Boy/Girl',     // Lv 7 — strategic leader (Tactician)
+  'Prefect Champion',  // Lv 8 — recognised talent (Strategist)
+  'Order Member',      // Lv 9 — trusted expert (Expert)
+  'Hogwarts Champion', // Lv 10 — near master level
+  'Chess Master'       // Lv 11 — graduated with honours
 ];
 
 // Override addXP to use new thresholds
@@ -3070,6 +3153,22 @@ addXP = function(n, label='') {
 };
 
 // ── STREAK SYSTEM ─────────────────────────────────────────────
+// ── HP FLOATING CANDLES ────────────────────────────────────────
+function initCandles(){
+  const bg=document.createElement('div');bg.className='candles-bg';bg.id='candles-bg';
+  document.body.prepend(bg);
+  for(let i=0;i<18;i++){
+    const c=document.createElement('div');c.className='candle';
+    const drift=(Math.random()-0.5)*80;
+    const left=Math.random()*98;
+    const dur=8+Math.random()*12;
+    const delay=Math.random()*20;
+    c.style.cssText=`left:${left}%;--drift:${drift}px;animation-duration:${dur}s;animation-delay:${delay}s`;
+    c.innerHTML='<div class="candle-flame"></div><div class="candle-body"></div>';
+    bg.appendChild(c);
+  }
+}
+
 function recordDailyVisit() {
   const today = new Date().toDateString();
   const lastDay = localStorage.getItem('chess_last_day');
@@ -3265,6 +3364,7 @@ if(hasData){
   ST.done.forEach(k=>{const el=document.getElementById('s-'+k);if(el){el.className='si-st done';el.textContent='✓';}});
 }
 recordDailyVisit();
+initCandles();
 if (hasData && ST.skillLevel) {
   // Returning user — skip onboarding
   document.getElementById('onboard-overlay').style.display = 'none';
@@ -3382,6 +3482,14 @@ function onTacClick(s){
     playSound(chosen.cap?'capture':'move');
     ST.evalTac.st=applyMove(st,chosen);ST.evalTac.sel=null;drawTac();
     if(!ST.evalTacSolved.has(puz.id)){ST.evalTacSolved.add(puz.id);ST.streak++;onEvalTacSolved(puz.id,puz.xp);}
+    // Mark daily puzzle done if this was the daily challenge
+    if(ST._dailyPuzzleKey&&ALL_PUZZLES.indexOf(puz)===ST._dailyPuzzleIdx){
+      localStorage.setItem(ST._dailyPuzzleKey,'1');
+      ST._dailyPuzzleKey=null;
+      addXP(25,'🎩 +25 XP Daily Wizard Challenge!');
+      const dc=document.getElementById('daily-card');
+      if(dc){dc.className='daily-card done';dc.querySelector('.dc-status')!.textContent='✅ Completed today';}
+    }
     setFB('t-fb','fgld','🏆 '+puz.explain);
     const stars=ST.evalTac.attempts<=1?'⭐⭐⭐':ST.evalTac.attempts<=3?'⭐⭐':'⭐';
     document.getElementById('t-stars').textContent=stars;
@@ -3631,8 +3739,15 @@ function buildBotGrid(){
   note.textContent='♞ Built-in chess engine · Choose your opponent strength';
   el.appendChild(note);
   BOTS.forEach(b=>{
+    const wins=(ST.botWins||{})[b.id]||0;
+    const winsLabel=wins>0?`<span style="color:var(--grnl);font-size:.63rem;margin-left:6px">✓ ${wins}W</span>`:'';
     const c=document.createElement('div');c.className='bcrd';
-    c.innerHTML=`<span class="bav">${b.ava}</span><div class="bnm">${b.name}</div><div class="brt">~${b.rating} ELO · depth ${b.depth}</div><div class="bds">${b.desc}</div><div style="margin-top:8px;font-family:'IBM Plex Mono',monospace;font-size:.59rem;padding:2px 8px;border-radius:9px;background:var(--goldd);color:var(--gold);border:1px solid rgba(200,169,90,.28);display:inline-block">Minimax engine</div>`;
+    c.innerHTML=`<span class="bav">${b.ava}</span>
+      <div class="bnm">${b.name}${winsLabel}</div>
+      <div class="brt">~${b.rating} ELO · depth ${b.depth}</div>
+      <div class="bds">${b.desc}</div>
+      ${b.hp?`<div class="hp-quip" style="margin-top:4px">${b.hp}</div>`:''}
+      <div style="margin-top:8px;font-family:'IBM Plex Mono',monospace;font-size:.59rem;padding:2px 8px;border-radius:9px;background:var(--goldd);color:var(--gold);border:1px solid rgba(200,169,90,.28);display:inline-block">🎩 Wizard's Chess</div>`;
     c.onclick=()=>startBot(b.id);el.appendChild(c);
   });
 }
@@ -3724,8 +3839,16 @@ function endBot(winner,title,msg){
   document.getElementById('bg-res').classList.add('show');
   document.getElementById('btn-newgame').onclick=()=>startBot(ST.evalBot.bot.id);
   setFB('bg-fb',winner==='w'?'fgld':winner==='d'?'finf':'ferr',title);
-  if(winner==='w'){confetti();onBotGameWon(ST.evalBot.bot?ST.evalBot.bot.rating:300);playSound('win');}
-  else if(winner==='b'){playSound('lose');}
+  if(winner==='w'){
+    confetti();
+    onBotGameWon(ST.evalBot.bot?ST.evalBot.bot.rating:300);
+    playSound('win');
+    if(ST.evalBot.bot){
+      if(!ST.botWins)ST.botWins={};
+      ST.botWins[ST.evalBot.bot.id]=(ST.botWins[ST.evalBot.bot.id]||0)+1;
+    }
+    setTimeout(checkAchievements,400);
+  } else if(winner==='b'){playSound('lose');}
   const ab = document.getElementById('btn-analyse');
   if (ab) ab.style.display = 'inline-flex';
   saveProgress();
@@ -3736,7 +3859,9 @@ function addCoachNote(n){
   const el=document.getElementById('coach-panel');
   const d=document.createElement('div');d.className='cnote';
   const icon=n.t==='warn'?'⚠️':n.t==='good'?'✓':n.t==='tip'?'💡':'📌';
-  d.innerHTML=`<div class="cnlbl">${icon} ${n.t==='warn'?'Warning':n.t==='good'?'Good':n.t==='tip'?'Tip':'Note'}</div>${n.msg}`;
+  const hpHtml=n.hp?`<span class="hp-quip">${n.hp}</span>`:'';
+  const body=n.msg?`${n.msg}${hpHtml}`:hpHtml;
+  d.innerHTML=`<div class="cnlbl">${icon} ${n.t==='warn'?'Warning':n.t==='good'?'Good':n.t==='tip'?'Tip':'Note'}</div>${body}`;
   el.prepend(d);while(el.children.length>6)el.removeChild(el.lastChild);
 }
 
@@ -3821,7 +3946,9 @@ function collapseOpList(){/* no longer used — openings use card grid */}
 function toggleTheme() {
   const isLight = document.documentElement.classList.toggle('light');
   const btn = document.getElementById('theme-toggle');
-  if (btn) btn.textContent = isLight ? '☀️' : '🌙';
+  if (btn) btn.textContent = isLight ? '☀️' : '🕯️';
+  if (isLight) toast('☀️ Lumos! Light mode activated.','tok');
+  else toast('🕯️ Nox. The candles are lit.','tok');
   localStorage.setItem('theme', isLight ? 'light' : 'dark');
 }
 
@@ -4098,7 +4225,7 @@ function resetClock() {
 if (localStorage.getItem('theme') === 'light') {
   document.documentElement.classList.add('light');
   const btn = document.getElementById('theme-toggle');
-  if (btn) btn.textContent = '☀️';
+  if (btn) btn.textContent = '☀️'; // Lumos — light mode
 }
 if (_muted) {
   const btn = document.getElementById('mute-btn');

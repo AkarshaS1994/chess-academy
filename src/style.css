@@ -555,7 +555,7 @@ html,body{height:100%;overflow:hidden;font-family:'IBM Plex Sans',sans-serif;bac
 .lnode.priority::before{content:'🎯 START HERE';position:absolute;top:-1px;right:10px;font-family:'IBM Plex Mono',monospace;font-size:.55rem;background:var(--gold);color:#1a1208;padding:2px 7px;border-radius:0 0 5px 5px;letter-spacing:.06em}
 .lnode{position:relative}
 
-:root{--bg:#080808;--s1:#101010;--s2:#181614;--s3:#201e1a;--s4:#2a2620;--bord:rgba(255,255,255,.07);--bord2:rgba(255,255,255,.12);--gold:#c8a95a;--goldl:#e8cc88;--goldd:rgba(200,169,90,.13);--cream:#f0ead8;--txt:#ccc6ba;--mute:#5a5448;--grn:#3d9465;--grnl:#52cc88;--grnd:rgba(61,148,101,.12);--red:#c04840;--redl:#e86060;--redd:rgba(192,72,64,.12);--lsq:#f0d9b5;--dsq:#b58863;--hl:rgba(200,169,90,.45);--hnt:rgba(61,148,101,.5);}
+:root{--bg:#110a04;--s1:#1a1008;--s2:#231508;--s3:#2e1e0c;--s4:#3a2710;--bord:rgba(255,200,80,.08);--bord2:rgba(255,200,80,.15);--gold:#d4a017;--goldl:#f0c040;--goldd:rgba(212,160,23,.15);--cream:#f5e6c8;--txt:#e0c896;--mute:#9a7850;--grn:#3d9465;--grnl:#52cc88;--grnd:rgba(61,148,101,.12);--red:#c04840;--redl:#e86060;--redd:rgba(192,72,64,.12);--lsq:#e8c87a;--dsq:#8B4513;--hl:rgba(212,160,23,.55);--hnt:rgba(212,160,23,.3);}
 *{box-sizing:border-box;margin:0;padding:0}html,body{height:100%;overflow:hidden;font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--txt)}
 
 
@@ -606,8 +606,10 @@ html,body{height:100%;overflow:hidden;font-family:'IBM Plex Sans',sans-serif;bac
 .cr{position:absolute;top:1px;left:2px;font-family:'IBM Plex Mono',monospace;font-size:8px;opacity:.5;pointer-events:none}
 .sq.lt .cf,.sq.lt .cr{color:var(--dsq)}.sq.dk .cf,.sq.dk .cr{color:var(--lsq)}
 .piece{pointer-events:none;display:flex;align-items:center;justify-content:center;width:100%;height:100%;filter:drop-shadow(0 1px 2px rgba(0,0,0,.4));font-size:clamp(26px,4.5vw,44px);line-height:1;font-family:'Segoe UI Symbol','Apple Color Emoji','Noto Chess',serif;font-style:normal;font-weight:normal;user-select:none}
-.piece.pw{color:#fffff0;text-shadow:-1.5px -1.5px 0 #3a2010,1.5px -1.5px 0 #3a2010,-1.5px 1.5px 0 #3a2010,1.5px 1.5px 0 #3a2010,0 2px 0 #3a2010,-2px 0 0 #3a2010,2px 0 0 #3a2010,0 3px 5px rgba(0,0,0,.4)}
-.piece.pb{color:#180f04;text-shadow:-1.5px -1.5px 0 #c8a95a,1.5px -1.5px 0 #c8a95a,-1.5px 1.5px 0 #c8a95a,1.5px 1.5px 0 #c8a95a,0 2px 0 #c8a95a,-2px 0 0 #c8a95a,2px 0 0 #c8a95a,0 3px 5px rgba(0,0,0,.45)}
+.piece.pw{color:#fff8e8;text-shadow:-1.5px -1.5px 0 #5a3010,1.5px -1.5px 0 #5a3010,-1.5px 1.5px 0 #5a3010,1.5px 1.5px 0 #5a3010,0 2px 0 #5a3010,-2px 0 0 #5a3010,2px 0 0 #5a3010,0 3px 6px rgba(0,0,0,.6),0 0 12px rgba(212,160,23,.35)}
+.piece.pb{color:#1a0a00;text-shadow:-1.5px -1.5px 0 #d4a017,1.5px -1.5px 0 #d4a017,-1.5px 1.5px 0 #d4a017,1.5px 1.5px 0 #d4a017,0 2px 0 #d4a017,-2px 0 0 #d4a017,2px 0 0 #d4a017,0 3px 6px rgba(0,0,0,.7),0 0 10px rgba(180,60,10,.4)}
+.sq.sel .piece.pw{text-shadow:-1.5px -1.5px 0 #5a3010,1.5px -1.5px 0 #5a3010,-1.5px 1.5px 0 #5a3010,1.5px 1.5px 0 #5a3010,0 0 16px rgba(255,200,50,.9),0 0 30px rgba(212,160,23,.6)}
+.sq.sel .piece.pb{text-shadow:-1.5px -1.5px 0 #d4a017,1.5px -1.5px 0 #d4a017,-1.5px 1.5px 0 #d4a017,1.5px 1.5px 0 #d4a017,0 0 16px rgba(255,200,50,.9),0 0 30px rgba(212,160,23,.6)}
 .chdr{background:var(--s2);border:1px solid var(--bord);border-radius:8px;padding:11px 14px}
 .chdr-l{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:3px}
 .chdr-t{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:700;color:var(--cream);margin-bottom:1px}
@@ -813,3 +815,64 @@ html.light .piece.pb { color: #1a1200; text-shadow: 0 1px 2px rgba(255,255,255,0
   .top-right { gap: 5px; }
   .lv-pill, #eval-stat-bar { display: none; }
 }
+
+/* ── HOGWARTS GREAT HALL ──────────────────────────────────────── */
+/* Floating candles */
+.candles-bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.candle{position:absolute;bottom:-40px;display:flex;flex-direction:column;align-items:center;animation:floatUp linear infinite;opacity:0}
+.candle-flame{width:8px;height:14px;background:radial-gradient(ellipse at 50% 80%,#fff 0%,#ffd700 30%,#ff8c00 65%,transparent 100%);border-radius:50% 50% 30% 30%;margin-bottom:1px;animation:flicker .12s ease-in-out infinite alternate;filter:blur(.4px)}
+.candle-body{width:5px;height:20px;background:linear-gradient(to bottom,#f5e6c8,#d4a017 60%,#8B4513);border-radius:2px 2px 1px 1px;box-shadow:0 0 6px rgba(212,160,23,.3)}
+@keyframes floatUp{0%{transform:translateY(0) translateX(0);opacity:0}5%{opacity:.8}90%{opacity:.6}100%{transform:translateY(-110vh) translateX(var(--drift,20px));opacity:0}}
+@keyframes flicker{from{transform:scaleX(1) scaleY(1);opacity:1}to{transform:scaleX(.82) scaleY(1.12);opacity:.85}}
+
+/* Sorting hat */
+.sorting-hat-wrap{text-align:center;margin-bottom:12px}
+.sorting-hat{font-size:3rem;display:inline-block;animation:hatWobble 3s ease-in-out infinite;filter:drop-shadow(0 0 12px rgba(212,160,23,.5))}
+.hat-speech{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--gold);font-size:.88rem;margin-top:6px;min-height:2.4em;transition:opacity .3s;padding:0 12px;line-height:1.5}
+@keyframes hatWobble{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(6deg)}}
+
+/* HP quips in coach */
+.hp-quip{color:var(--gold);font-size:.7em;font-family:'Cormorant Garamond',serif;font-style:italic;display:block;margin-top:2px}
+
+/* Daily challenge card */
+.daily-card{background:linear-gradient(135deg,var(--s2),var(--s3));border:1px solid var(--gold);border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:14px;cursor:pointer;margin-bottom:18px;transition:transform .15s,box-shadow .15s}
+.daily-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(212,160,23,.25)}
+.daily-card.done{border-color:#2ecc71}.daily-card.done .dc-status{color:#2ecc71}
+.dc-icon{font-size:1.8rem;flex-shrink:0}
+.dc-body{flex:1;min-width:0}
+.dc-label{font-family:'IBM Plex Mono',monospace;font-size:.52rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:3px}
+.dc-title{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:700;color:var(--cream)}
+.dc-status{font-size:.7rem;color:var(--mute);margin-top:2px}
+.dc-streak{font-size:1rem;font-weight:700;color:var(--gold);font-family:'IBM Plex Mono',monospace;flex-shrink:0}
+
+/* House Cup banner */
+.house-cup{background:linear-gradient(135deg,var(--s2),#1a0808);border:1px solid var(--gold);border-radius:10px;padding:10px 16px;display:flex;align-items:center;gap:12px;margin-bottom:14px;font-size:.78rem}
+.house-cup-icon{font-size:1.4rem}
+.house-cup-pts{font-family:'IBM Plex Mono',monospace;font-size:1.1rem;font-weight:700;color:var(--gold)}
+
+/* Eval bar */
+.eval-bar-wrap{display:flex;flex-direction:column;align-items:center;gap:4px;margin:0 6px}
+.eval-bar{width:14px;height:200px;background:#1a0a00;border-radius:7px;overflow:hidden;border:1px solid var(--bord2);position:relative}
+.eval-bar-fill{position:absolute;bottom:0;left:0;right:0;background:var(--cream);transition:height .4s ease;border-radius:0 0 6px 6px}
+.eval-score{font-family:'IBM Plex Mono',monospace;font-size:.6rem;color:var(--mute);text-align:center}
+
+/* ELO tracker chart */
+.elo-chart{background:var(--s2);border:1px solid var(--bord);border-radius:10px;padding:14px;margin-bottom:14px}
+.elo-chart canvas{width:100%!important;height:120px!important}
+.elo-current{font-family:'IBM Plex Mono',monospace;font-size:1.6rem;font-weight:700;color:var(--gold)}
+
+/* Tournament bracket */
+.tournament-bracket{display:flex;flex-direction:column;gap:8px;padding:12px}
+.t-round{background:var(--s2);border:1px solid var(--bord);border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:border-color .15s}
+.t-round:hover{border-color:var(--gold)}
+.t-round.locked{opacity:.45;cursor:not-allowed}
+.t-round.beaten{border-color:#2ecc71}
+.t-round-name{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:700;color:var(--cream);flex:1}
+.t-round-sub{font-size:.68rem;color:var(--mute)}
+
+/* Glossary popup */
+.glossary-popup{position:fixed;bottom:80px;right:20px;background:var(--s2);border:1px solid var(--gold);border-radius:12px;padding:14px 18px;max-width:280px;z-index:500;box-shadow:0 8px 32px rgba(0,0,0,.6);animation:popIn .2s ease}
+.glossary-popup h4{font-family:'Cormorant Garamond',serif;color:var(--gold);margin-bottom:6px;font-size:1rem}
+.glossary-popup p{font-size:.75rem;color:var(--txt);line-height:1.6}
+.glossary-popup .gp-close{position:absolute;top:8px;right:10px;cursor:pointer;color:var(--mute);font-size:.8rem}
+@keyframes popIn{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
