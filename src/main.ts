@@ -1943,7 +1943,7 @@ scandinavian:{
 }};
 
 // ── STATE ─────────────────────────────────────────────────────
-const ST={xp:0,lv:1,streak:0,skillLevel:null,done:new Set(),qzRes:{},varsDone:{},opsDone:new Set(),
+const ST:any={xp:0,lv:1,streak:0,skillLevel:null,done:new Set(),qzRes:{},varsDone:{},opsDone:new Set(),
   // ── Eval mastery state ──
   practiceDone:new Set<string>(),
   evalTacSolved:new Set(),evalMateSolved:0,evalMateStreak:0,evalEgPassed:new Set(),
@@ -1952,7 +1952,19 @@ const ST={xp:0,lv:1,streak:0,skillLevel:null,done:new Set(),qzRes:{},varsDone:{}
   evalEg:{st:null,sel:null,drill:null,moves:0,log:[],over:false},
   evalBot:{st:null,sel:null,bot:null,history:[],states:[],coach:[],stats:{cap:0,chk:0},over:false},
   curOp:'qgd',curVar:'qgd_dec',board:{},step:0,sel:null,hint:false,
-  qlv:1,qstep:0,qans:[],curMod:null,totalCorrect:0,totalQ:0};
+  qlv:1,qstep:0,qans:[],curMod:null,totalCorrect:0,totalQ:0,
+  // ── New v3 fields ──
+  botWins:{} as Record<string,number>,
+  gameHistory:[] as any[],
+  eloHistory:[] as number[],
+  eloPeak:400,
+  weaknesses:{} as Record<string,number>,
+  srData:{} as Record<string,any>,
+  frogs:[] as string[],
+  achievements:[] as string[],
+  _dailyPuzzleKey:null as string|null,
+  _dailyPuzzleIdx:-1 as number,
+};
 
 const XPT=[0,120,300,560,900,1400];
 function pos0(){return{a8:'bR',b8:'bN',c8:'bB',d8:'bQ',e8:'bK',f8:'bB',g8:'bN',h8:'bR',a7:'bP',b7:'bP',c7:'bP',d7:'bP',e7:'bP',f7:'bP',g7:'bP',h7:'bP',a1:'wR',b1:'wN',c1:'wB',d1:'wQ',e1:'wK',f1:'wB',g1:'wN',h1:'wR',a2:'wP',b2:'wP',c2:'wP',d2:'wP',e2:'wP',f2:'wP',g2:'wP',h2:'wP'};}
@@ -3058,7 +3070,7 @@ const SAVE_KEY = 'chess_master_v1';
 
 function _buildSaveData(){
   return {
-    v:2,
+    v:3,
     xp:ST.xp,lv:ST.lv,streak:ST.streak,skillLevel:ST.skillLevel,
     done:[...ST.done],qzRes:ST.qzRes,varsDone:ST.varsDone,
     opsDone:[...ST.opsDone],totalCorrect:ST.totalCorrect,totalQ:ST.totalQ,
@@ -3069,7 +3081,16 @@ function _buildSaveData(){
     evalEgPassed:[...(ST.evalEgPassed||[])],
     tacticsLearned:ST.tacticsLearned||{},endgamesLearned:ST.endgamesLearned||{},
     stageUnlocked:ST.stageUnlocked||{1:true,2:false,3:false},
-    qzWrong:ST.qzWrong||{}
+    qzWrong:ST.qzWrong||{},
+    // New fields v3
+    botWins:ST.botWins||{},
+    gameHistory:ST.gameHistory||[],
+    eloHistory:ST.eloHistory||[],
+    eloPeak:ST.eloPeak||400,
+    weaknesses:ST.weaknesses||{},
+    srData:ST.srData||{},
+    frogs:ST.frogs||[],
+    qlv:ST.qlv||1,
   };
 }
 
@@ -3088,6 +3109,15 @@ function _applySaveData(d){
   ST.tacticsLearned=d.tacticsLearned||{};ST.endgamesLearned=d.endgamesLearned||{};
   ST.stageUnlocked=d.stageUnlocked||{1:true,2:false,3:false};
   ST.qzWrong=d.qzWrong||{};
+  // New fields v3
+  ST.botWins=d.botWins||{};
+  ST.gameHistory=d.gameHistory||[];
+  ST.eloHistory=d.eloHistory||[];
+  ST.eloPeak=d.eloPeak||400;
+  ST.weaknesses=d.weaknesses||{};
+  ST.srData=d.srData||{};
+  ST.frogs=d.frogs||[];
+  if(d.qlv)ST.qlv=d.qlv;
   const daysSince=(Date.now()-(d.lastVisit||0))/86400000;
   if(daysSince>2)ST.streak=0;
   return true;
@@ -4499,25 +4529,24 @@ function _blitzTick(){
 function loadBlitzPuzzle(){
   const puz=_blitzPool[_blitzIdx];if(!puz){endBlitz();return;}
   const fb=document.getElementById('blitz-fb');if(fb)fb.textContent='';
-  drawEvalBoard('blitz-board',mkState(puz.fen||puz.board,puz.turn||'w'),{sz:300});
-  wireEvalBoard('blitz-board',(sq,st)=>{
-    if(!st)return;
-    const moves=legalMoves(st).filter(m=>m.from===sq);
-    if(!moves.length)return;
+  const blitzSt=mkState({...puz.pos},puz.side||'w');
+  drawEvalBoard('blitz-board',blitzSt,{sz:300});
+  wireEvalBoard('blitz-board',(sq)=>{
     const fb2=document.getElementById('blitz-fb');
-    if(st.board[sq]&&st.board[sq][0]===st.turn){
-      // Select piece — wait for second click
+    const curSt=mkState({...puz.pos},puz.side||'w');
+    if(curSt.board[sq]&&curSt.board[sq][0]===(puz.side||'w')){
       (window as any)._blitzSel=sq;
     } else if((window as any)._blitzSel){
-      const m=legalMoves(mkState(puz.fen||puz.board,puz.turn||'w')).find(mv=>mv.from===(window as any)._blitzSel&&mv.to===sq);
+      const from=(window as any)._blitzSel;
       (window as any)._blitzSel=null;
-      if(m&&m.from===puz.solution.from&&m.to===puz.solution.to){
+      const m=legalMoves(curSt).find(mv=>mv.from===from&&mv.to===sq);
+      if(m&&from===puz.solution.from&&sq===puz.solution.to){
         _blitzScore+=10;haptic([10,50,10]);playSound('win');
         if(fb2)fb2.textContent='✓ Correct! +10';
         _blitzIdx++;setTimeout(()=>_blitzIdx<5?loadBlitzPuzzle():endBlitz(),600);
       } else if(m){
         haptic([200]);playSound('lose');
-        if(fb2)fb2.textContent='✗ Wrong tactic — try the next one.';
+        if(fb2)fb2.textContent='✗ Not the tactic — next puzzle.';
         _blitzIdx++;setTimeout(()=>_blitzIdx<5?loadBlitzPuzzle():endBlitz(),800);
       }
     }
@@ -4817,7 +4846,7 @@ function renderGTMGame(){
   if(fb){fb.textContent='🎯 '+((_gtmMoveIdx===game.moves.length)?'Game complete! '+ann:'Your turn — play the master\'s move. '+(_gtmMoveIdx%2===0?'(White to move)':'(Black to move)'));fb.className='gtm-fb info';}
   _gtmWaiting=_gtmMoveIdx<game.moves.length;
 }
-function onGTMClick(sq:string,st:any){
+function onGTMClick(sq:string){
   if(!_gtmWaiting||!_gtmSt)return;
   const game=MASTER_GAMES[_gtmGameIdx];
   const expected=game.moves[_gtmMoveIdx];if(!expected)return;
