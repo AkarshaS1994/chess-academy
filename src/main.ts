@@ -323,6 +323,25 @@ function getBotMove(st,depth){
   }
   return _mmFallback(st,depth);
 }
+async function getBotMoveForBot(st:any,bot:any):Promise<any>{
+  const legal=legalMoves(st);if(!legal.length)return null;
+  // Opening preference: bot plays a preferred first move if still in early game
+  const sp=startPos();
+  const moved=Object.keys(sp).filter(sq=>st.board[sq]!==sp[sq]).length;
+  if(bot.openings?.length&&moved<8&&st.turn==='b'){
+    for(const [from,to] of bot.openings){
+      const m=legal.find((mv:any)=>mv.from===from&&mv.to===to);
+      if(m)return m;
+    }
+  }
+  // Blunder: pick a random legal move (beginner-style error)
+  if(bot.blunderRate&&Math.random()<bot.blunderRate){
+    const safe=legal.filter((m:any)=>{const ns=applyMove(st,m);return!isMate(ns);});
+    const pool=safe.length?safe:legal;
+    return pool[Math.floor(Math.random()*pool.length)];
+  }
+  return getBotMove(st,bot.depth);
+}
 
 // ── RULE-BASED COACH ─────────────────────────────────────────
 function coachMove(stBefore,stAfter,move,moveNum,c,history){
@@ -947,18 +966,23 @@ const EG_DRILLS=[
 
 const BOTS=[
   {id:'b300',name:'Ron Weasley',rating:300,ava:'🧡',depth:1,
+   blunderRate:0.42,openings:[],
    desc:'Ron is enthusiastic but moves impulsively — misses hanging pieces and blunders often. Perfect for learning piece safety and basic tactics.',
-   hp:'Ron charges in without a plan, just like his wizard chess style. A great first opponent.'},
+   hp:'Ron charges in without a plan, just like his wizard chess style. Watch for hanging pieces — he misses them constantly.'},
   {id:'b600',name:'Neville Longbottom',rating:600,ava:'🌿',depth:2,
+   blunderRate:0.16,openings:[['e2','e4'],['d2','d4'],['g1','f3']],
    desc:'Neville develops his pieces and sometimes castles, but loses track of threats. Good for practising opening principles.',
-   hp:'Neville has improved enormously — he develops and defends, but coordination still eludes him.'},
+   hp:'Neville has improved enormously — he develops and defends, but coordination still eludes him. He forgets about your threats.'},
   {id:'b900',name:'Viktor Krum',rating:900,ava:'🦅',depth:3,
+   blunderRate:0.06,openings:[['e2','e4'],['d2','d4'],['c2','c4']],
    desc:'Krum plays tactically — spots forks and pins reliably. Tests whether you keep your pieces defended.',
    hp:'The Durmstrang champion plays sharp, aggressive chess. Watch your hanging pieces.'},
   {id:'b1200',name:'Professor McGonagall',rating:1200,ava:'🎓',depth:4,
+   blunderRate:0.02,openings:[['d2','d4'],['g1','f3'],['c2','c4']],
    desc:'McGonagall controls the centre and builds patiently. Tests your positional understanding and long-term planning.',
    hp:'Transfiguration demands precision. The Professor will punish every structural weakness.'},
   {id:'b1500',name:'Albus Dumbledore',rating:1500,ava:'🌟',depth:4,
+   blunderRate:0,openings:[],
    desc:'Dumbledore is the strongest opponent — deep calculation, no inaccuracy goes unpunished. Excellent preparation for online play.',
    hp:'The greatest wizard of the age. Defeating Dumbledore earns you a place in chess history.'},
 ];
@@ -3551,6 +3575,41 @@ document.querySelectorAll('.nav-item[data-v="tactics"]').forEach(n=>n.addEventLi
 // ═══════════════════════════════════════════════════════════════
 // UNI provided by academy
 
+function mkPieceSVG(piece:string,sz:number):string{
+  const isW=piece[0]==='w';const t=piece[1];
+  const f=isW?'#fffff4':'#0d0600';const s=isW?'#3a1a08':'#c8a95a';const sw=Math.max(1.2,sz/28);
+  const shapes:Record<string,string>={
+    P:`<circle cx="22.5" cy="9" r="4.5" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
+<path d="M19 14.5 C17.5 17 16.5 21 16.5 25.5 L28.5 25.5 C28.5 21 27.5 17 26 14.5 C24.5 16 20.5 16 19 14.5Z" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
+<rect x="12" y="25.5" width="21" height="4" rx="1.5" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
+<rect x="10" y="29.5" width="25" height="4" rx="2" fill="${f}" stroke="${s}" stroke-width="${sw}"/>`,
+    N:`<path d="M22 10 C19 8 15.5 10 15.5 14 C15.5 18 18 20 19.5 21.5 L15 32 L30 32 L30 26 C32.5 24.5 34 21 33 17 C32 13.5 27.5 11 25 10.5 C24 10 23 10 22 10Z" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
+<circle cx="20.5" cy="15.5" r="1.8" fill="${s}"/>
+<path d="M19.5 21 C18 20 17 18.5 18 16.5" stroke="${s}" stroke-width="1" fill="none" stroke-linecap="round"/>
+<rect x="12" y="32" width="21" height="3.5" rx="1.5" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
+<rect x="10" y="35.5" width="25" height="4" rx="2" fill="${f}" stroke="${s}" stroke-width="${sw}"/>`,
+    B:`<circle cx="22.5" cy="6" r="2.5" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
+<path d="M22.5 9 C19.5 11 17 15 17 20 C17 25 19.5 27 22.5 27.5 C25.5 27 28 25 28 20 C28 15 25.5 11 22.5 9Z" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
+<path d="M19.5 17 L25.5 17" stroke="${s}" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+<rect x="12" y="27.5" width="21" height="3.5" rx="1.5" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
+<rect x="10" y="31" width="25" height="4" rx="2" fill="${f}" stroke="${s}" stroke-width="${sw}"/>`,
+    R:`<path d="M13 8 L13 13 L16.5 13 L16.5 10.5 L20 10.5 L20 13 L25 13 L25 10.5 L28.5 10.5 L28.5 13 L32 13 L32 8Z" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
+<rect x="14.5" y="13" width="16" height="13" rx="1" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
+<rect x="12" y="26" width="21" height="4" rx="1.5" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
+<rect x="10" y="30" width="25" height="4" rx="2" fill="${f}" stroke="${s}" stroke-width="${sw}"/>`,
+    Q:`<circle cx="22.5" cy="7" r="3" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
+<circle cx="11.5" cy="11.5" r="2.5" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
+<circle cx="33.5" cy="11.5" r="2.5" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
+<path d="M8.5 13 L15.5 24 L22.5 17 L29.5 24 L36.5 13 L31 26 L14 26Z" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
+<rect x="12" y="26" width="21" height="4" rx="1.5" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
+<rect x="10" y="30" width="25" height="4" rx="2" fill="${f}" stroke="${s}" stroke-width="${sw}"/>`,
+    K:`<path d="M21.5 5 L23.5 5 L23.5 9 L27.5 9 L27.5 11 L23.5 11 L23.5 15 L21.5 15 L21.5 11 L17.5 11 L17.5 9 L21.5 9Z" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
+<path d="M15.5 15 L29.5 15 L31 26 L14 26Z" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
+<rect x="12" y="26" width="21" height="4" rx="1.5" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
+<rect x="10" y="30" width="25" height="4" rx="2" fill="${f}" stroke="${s}" stroke-width="${sw}"/>`,
+  };
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45" width="${sz}" height="${sz}" style="display:block;pointer-events:none">${shapes[t]||''}</svg>`;
+}
 function drawEvalBoard(id,st,{sel=null,last=null,hints=[],sz=0}={}){
   const el=document.getElementById(id);if(!el)return;el.innerHTML='';
   if(!sz){
@@ -3574,7 +3633,7 @@ function drawEvalBoard(id,st,{sel=null,last=null,hints=[],sz=0}={}){
       const s=FL[f]+r,lt=(f+r)%2===1;
       const d=document.createElement('div');
       d.className='sq '+(lt?'lt':'dk');d.style.cssText=`width:${sz}px;height:${sz}px`;d.dataset.sq=s;
-      if(pos[s]){const sp=document.createElement('span');sp.className='piece '+(pos[s][0]==='w'?'pw':'pb');sp.style.fontSize=Math.round(sz*.86)+'px';sp.textContent=(UNI[pos[s]]||'')+'︎';d.appendChild(sp);}
+      if(pos[s]){const sp=document.createElement('div');sp.className='piece '+(pos[s][0]==='w'?'pw':'pb');sp.dataset.piece=pos[s];sp.innerHTML=mkPieceSVG(pos[s],Math.round(sz*.9));d.appendChild(sp);}
       if((!_boardFlipped&&r===1)||(_boardFlipped&&r===8)){const c=document.createElement('span');c.className='cf';c.textContent=FL[f];d.appendChild(c);}
       if((!_boardFlipped&&f===0)||(_boardFlipped&&f===7)){const c=document.createElement('span');c.className='cr';c.textContent=r;d.appendChild(c);}
       if(s===sel)d.classList.add('sel');
@@ -3981,7 +4040,7 @@ async function onBotClick(s){
   setFB('bg-fb','finf',ST.evalBot.bot.ava+' '+ST.evalBot.bot.name+' thinking (depth '+ST.evalBot.bot.depth+')...');
   startClock('b');
   setEng(true);
-  const bm=await getBotMove(ns,ST.evalBot.bot.depth);
+  const bm=await getBotMoveForBot(ns,ST.evalBot.bot);
   setEng(false);
   if(!bm){endBot('w','You won!','No legal moves for the bot.');return;}
   const ns2=applyMove(ns,bm);
@@ -4199,18 +4258,19 @@ function addDragSupport(boardId: string, clickHandler: (sq: string) => void) {
     const target = (e.target as HTMLElement).closest('[data-sq]') as HTMLElement;
     if (!target) return;
     const piece = target.querySelector('.piece') as HTMLElement;
-    if (!piece || !piece.textContent?.trim()) return;
+    if (!piece || !piece.dataset.piece) return;
     dragSrc = target.dataset.sq!;
     srcEl = target;
     isDragging = false;
 
-    const sz = parseInt(piece.style.fontSize) || 40;
+    const svg = piece.querySelector('svg');
+    const sz = svg ? parseInt(svg.getAttribute('width')||'40') : 40;
     const ghostSz = Math.max(48, sz * 1.2);
 
     ghost = document.createElement('div');
     ghost.className = 'drag-ghost';
-    ghost.textContent = piece.textContent || '';
-    ghost.style.cssText = `position:fixed;pointer-events:none;font-size:${ghostSz}px;z-index:9999;transform:translate(-50%,-50%);left:${e.clientX}px;top:${e.clientY}px;opacity:0.92;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.6))`;
+    ghost.innerHTML = mkPieceSVG(piece.dataset.piece, ghostSz);
+    ghost.style.cssText = `position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);left:${e.clientX}px;top:${e.clientY}px;opacity:0.92;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.7))`;
     document.body.appendChild(ghost);
     target.style.opacity = '0.25';
     try { el.setPointerCapture(e.pointerId); } catch {}
@@ -4412,6 +4472,8 @@ function resetClock() {
 (window as any).pracReset      = pracReset;
 (window as any).selectSkill    = selectSkill;
 (window as any).startWithSkill = startWithSkill;
+(window as any).mkPieceSVG     = mkPieceSVG;
+(window as any).getBotMoveForBot=getBotMoveForBot;
 (window as any).showSkillChange= showSkillChange;
 (window as any).exportSave     = exportSave;
 (window as any).importSave     = importSave;
