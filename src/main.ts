@@ -2252,27 +2252,40 @@ let _prac: {st:any;sel:string|null;ex:any;modKey:string;solved:boolean}|null=nul
 
 function buildPracticeHTML(modKey:string,ex:any,alreadyDone:boolean):string{
   const badge=alreadyDone?'<span style="color:var(--grnl);font-size:.75rem;font-weight:600">✓ Already solved</span>':'';
-  return `<div style="display:flex;flex-direction:column;align-items:center;gap:10px;padding:12px 4px">
-    <div style="font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:700;color:var(--cream)">${ex.title} ${badge}</div>
-    <div style="font-size:.76rem;color:var(--mute);text-align:center;max-width:360px">${ex.desc}</div>
-    <div id="prac-board" style="display:inline-block;border:1px solid var(--bord)"></div>
-    <div id="prac-fb" class="fb" style="min-height:28px;text-align:center;padding:6px 12px;border-radius:7px">👆 Click a piece, then its destination square.</div>
-    <div style="display:flex;gap:8px">
+  return `<div style="display:flex;flex-direction:column;align-items:center;gap:12px;padding:8px 0;width:100%">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;color:var(--cream);text-align:center">${ex.title} ${badge}</div>
+    <div style="font-size:.8rem;color:var(--mute);text-align:center;max-width:320px;line-height:1.5">${ex.desc}</div>
+    <div style="width:100%;display:flex;justify-content:center;overflow:hidden">
+      <div id="prac-board" style="border-radius:4px;overflow:hidden;box-shadow:0 0 0 3px var(--s4),0 0 0 4px var(--gold),0 8px 24px rgba(0,0,0,.6)"></div>
+    </div>
+    <div id="prac-fb" class="fb" style="width:100%;box-sizing:border-box;min-height:32px;text-align:center;padding:8px 14px;border-radius:8px;font-size:.82rem">👆 Click a piece, then its destination square.</div>
+    <div style="display:flex;gap:10px">
       <button class="btn" onclick="pracHint()">💡 Hint</button>
       <button class="btn" onclick="pracReset()">↺ Reset</button>
     </div>
-    <div id="prac-success" style="display:none;background:var(--grnl);color:#fff;border-radius:8px;padding:10px 16px;font-weight:700;text-align:center">✓ Correct! +10 XP 🎉</div>
+    <div id="prac-success" style="display:none;background:var(--grnl);color:#fff;border-radius:8px;padding:12px 20px;font-weight:700;text-align:center;width:100%;box-sizing:border-box">✓ Correct! +10 XP 🎉</div>
   </div>`;
+}
+
+function calcPracSz():number{
+  // Modal width minus lm-body padding (24px each side = 48px)
+  const modal=document.getElementById('lesson-modal');
+  const mw=modal?modal.getBoundingClientRect().width:0;
+  // Clamp to actual viewport so we never overflow on mobile
+  const vw=window.innerWidth||360;
+  const avail=Math.min(mw>60?mw:vw*0.96,680)-56;
+  return Math.max(32,Math.min(52,Math.floor(avail/8)));
 }
 
 function initPracticeBoard(modKey:string,ex:any){
   _prac={st:mkState({...ex.board},ex.turn),sel:null,ex,modKey,solved:false};
-  drawPrac();
+  drawPrac([],null,calcPracSz());
 }
 
-function drawPrac(hints:string[]=[],showSel:string|null=null){
+function drawPrac(hints:string[]=[],showSel:string|null=null,sz=0){
   if(!_prac)return;
-  drawEvalBoard('prac-board',_prac.st,{sel:showSel||_prac.sel,hints});
+  const s=sz||calcPracSz();
+  drawEvalBoard('prac-board',_prac.st,{sel:showSel||_prac.sel,hints,sz:s});
   wireEvalBoard('prac-board',onPracClick);
   addDragSupport('prac-board',onPracClick);
 }

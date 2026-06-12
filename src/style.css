@@ -602,7 +602,13 @@ html,body{height:100%;overflow:hidden;font-family:'IBM Plex Sans',sans-serif;bac
 .board{display:flex;flex-wrap:wrap;border-radius:3px;overflow:hidden;box-shadow:0 0 0 3px var(--s3),0 0 0 4px var(--gold),0 8px 36px rgba(0,0,0,.7)}
 .sq{display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer;transition:background .07s}
 .sq.lt{background:var(--lsq)}.sq.dk{background:var(--dsq)}
-.sq.sel{box-shadow:inset 0 0 0 3px rgba(200,169,90,.85)}.sq.hl{background:var(--hl)!important}.sq.hnt{background:var(--hnt)!important}.sq.last{background:rgba(200,169,90,.22)!important}
+.sq.sel{background:rgba(212,160,23,.45)!important}
+.sq.hl{background:var(--hl)!important}
+.sq.last{background:rgba(200,169,90,.28)!important}
+/* chess.com-style move dots: filled circle on empty squares */
+.sq.hnt::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:32%;height:32%;border-radius:50%;background:rgba(0,0,0,.22);pointer-events:none}
+/* ring overlay when hint square has a piece (capture) */
+.sq.hnt:has(.piece)::after{width:86%;height:86%;background:none;border-radius:50%;border:4px solid rgba(0,0,0,.22)}
 .cf{position:absolute;bottom:1px;right:2px;font-family:'IBM Plex Mono',monospace;font-size:8px;opacity:.5;pointer-events:none}
 .cr{position:absolute;top:1px;left:2px;font-family:'IBM Plex Mono',monospace;font-size:8px;opacity:.5;pointer-events:none}
 .sq.lt .cf,.sq.lt .cr{color:var(--dsq)}.sq.dk .cf,.sq.dk .cr{color:var(--lsq)}
@@ -820,9 +826,13 @@ html.light .piece.pb { color: #1a1200; text-shadow: 0 1px 2px rgba(255,255,255,0
   .lv-pill, #eval-stat-bar { display: none; }
 }
 
+/* ── WIZARD'S CHESS tag in topbar ────────────────────────────── */
+.wiz-tag{font-family:'IBM Plex Mono',monospace;font-size:.5rem;color:var(--gold);letter-spacing:.08em;font-weight:400;margin-left:6px;opacity:.85;font-style:normal}
+
 /* ── HOGWARTS GREAT HALL ──────────────────────────────────────── */
 /* Floating candles — HP Great Hall atmospheric effect */
-.candles-bg{position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden}
+/* z-index:-1 keeps candles strictly behind all page content */
+.candles-bg{position:fixed;inset:0;pointer-events:none;z-index:-1;overflow:hidden}
 .candle{position:absolute;bottom:-60px;display:flex;flex-direction:column;align-items:center;animation:floatUp linear infinite;opacity:0}
 .candle-flame{width:11px;height:18px;background:radial-gradient(ellipse at 50% 80%,#fff8e0 0%,#ffd700 25%,#ff8c00 55%,rgba(255,80,0,.4) 80%,transparent 100%);border-radius:50% 50% 30% 30%;margin-bottom:2px;animation:flicker .15s ease-in-out infinite alternate;filter:drop-shadow(0 0 4px rgba(255,180,0,.9))}
 .candle-body{width:7px;height:28px;background:linear-gradient(to bottom,#f5e6c8,#d4a017 60%,#8B4513);border-radius:3px 3px 1px 1px;box-shadow:0 0 8px rgba(212,160,23,.5)}
@@ -1064,6 +1074,27 @@ html.light .piece.pb { color: #1a1200; text-shadow: 0 1px 2px rgba(255,255,255,0
   .lm-body{padding:14px 16px}
   .lm-footer{padding:10px 16px;flex-wrap:wrap;gap:8px}
 
-  /* Top bar: tighten */
-  .topbar{padding:0 10px;gap:8px}
+  /* Top bar: tighten and prevent overflow */
+  .topbar{padding:0 10px;gap:6px;overflow:hidden}
+  .wiz-tag{display:none}           /* hide "WIZARD'S CHESS" tag — saves ~110px */
+  #skill-badge{display:none}       /* hide skill badge — saves ~130px */
+  .xp-widget{padding:4px 8px;gap:4px}
+  .streak-widget{padding:4px 8px}
+  .top-right{gap:6px;flex-shrink:1;min-width:0}
+
+  /* Home: fix horizontal overflow */
+  .home-wrap{padding:16px;width:100%;max-width:100%;box-sizing:border-box;overflow-x:hidden}
+  .stats-row{grid-template-columns:repeat(2,1fr);gap:8px}  /* 4→2 columns */
+  .home-grid{grid-template-columns:1fr;gap:12px}           /* 2→1 column */
+  .continue-card{padding:16px;gap:12px}
+  .cc-btn{display:none}            /* hide button — card itself is clickable */
+
+  /* Practice board inside lesson modal: must fit modal width */
+  .lm-content#lm-practice .board-zone{width:100%;max-width:100%;overflow:hidden}
+  #prac-board{max-width:calc(100vw - 60px)!important;overflow:hidden}
+
+  /* Lesson modal: full-width on mobile */
+  .lesson-modal{width:98%;max-height:94vh;border-radius:10px;overflow:hidden}
+  .lm-body{padding:14px 16px;overflow-x:hidden}
+  .lm-footer{padding:10px 16px;flex-wrap:wrap;gap:8px}
 }
