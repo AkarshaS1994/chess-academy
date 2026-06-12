@@ -3564,7 +3564,7 @@ function drawEvalBoard(id,st,{sel=null,last=null,hints=[],sz=0}={}){
     bw=Math.min(bw,maxW);
     sz=Math.max(36,Math.min(54,Math.floor((bw-8)/8)));
   }
-  el.style.width=(sz*8)+'px';el.style.height=(sz*8)+'px';
+  el.style.width=(sz*8)+'px';el.style.height=(sz*8)+'px';el.style.display='flex';el.style.flexWrap='wrap';
   const pos=st.board||st;
   const _ranks=_boardFlipped?[1,2,3,4,5,6,7,8]:[8,7,6,5,4,3,2,1];
   const _files=_boardFlipped?[7,6,5,4,3,2,1,0]:[0,1,2,3,4,5,6,7];
@@ -3573,7 +3573,7 @@ function drawEvalBoard(id,st,{sel=null,last=null,hints=[],sz=0}={}){
       const s=FL[f]+r,lt=(f+r)%2===1;
       const d=document.createElement('div');
       d.className='sq '+(lt?'lt':'dk');d.style.cssText=`width:${sz}px;height:${sz}px`;d.dataset.sq=s;
-      if(pos[s]){const sp=document.createElement('span');sp.className='piece '+(pos[s][0]==='w'?'pw':'pb');sp.style.fontSize=Math.round(sz*.78)+'px';sp.textContent=UNI[pos[s]]||'';d.appendChild(sp);}
+      if(pos[s]){const sp=document.createElement('span');sp.className='piece '+(pos[s][0]==='w'?'pw':'pb');sp.style.fontSize=Math.round(sz*.86)+'px';sp.textContent=(UNI[pos[s]]||'')+'︎';d.appendChild(sp);}
       if((!_boardFlipped&&r===1)||(_boardFlipped&&r===8)){const c=document.createElement('span');c.className='cf';c.textContent=FL[f];d.appendChild(c);}
       if((!_boardFlipped&&f===0)||(_boardFlipped&&f===7)){const c=document.createElement('span');c.className='cr';c.textContent=r;d.appendChild(c);}
       if(s===sel)d.classList.add('sel');
