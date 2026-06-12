@@ -90,6 +90,7 @@ function sq(f,r){return FL[f]+(8-r);}
 function ok(f,r){return f>=0&&f<8&&r>=0&&r<8;}
 
 // ── STATE ──────────────────────────────────────────────────────
+function startPos(){return{a8:'bR',b8:'bN',c8:'bB',d8:'bQ',e8:'bK',f8:'bB',g8:'bN',h8:'bR',a7:'bP',b7:'bP',c7:'bP',d7:'bP',e7:'bP',f7:'bP',g7:'bP',h7:'bP',a2:'wP',b2:'wP',c2:'wP',d2:'wP',e2:'wP',f2:'wP',g2:'wP',h2:'wP',a1:'wR',b1:'wN',c1:'wB',d1:'wQ',e1:'wK',f1:'wB',g1:'wN',h1:'wR'};}
 function mkState(board,turn='w',cast={wK:true,wQ:true,bK:true,bQ:true},ep=null,half=0){
   return {board:{...board},turn,cast:{...cast},ep,half};
 }
@@ -2024,7 +2025,7 @@ function switchView(v){
     if(v==='eval-mates')buildMateGrid();
     if(v==='eval-endgame')buildEgGrid();
     if(v==='eval-bot')buildBotGrid();
-    if(v==='eval-progress'){buildEvalProgress();buildProgress();}
+    if(v==='eval-progress')buildProgress();
     if(v==='tactics')renderTactics();
     if(v==='endgames')renderEndgames();
     if(v==='tournament')buildTournament();
@@ -4075,7 +4076,7 @@ document.getElementById('btn-undo').onclick=()=>{
 // PROGRESS
 // ═══════════════════════════════════════════════════════════════
 function buildProgress(){
-  const el=document.getElementById('prog-body');el.innerHTML='';
+  const el=document.getElementById('prog-body');if(!el)return;el.innerHTML='';
   const secs=[
     {t:'⚔️ Tactics Puzzles',mastered:ST.evalTacSolved.size>=Math.ceil(ALL_PUZZLES.length*.875),how:'Solve 7 of 8 puzzles (87.5%)',
      stats:[{l:'Solved',v:ST.evalTacSolved.size+'/'+ALL_PUZZLES.length,pct:ST.evalTacSolved.size/ALL_PUZZLES.length,col:'var(--gold)'},{l:'Streak',v:ST.streak},{l:'XP',v:ST.xp}]},
@@ -4596,7 +4597,7 @@ function loadBlitzPuzzle(){
   const puz=_blitzPool[_blitzIdx];if(!puz){endBlitz();return;}
   const fb=document.getElementById('blitz-fb');if(fb)fb.textContent='';
   const blitzSt=mkState({...puz.pos},puz.side||'w');
-  drawEvalBoard('blitz-board',blitzSt,{sz:300});
+  drawEvalBoard('blitz-board',blitzSt);
   wireEvalBoard('blitz-board',(sq)=>{
     const fb2=document.getElementById('blitz-fb');
     const curSt=mkState({...puz.pos},puz.side||'w');
@@ -4901,7 +4902,7 @@ function renderGTMGame(){
     const legal=legalMoves(_gtmSt).find(m=>m.from===mv.from&&m.to===mv.to);
     if(legal)_gtmSt=applyMove(_gtmSt,legal);
   }
-  drawEvalBoard('gtm-board',_gtmSt,{sz:360});
+  drawEvalBoard('gtm-board',_gtmSt);
   wireEvalBoard('gtm-board',onGTMClick);
   addDragSupport('gtm-board',onGTMClick);
   const mn=document.getElementById('gtm-move-num');
@@ -4927,7 +4928,7 @@ function onGTMClick(sq:string){
   if(legal&&sel===expected.from&&sq===expected.to){
     _gtmScore+=10;haptic([10,50,10]);playSound('move');
     _gtmSt=applyMove(_gtmSt,legal);_gtmMoveIdx++;
-    drawEvalBoard('gtm-board',_gtmSt,{sz:360});
+    drawEvalBoard('gtm-board',_gtmSt);
     const ann=game.annotations[_gtmMoveIdx-1]||'Correct!';
     if(fb){fb.textContent='✓ Correct! '+ann;fb.className='gtm-fb correct';}
     const sc=document.getElementById('gtm-score');if(sc)sc.textContent=String(_gtmScore);
@@ -4957,7 +4958,7 @@ function gtmSkip(){
   const fb=document.getElementById('gtm-fb');
   const ann=game.annotations[_gtmMoveIdx-1]||'';
   if(fb){fb.textContent='Skipped: '+mv.from+'→'+mv.to+'. '+ann;fb.className='gtm-fb wrong';}
-  drawEvalBoard('gtm-board',_gtmSt,{sz:360});wireEvalBoard('gtm-board',onGTMClick);addDragSupport('gtm-board',onGTMClick);
+  drawEvalBoard('gtm-board',_gtmSt);wireEvalBoard('gtm-board',onGTMClick);addDragSupport('gtm-board',onGTMClick);
 }
 function gtmNextGame(){
   _gtmGameIdx=(_gtmGameIdx+1)%MASTER_GAMES.length;_gtmMoveIdx=0;_gtmScore=0;renderGTMGame();
