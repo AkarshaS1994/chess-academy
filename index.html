@@ -229,6 +229,15 @@
             <h3 id="op-h2" style="margin:0;flex:1">Queen's Gambit</h3>
           </div>
           <div class="var-tabs" id="var-tabs" style="padding:0 22px 10px"></div>
+          <!-- Feedback + move sequence above the board so user never has to scroll -->
+          <div class="op-seq-bar">
+            <div id="op-var-desc" class="op-var-desc" style="display:none"></div>
+            <div id="fb-box" class="fb-box" aria-live="polite">👆 Select a piece to begin.</div>
+            <div class="seq-wrap" style="margin-bottom:0">
+              <div class="seq-lbl">Move sequence</div>
+              <div class="seq-pills" id="seq-pills"></div>
+            </div>
+          </div>
           <div class="op-content">
             <div class="board-zone">
               <div class="board-wrap" style="position:relative">
@@ -248,11 +257,6 @@
                 <div class="prog-block">
                   <div class="pb-row"><span class="pb-lbl">Progress</span><span class="pb-pct" id="pb-pct">0 / 0</span></div>
                   <div class="pb-track"><div class="pb-fill" id="pb-fill" style="width:0%"></div></div>
-                </div>
-                <div id="fb-box" class="fb-box" aria-live="polite">👆 Select a piece to begin.</div>
-                <div class="seq-wrap">
-                  <div class="seq-lbl">Move sequence</div>
-                  <div class="seq-pills" id="seq-pills"></div>
                 </div>
                 <div class="op-complete-banner" id="op-complete">
                   <div style="font-size:1.5rem;margin-bottom:6px">🏆</div>

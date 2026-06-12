@@ -2176,26 +2176,40 @@ const LEVEL_ICO={1:'ico-lv1',2:'ico-lv2',3:'ico-lv3'};
 function renderLearnPath(){
   const el=document.getElementById('lesson-path');el.innerHTML='';
   [1,2,3].forEach(lv=>{
+    const lvLocked=lv>1&&!(ST.stageUnlocked&&ST.stageUnlocked[lv]);
     const mods=MODS.filter(m=>m.level===lv);
     const grp=document.createElement('div');grp.className='level-group';
-    grp.innerHTML=`<div class="level-header"><span class="level-badge-large ${LEVEL_BAD[lv]}">${LEVEL_NAMES[lv]}</span><div class="level-line"></div></div><div class="lesson-nodes" id="ln-${lv}"></div>`;
+    grp.innerHTML=`<div class="level-header"><span class="level-badge-large ${LEVEL_BAD[lv]}">${LEVEL_NAMES[lv]}</span><div class="level-line"></div>${lvLocked?`<span class="lv-lock-tag">🔒 Pass Level ${lv-1} quiz to unlock</span>`:''}</div><div class="lesson-nodes" id="ln-${lv}"></div>`;
     el.appendChild(grp);
     const nodesEl=grp.querySelector('#ln-'+lv);
     mods.forEach(m=>{
       const done=ST.done.has(m.k);
-      const nd=document.createElement('div');nd.className='lnode '+(done?'done':'act');
-      nd.innerHTML=`
-        <div class="lnode-ico ${LEVEL_ICO[lv]}">${m.icon}</div>
-        <div class="lnode-body">
-          <span class="lnode-name">${m.name}</span>
-          <span class="lnode-desc">${m.desc}</span>
-          <div class="lnode-meta"><span class="lmeta-tag ${done?'lmeta-done':'lmeta-open'}">${done?'✓ Complete':'Open'}</span></div>
-        </div>
-        <div class="lnode-right">
-          <span class="lnode-xp">+${m.xp} XP</span>
-          <span class="lnode-arrow">›</span>
-        </div>`;
-      nd.addEventListener('click',()=>openLesson(m.k));
+      const nd=document.createElement('div');
+      nd.className='lnode '+(lvLocked?'lk':done?'done':'act');
+      if(lvLocked){
+        nd.innerHTML=`
+          <div class="lnode-ico ${LEVEL_ICO[lv]}" style="opacity:.35">${m.icon}</div>
+          <div class="lnode-body">
+            <span class="lnode-name" style="opacity:.45">${m.name}</span>
+            <span class="lnode-desc" style="opacity:.35">${m.desc}</span>
+            <div class="lnode-meta"><span class="lmeta-tag lmeta-lk">🔒 Locked</span></div>
+          </div>
+          <div class="lnode-right"><span class="lnode-xp" style="opacity:.3">+${m.xp} XP</span></div>`;
+        nd.addEventListener('click',()=>toast('🔒 Pass the Level '+(lv-1)+' quiz to unlock Level '+lv,'t-bad'));
+      }else{
+        nd.innerHTML=`
+          <div class="lnode-ico ${LEVEL_ICO[lv]}">${m.icon}</div>
+          <div class="lnode-body">
+            <span class="lnode-name">${m.name}</span>
+            <span class="lnode-desc">${m.desc}</span>
+            <div class="lnode-meta"><span class="lmeta-tag ${done?'lmeta-done':'lmeta-open'}">${done?'✓ Complete':'Open'}</span></div>
+          </div>
+          <div class="lnode-right">
+            <span class="lnode-xp">+${m.xp} XP</span>
+            <span class="lnode-arrow">›</span>
+          </div>`;
+        nd.addEventListener('click',()=>openLesson(m.k));
+      }
       nodesEl.appendChild(nd);
     });
   });
@@ -2533,6 +2547,12 @@ function loadVar(opk,vk,fromUser=false){
   document.getElementById('op-p').textContent='Practice this opening — play each move in order.';
   document.getElementById('iz-vname').textContent=vr.name||'';
   document.getElementById('iz-vdesc').textContent=vr.desc||'';
+  // Show variation name + desc above board
+  const _ovd=document.getElementById('op-var-desc');
+  if(_ovd){
+    _ovd.innerHTML=`<span class="ovd-name">${vr.name||''}</span><span class="ovd-sep">·</span><span class="ovd-desc">${vr.desc||''}</span><button class="btn ovd-btn" onclick="document.querySelector('.info-zone')?.scrollIntoView({behavior:'smooth',block:'nearest'})">📖 Theory</button>`;
+    _ovd.style.display='flex';
+  }
   document.getElementById('op-complete').classList.remove('show');
   showMoveInstruction(); // show current move instruction proactively
   renderVarTabs();updateSeq();updateProg();updateOpTips();
@@ -2545,6 +2565,20 @@ function renderOpList(){
   // Renamed renderOpList but kept for compatibility — calls renderOpGrid
   renderOpGrid();
 }
+
+const OP_THEORY:{[k:string]:{suited:string,why:string}}={
+  qgd:{suited:'All levels',why:'Controls the centre with d4+c4, forcing Black into strategic decisions from move 2. White aims for long-term space and queenside play.'},
+  london:{suited:'Beginners & positional players',why:'The London triangle (d4+Bf4+e3) is rock-solid. Play the same structure against anything Black does — learn one plan and use it forever.'},
+  italian:{suited:'Beginners & attacking players',why:'Open games develop fast and the Italian bishop eyes the f7 weakness from move 3. Leads to rich tactical battles.'},
+  ruy:{suited:'Intermediate & advanced',why:'Most analysed opening in history. Pins the c6 knight to put indirect pressure on e5. Long-term positional superiority for White — Kasparov\'s weapon.'},
+  kid:{suited:'Tactical & dynamic players',why:'Black allows White a big centre, then counterattacks violently with …e5. Fischer and Kasparov\'s signature weapon. Enormous counterplay.'},
+  sicilian:{suited:'Aggressive & ambitious players',why:'The most played response to 1.e4 at all levels. Fights for the centre unsymmetrically — leads to the sharpest positions in chess.'},
+  french:{suited:'Positional & solid players',why:'Black cedes the centre temporarily and builds a rock-solid structure. Reliable and consistent — used by Korchnoi and Bareev for decades.'},
+  caro:{suited:'Solid & positional players',why:'Most solid reply to 1.e4. No structural weaknesses, low theoretical load. Gets the dark bishop out (unlike the French) before closing the position.'},
+  scandinavian:{suited:'Club players & simplification seekers',why:'1…d5 immediately contests the centre. After 2.exd5 Qxd5 Black is well-coordinated. Practical and easy to learn for club level.'},
+  pirc:{suited:'Hypermodern & counterattacking players',why:'Black allows the big centre and attacks it from the flanks with the g7 bishop. Unorthodox but very hard to refute at club level.'},
+  dutch:{suited:'Aggressive & unbalancing players',why:'1…f5 grabs e4 and signals kingside attack immediately. Extremely imbalanced — Black is playing for a win, not a draw.'},
+};
 
 function renderOpGrid(){
   const el=document.getElementById('op-grid');if(!el)return;el.innerHTML='';
@@ -2575,6 +2609,7 @@ function renderOpGrid(){
       const unlocked=xp>=req;
       const done=ST.opsDone&&ST.opsDone.has(k);
       const diff=_diff[k]||'beginner';
+      const th=OP_THEORY[k];
 
       const c=document.createElement('div');
       c.className='op-card2'+(done?' op-done':'')+(unlocked?'':' op-locked2');
@@ -2590,6 +2625,7 @@ function renderOpGrid(){
           '<div class="op2-name">'+op.n+'</div>'+
           '<div class="op2-eco">ECO '+(_eco[k]||'–')+'</div>'+
           '<span class="op2-badge tag-'+diff+'">'+diff+'</span>'+
+          (th?'<div class="op2-theory"><span class="op2-suited">Suited for: '+th.suited+'</span><p class="op2-why">'+th.why+'</p></div>':'')+
           (done?'<div class="op2-done">✅ Mastered</div>':'');
         c.addEventListener('click',()=>{
           const firstVar=Object.keys(op.vars)[0];
@@ -3577,7 +3613,7 @@ document.querySelectorAll('.nav-item[data-v="tactics"]').forEach(n=>n.addEventLi
 
 function mkPieceSVG(piece:string,sz:number):string{
   const isW=piece[0]==='w';const t=piece[1];
-  const f=isW?'#fffff4':'#0d0600';const s=isW?'#3a1a08':'#c8a95a';const sw=Math.max(1.2,sz/28);
+  const f=isW?'#fffff4':'#0d0600';const s=isW?'#3a1a08':'#c8a95a';const sw=isW?Math.max(1.2,sz/30):Math.max(0.7,sz/38);
   const shapes:Record<string,string>={
     P:`<circle cx="22.5" cy="9" r="4.5" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
 <path d="M19 14.5 C17.5 17 16.5 21 16.5 25.5 L28.5 25.5 C28.5 21 27.5 17 26 14.5 C24.5 16 20.5 16 19 14.5Z" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
@@ -4253,7 +4289,10 @@ function addDragSupport(boardId: string, clickHandler: (sq: string) => void) {
   let ghost: HTMLElement | null = null;
   let srcEl: HTMLElement | null = null;
   let isDragging = false;
+  let startX = 0, startY = 0;
+  let hoveredSq: HTMLElement | null = null;
 
+  // pointerdown: record source — do NOT call preventDefault here, it blocks click events on mobile
   el.addEventListener('pointerdown', (e: PointerEvent) => {
     const target = (e.target as HTMLElement).closest('[data-sq]') as HTMLElement;
     if (!target) return;
@@ -4261,39 +4300,56 @@ function addDragSupport(boardId: string, clickHandler: (sq: string) => void) {
     if (!piece || !piece.dataset.piece) return;
     dragSrc = target.dataset.sq!;
     srcEl = target;
+    startX = e.clientX; startY = e.clientY;
     isDragging = false;
-
-    const svg = piece.querySelector('svg');
-    const sz = svg ? parseInt(svg.getAttribute('width')||'40') : 40;
-    const ghostSz = Math.max(48, sz * 1.2);
-
-    ghost = document.createElement('div');
-    ghost.className = 'drag-ghost';
-    ghost.innerHTML = mkPieceSVG(piece.dataset.piece, ghostSz);
-    ghost.style.cssText = `position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);left:${e.clientX}px;top:${e.clientY}px;opacity:0.92;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.7))`;
-    document.body.appendChild(ghost);
-    target.style.opacity = '0.25';
-    try { el.setPointerCapture(e.pointerId); } catch {}
-    e.preventDefault();
-  }, { passive: false });
+  }, { passive: true });
 
   el.addEventListener('pointermove', (e: PointerEvent) => {
-    if (!ghost) return;
-    isDragging = true;
-    ghost.style.left = e.clientX + 'px';
-    ghost.style.top = e.clientY + 'px';
-    e.preventDefault();
+    if (!dragSrc || !srcEl) return;
+    const piece = srcEl.querySelector('.piece') as HTMLElement;
+    if (!piece?.dataset.piece) return;
+    const dx = e.clientX - startX, dy = e.clientY - startY;
+
+    // Only start drag after 8px movement to allow normal taps/clicks
+    if (!isDragging && Math.sqrt(dx * dx + dy * dy) > 8) {
+      isDragging = true;
+      const svg = piece.querySelector('svg');
+      const sz = svg ? parseInt(svg.getAttribute('width') || '40') : 40;
+      const ghostSz = Math.max(52, Math.round(sz * 1.3));
+      ghost = document.createElement('div');
+      ghost.className = 'drag-ghost';
+      ghost.innerHTML = mkPieceSVG(piece.dataset.piece, ghostSz);
+      // Position ghost with piece centre slightly above cursor — natural pickup feel
+      ghost.style.cssText = `position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-62%);left:${e.clientX}px;top:${e.clientY}px;opacity:0.95;filter:drop-shadow(0 8px 20px rgba(0,0,0,.85)) drop-shadow(0 0 8px rgba(200,169,90,.4))`;
+      document.body.appendChild(ghost);
+      srcEl.style.opacity = '0.18';
+    }
+
+    if (isDragging && ghost) {
+      ghost.style.left = e.clientX + 'px';
+      ghost.style.top = e.clientY + 'px';
+      e.preventDefault(); // prevent scroll only during actual drag
+
+      // Highlight the square the piece is hovering over
+      el.style.pointerEvents = 'none';
+      const overEl = document.elementFromPoint(e.clientX, e.clientY)?.closest('[data-sq]') as HTMLElement | null;
+      el.style.pointerEvents = '';
+      if (overEl !== hoveredSq) {
+        hoveredSq?.classList.remove('ssel');
+        hoveredSq = null;
+        if (overEl && overEl !== srcEl) { overEl.classList.add('ssel'); hoveredSq = overEl; }
+      }
+    }
   }, { passive: false });
 
   el.addEventListener('pointerup', (e: PointerEvent) => {
-    if (!ghost) { dragSrc = null; return; }
-    ghost.remove(); ghost = null;
-    if (srcEl) { srcEl.style.opacity = ''; srcEl = null; }
-    const src = dragSrc; dragSrc = null;
-
-    if (!isDragging || !src) return;
+    hoveredSq?.classList.remove('ssel'); hoveredSq = null;
+    if (ghost) { ghost.remove(); ghost = null; }
+    if (srcEl) { srcEl.style.opacity = ''; }
+    const src = dragSrc;
+    srcEl = null; dragSrc = null;
+    if (!isDragging || !src) { isDragging = false; return; }
     isDragging = false;
-
     el.style.pointerEvents = 'none';
     const dropEl = document.elementFromPoint(e.clientX, e.clientY)?.closest('[data-sq]') as HTMLElement | null;
     el.style.pointerEvents = '';
@@ -4305,6 +4361,7 @@ function addDragSupport(boardId: string, clickHandler: (sq: string) => void) {
   });
 
   el.addEventListener('pointercancel', () => {
+    hoveredSq?.classList.remove('ssel'); hoveredSq = null;
     if (ghost) { ghost.remove(); ghost = null; }
     if (srcEl) { srcEl.style.opacity = ''; srcEl = null; }
     dragSrc = null; isDragging = false;
@@ -5005,7 +5062,7 @@ function onGTMClick(sq:string){
     if(fb){fb.textContent='✗ Not the master\'s move. The move was '+expected.from+'→'+expected.to+'. '+( game.annotations[_gtmMoveIdx]||'');fb.className='gtm-fb wrong';}
     // Auto-play correct move
     const correct=legalMoves(_gtmSt).find(m=>m.from===expected.from&&m.to===expected.to);
-    if(correct){_gtmSt=applyMove(_gtmSt,correct);_gtmMoveIdx++;setTimeout(()=>{drawEvalBoard('gtm-board',_gtmSt,{sz:360});wireEvalBoard('gtm-board',onGTMClick);addDragSupport('gtm-board',onGTMClick);},600);}
+    if(correct){_gtmSt=applyMove(_gtmSt,correct);_gtmMoveIdx++;setTimeout(()=>{drawEvalBoard('gtm-board',_gtmSt);wireEvalBoard('gtm-board',onGTMClick);addDragSupport('gtm-board',onGTMClick);},600);}
   } else {
     if(fb){fb.textContent='Select one of your pieces first.';fb.className='gtm-fb info';}
   }
