@@ -1011,3 +1011,18 @@ html.light .piece.pb { color: #1a1200; text-shadow: 0 1px 2px rgba(255,255,255,0
 
 /* ── EVAL BAR (in-game) ───────────────────────────────────────── */
 .bg-with-eval{display:flex;align-items:flex-start;gap:8px}
+
+/* ── MOBILE: new views ────────────────────────────────────────── */
+@media(max-width:768px){
+  .tournament-wrap,.history-wrap,.elo-wrap,.frogs-wrap,.glossary-wrap,.chess960-wrap,.weakness-wrap{padding:14px}
+  .frogs-grid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}
+  .gtm-wrap{flex-direction:column}
+  .blitz-card{padding:18px 16px}
+  .blitz-timer{font-size:2.2rem}
+  .settings-fab{bottom:68px}
+  .settings-panel{right:8px;bottom:120px;min-width:200px}
+  .bg-with-eval{gap:4px}
+  .eval-bar-wrap{display:none}/* hide eval bar on mobile — board too narrow */
+  .eval-stat-bar-mb{display:block!important}
+  .elo-chart canvas{height:80px!important}
+}

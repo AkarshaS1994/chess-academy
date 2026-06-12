@@ -2054,7 +2054,7 @@ function injectDailyCard(wrap: Element) {
   card.innerHTML=`<div class="dc-icon">🎩</div>
     <div class="dc-body">
       <div class="dc-label">Daily Challenge — Wizard's Puzzle</div>
-      <div class="dc-title">${puzz.name||'Checkmate Pattern'}</div>
+      <div class="dc-title">${puzz.title||puzz.type||'Tactics Puzzle'}</div>
       <div class="dc-status">${done?'✅ Completed today':'Solve to earn +25 XP & 🔥 streak bonus'}</div>
     </div>
     <div class="dc-streak">🔥 ${ST.streak}</div>`;
@@ -4055,10 +4055,19 @@ function buildProgress(){
     c.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:9px"><div style="font-family:Cormorant Garamond,serif;font-size:1.02rem;font-weight:700;color:var(--cream)">${sec.t}</div><div style="font-family:'IBM Plex Mono',monospace;font-size:.63rem;color:${sec.mastered?'var(--grnl)':'var(--mute)'}">${sec.mastered?'✅ MASTERED':'IN PROGRESS'}</div></div><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(105px,1fr));gap:6px;margin-bottom:8px">${sec.stats.map(s=>`<div style="background:var(--s3);border-radius:6px;padding:7px;text-align:center"><div style="font-family:Cormorant Garamond,serif;font-size:1.3rem;font-weight:700;color:var(--cream)">${s.v}</div><div style="font-size:.58rem;font-family:'IBM Plex Mono',monospace;color:var(--mute)">${s.l}</div>${s.pct!=null?`<div class="pbar" style="margin-top:4px"><div class="pbf" style="width:${Math.round(s.pct*100)}%;background:${s.col}"></div></div>`:''}</div>`).join('')}</div><div style="font-size:.71rem;font-family:'IBM Plex Mono',monospace;color:${sec.mastered?'var(--grnl)':'var(--mute)'}">How to master: ${sec.how}</div>`;
     el.appendChild(c);
   });
+  // Weakness radar
+  const wr=document.createElement('div');
+  wr.innerHTML=buildWeaknessReport();
+  el.appendChild(wr);
+  // ELO estimate
+  const eloDiv=document.createElement('div');
+  eloDiv.style.cssText='background:var(--s2);border:1px solid var(--bord);border-radius:10px;padding:14px 16px;margin-bottom:11px;display:flex;align-items:center;gap:16px';
+  eloDiv.innerHTML=`<div><div style="font-family:'IBM Plex Mono',monospace;font-size:.62rem;color:var(--mute);letter-spacing:.1em">ESTIMATED ELO</div><div style="font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;color:var(--gold)">${estimateElo()}</div></div><div style="font-size:.73rem;color:var(--mute);flex:1">Based on bot wins, puzzles solved, and modules completed. <span style="color:var(--gold);cursor:pointer" onclick="switchView('elo-tracker')">See full tracker →</span></div>`;
+  el.appendChild(eloDiv);
   // Engine explanation
   const info=document.createElement('div');
   info.style.cssText='background:var(--s2);border:1px solid rgba(200,169,90,.2);border-radius:10px;padding:14px 16px;font-size:.75rem;color:var(--mute);line-height:1.65';
-  info.innerHTML=`<div style="font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:7px">🔧 How Evaluation Works</div><b style="color:var(--cream)">No API · No tokens · Works offline · 100% deterministic</b><br><br>Bot moves use <b style="color:var(--cream)">minimax with alpha-beta pruning</b> — the same algorithm used in every chess engine including Stockfish. Depth 1=~300 ELO, depth 2=~600, depth 3=~900, depth 4=~1200 ELO.<br><br>Position evaluation uses <b style="color:var(--cream)">material counting + piece-square tables</b> — bonuses for knights in the centre, bishops on open diagonals, rooks on open files, king safety. Identical to Stockfish's evaluation core.<br><br>Coaching feedback is <b style="color:var(--cream)">rule-based and exact</b>: hanging pieces are detected by scanning all opponent replies, castling is tracked move-by-move, doubled pawns are counted per file. More accurate than AI because it never hallucinates.`;
+  info.innerHTML=`<div style="font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:7px">🔧 How Evaluation Works</div><b style="color:var(--cream)">No API · No tokens · Works offline · 100% deterministic</b><br><br>Bot moves use <b style="color:var(--cream)">minimax with alpha-beta pruning</b> — the same algorithm used in every chess engine including Stockfish. Depth 1=~300 ELO, depth 2=~600, depth 3=~900, depth 4=~1200 ELO.<br><br>Coaching feedback is <b style="color:var(--cream)">rule-based and exact</b>: hanging pieces are detected by scanning all opponent replies, castling is tracked move-by-move, doubled pawns are counted per file.`;
   el.appendChild(info);
 }
 
@@ -4362,6 +4371,8 @@ function resetClock() {
 (window as any).toggleTheme    = toggleTheme;
 (window as any).toggleMute     = toggleMute;
 (window as any).flipBoard      = flipBoard;
+(window as any).chess960Shuffle= chess960Shuffle;
+(window as any).chess960Start  = chess960Start;
 (window as any).startAnalysis  = startAnalysis;
 (window as any).toggleNav      = toggleNav;
 (window as any).undoTac        = undoTac;
@@ -4948,11 +4959,8 @@ function chess960Start(){
   rank.forEach((p,i)=>{board[files[i]+'8']='b'+p;board[files[i]+'1']='w'+p;});
   // Pawns
   files.forEach(f=>{board[f+'7']='bP';board[f+'2']='wP';});
-  // Find rook files and king file for castling rights
-  const rooks=rank.map((p,i)=>p==='R'?i:-1).filter(i=>i>=0);
-  const kingFile=rank.indexOf('K');
-  // Castling: K=kingside rook, Q=queenside rook
-  const cast={wK:true,wQ:true,bK:true,bQ:true};
+  // Castling disabled in Chess960 — engine assumes a1/h1 rooks (standard only)
+  const cast={wK:false,wQ:false,bK:false,bQ:false};
   ST.evalBot={st:mkState(board,'w',cast),sel:null,bot:BOTS[2],history:[],states:[],coach:[],stats:{cap:0,chk:0},over:false};
   ST.evalBot.chess960=true;
   const b=BOTS[2];
@@ -5108,11 +5116,12 @@ const _origSwitchView=(window as any).switchView;
   _origSwitchView(v);
   if(v==='tournament')buildTournament();
   if(v==='game-history')buildGameHistory();
-  if(v==='elo-tracker')buildEloTracker();
+  if(v==='elo-tracker'){setTimeout(buildEloTracker,50);}// delay so canvas has layout
   if(v==='glossary')buildGlossary();
   if(v==='chocolate-frogs')buildFrogs();
   if(v==='guess-the-move')initGTM();
-  if(v==='chess960'){chess960Shuffle();}
+  if(v==='chess960')chess960Shuffle();
+  if(v==='eval-progress')buildProgress();
 };
 
 // ═══════════════════════════════════════════════════════════════
