@@ -2024,9 +2024,16 @@ function switchView(v){
     if(v==='eval-mates')buildMateGrid();
     if(v==='eval-endgame')buildEgGrid();
     if(v==='eval-bot')buildBotGrid();
-    if(v==='eval-progress')buildEvalProgress();
+    if(v==='eval-progress'){buildEvalProgress();buildProgress();}
     if(v==='tactics')renderTactics();
     if(v==='endgames')renderEndgames();
+    if(v==='tournament')buildTournament();
+    if(v==='game-history')buildGameHistory();
+    if(v==='elo-tracker'){setTimeout(buildEloTracker,50);}
+    if(v==='glossary')buildGlossary();
+    if(v==='chocolate-frogs')buildFrogs();
+    if(v==='guess-the-move')initGTM();
+    if(v==='chess960')chess960Shuffle();
   } catch(err) {
     console.error('View render error in "'+v+'":', err);
     const el=document.getElementById('view-'+v);
@@ -2762,10 +2769,15 @@ function showResults(){
 }
 
 // ── NAV WIRING ────────────────────────────────────────────────
-document.querySelectorAll('.nav-item').forEach(n=>n.addEventListener('click',()=>switchView(n.dataset.v)));
+// Use (window as any).switchView at click time to pick up the wrapped version (which builds new view content)
+document.querySelectorAll('.nav-item').forEach(n=>n.addEventListener('click',()=>{const sv=(window as any).switchView||switchView;sv(n.dataset.v);}));
 document.querySelectorAll('[data-ql]').forEach(b=>b.addEventListener('click',()=>startQuiz(parseInt(b.dataset.ql))));
 document.querySelectorAll('.qlv-btn').forEach(b=>b.addEventListener('click',()=>startQuiz(parseInt(b.dataset.ql))));
 document.getElementById('lesson-overlay').addEventListener('click',e=>{if(e.target===e.currentTarget)closeLesson();});
+// Belt-and-suspenders: wire modal buttons via addEventListener as well as onclick attribute
+document.getElementById('lm-mark-btn')?.addEventListener('click',markLessonDone);
+document.querySelector('#lesson-modal .btn:not(#lm-mark-btn)')?.addEventListener('click',closeLesson);
+document.querySelector('.lm-close')?.addEventListener('click',closeLesson);
 
 function updateHomeStats(){
   document.getElementById('stat-xp').textContent=ST.xp;
@@ -2906,7 +2918,9 @@ function selectSkill(el) {
 }
 
 function startWithSkill(mode) {
-  if (mode === 'skip' || !selectedSkill) selectedSkill = 'absolute';
+  // If called with a saved skill level, restore it; only default to absolute when no skill known
+  if (mode && mode !== 'skip' && SKILL_DATA[mode]) selectedSkill = mode;
+  if (!selectedSkill) selectedSkill = 'absolute';
   ST.skillLevel = selectedSkill;
   const sd = SKILL_DATA[selectedSkill];
 
@@ -3292,8 +3306,8 @@ function initCandles(){
     const c=document.createElement('div');c.className='candle';
     const drift=(Math.random()-0.5)*80;
     const left=Math.random()*98;
-    const dur=8+Math.random()*12;
-    const delay=Math.random()*20;
+    const dur=8+Math.random()*10;
+    const delay=Math.random()*4;
     c.style.cssText=`left:${left}%;--drift:${drift}px;animation-duration:${dur}s;animation-delay:${delay}s`;
     c.innerHTML='<div class="candle-flame"></div><div class="candle-body"></div>';
     bg.appendChild(c);
@@ -3504,7 +3518,6 @@ if (hasData && ST.skillLevel) {
   document.getElementById('onboard-overlay').style.display = 'none';
 }
 renderHome();
-loadVar('qgd','qgd_dec');
 startQuiz(ST.qlv || 1);
 document.getElementById('streak-num').textContent = ST.streak;
 document.querySelectorAll('.nav-item[data-v="tactics"]').forEach(n=>n.addEventListener('click',renderTactics));

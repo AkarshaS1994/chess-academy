@@ -100,7 +100,7 @@
 <div class="app">
 <!-- TOPBAR -->
 <header class="topbar">
-  <div class="logo"><span class="logo-icon">🏰</span>Chess<em>Academy</em></div>
+  <div class="logo"><span class="logo-icon">🏰</span>Chess<em>Academy</em><span style="font-family:'IBM Plex Mono',monospace;font-size:.5rem;color:var(--gold);letter-spacing:.08em;font-weight:400;margin-left:6px;opacity:.85;font-style:normal">⚡ WIZARD'S CHESS</span></div>
   <button class="hamburger" id="hamburger" onclick="toggleNav()" aria-label="Toggle navigation" aria-expanded="false">☰</button>
   <div class="top-right">
     <div class="streak-widget"><span class="streak-fire">🔥</span><span class="streak-num" id="streak-num">0</span></div>
@@ -429,7 +429,7 @@
             <div class="eval-bar"><div class="eval-bar-fill" id="eval-bar-fill" style="height:50%"></div></div>
             <div class="eval-score" id="eval-score">0.0</div>
           </div>
-          <div class="board" id="bg-board" style="width:432px;height:432px"></div>
+          <div class="board" id="bg-board"></div>
         </div>
         <div class="brow"><button class="btn" id="btn-resign">🏳 Resign</button><button class="btn" id="btn-undo">↩ Undo</button><button class="btn" id="btn-flip" onclick="flipBoard()">⟳ Flip</button><button class="btn" onclick="shareResult()">📤 Share</button><button class="btn" onclick="switchView('eval-bot')">← Bots</button></div>
       </div>
@@ -492,7 +492,7 @@
       <div class="gtm-game-title" id="gtm-title">Morphy's Opera Game (1858)</div>
       <div style="display:flex;gap:12px;align-items:center">
         <div style="text-align:center"><div class="gtm-score" id="gtm-score">0</div><div class="gtm-score-lbl">Points</div></div>
-        <div class="board" id="gtm-board" style="width:360px;height:360px"></div>
+        <div class="board" id="gtm-board"></div>
         <div style="text-align:center"><div class="gtm-score" id="gtm-move-num" style="font-size:1.1rem">—</div><div class="gtm-score-lbl">Move</div></div>
       </div>
       <div class="gtm-fb" id="gtm-fb">🎯 It's your turn — play the move the master played!</div>
@@ -585,7 +585,7 @@
       <div class="blitz-progress" id="blitz-progress">Puzzle 1 of 5</div>
       <div class="blitz-pb"><div class="blitz-pfill" id="blitz-pfill" style="width:0%"></div></div>
       <div class="blitz-timer" id="blitz-timer">3:00</div>
-      <div class="board" id="blitz-board" style="width:300px;height:300px;margin:0 auto"></div>
+      <div class="board" id="blitz-board" style="margin:0 auto"></div>
       <div style="margin-top:10px;font-size:.8rem;min-height:32px;color:var(--txt)" id="blitz-fb"></div>
       <button class="btn" onclick="endBlitz()" style="margin-top:12px">✕ End Blitz</button>
     </div>

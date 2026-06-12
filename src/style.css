@@ -213,6 +213,7 @@ html,body{height:100%;overflow:hidden;font-family:'IBM Plex Sans',sans-serif;bac
 .lesson-overlay.show{display:flex}
 @keyframes overlayIn{from{opacity:0}to{opacity:1}}
 .lesson-modal{
+  position:relative;
   background:var(--s2);border:1px solid var(--bord2);border-radius:16px;
   width:92%;max-width:680px;max-height:88vh;overflow:hidden;display:flex;flex-direction:column;
   animation:modalIn .3s cubic-bezier(.34,1.56,.64,1);
@@ -817,13 +818,13 @@ html.light .piece.pb { color: #1a1200; text-shadow: 0 1px 2px rgba(255,255,255,0
 }
 
 /* ── HOGWARTS GREAT HALL ──────────────────────────────────────── */
-/* Floating candles */
-.candles-bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
-.candle{position:absolute;bottom:-40px;display:flex;flex-direction:column;align-items:center;animation:floatUp linear infinite;opacity:0}
-.candle-flame{width:8px;height:14px;background:radial-gradient(ellipse at 50% 80%,#fff 0%,#ffd700 30%,#ff8c00 65%,transparent 100%);border-radius:50% 50% 30% 30%;margin-bottom:1px;animation:flicker .12s ease-in-out infinite alternate;filter:blur(.4px)}
-.candle-body{width:5px;height:20px;background:linear-gradient(to bottom,#f5e6c8,#d4a017 60%,#8B4513);border-radius:2px 2px 1px 1px;box-shadow:0 0 6px rgba(212,160,23,.3)}
-@keyframes floatUp{0%{transform:translateY(0) translateX(0);opacity:0}5%{opacity:.8}90%{opacity:.6}100%{transform:translateY(-110vh) translateX(var(--drift,20px));opacity:0}}
-@keyframes flicker{from{transform:scaleX(1) scaleY(1);opacity:1}to{transform:scaleX(.82) scaleY(1.12);opacity:.85}}
+/* Floating candles — HP Great Hall atmospheric effect */
+.candles-bg{position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden}
+.candle{position:absolute;bottom:-60px;display:flex;flex-direction:column;align-items:center;animation:floatUp linear infinite;opacity:0}
+.candle-flame{width:11px;height:18px;background:radial-gradient(ellipse at 50% 80%,#fff8e0 0%,#ffd700 25%,#ff8c00 55%,rgba(255,80,0,.4) 80%,transparent 100%);border-radius:50% 50% 30% 30%;margin-bottom:2px;animation:flicker .15s ease-in-out infinite alternate;filter:drop-shadow(0 0 4px rgba(255,180,0,.9))}
+.candle-body{width:7px;height:28px;background:linear-gradient(to bottom,#f5e6c8,#d4a017 60%,#8B4513);border-radius:3px 3px 1px 1px;box-shadow:0 0 8px rgba(212,160,23,.5)}
+@keyframes floatUp{0%{transform:translateY(0) translateX(0);opacity:0}8%{opacity:.9}85%{opacity:.75}100%{transform:translateY(-115vh) translateX(var(--drift,20px));opacity:0}}
+@keyframes flicker{from{transform:scaleX(1) scaleY(1);opacity:1}to{transform:scaleX(.78) scaleY(1.18);opacity:.8}}
 
 /* Sorting hat */
 .sorting-hat-wrap{text-align:center;margin-bottom:12px}
@@ -1012,17 +1013,43 @@ html.light .piece.pb { color: #1a1200; text-shadow: 0 1px 2px rgba(255,255,255,0
 /* ── EVAL BAR (in-game) ───────────────────────────────────────── */
 .bg-with-eval{display:flex;align-items:flex-start;gap:8px}
 
-/* ── MOBILE: new views ────────────────────────────────────────── */
+/* ── MOBILE RESPONSIVENESS ────────────────────────────────────── */
 @media(max-width:768px){
+  /* Allow vertical scroll on mobile — prevent horizontal overflow from causing Desktop Site prompt */
+  html,body{overflow-x:hidden;overflow-y:auto;height:auto}
+  .app{height:auto;min-height:100svh;overflow-x:hidden}
+
+  /* Stack board + info panel vertically instead of side-by-side */
+  .el{display:flex;flex-direction:column;height:auto;overflow:visible;width:100%}
+  .bc{overflow:visible;width:100%;max-width:100vw;padding:10px 8px}
+  .ic{min-width:0;max-width:100%;width:100%;border-left:none;border-top:1px solid var(--bord);height:auto;max-height:none;overflow-y:visible}
+
+  /* Board must never exceed screen width */
+  .board,.bg-with-eval{max-width:calc(100vw - 16px)}
+
+  /* Eval bar: hide on mobile (board too narrow), use text fallback */
+  .bg-with-eval{gap:0;flex-direction:column;align-items:center}
+  .eval-bar-wrap{display:none}
+  .eval-stat-bar-mb{display:block!important}
+
+  /* View wrap: allow scrolling */
+  .view-wrap,.view.act{height:auto;overflow:visible}
+
+  /* New view content: less padding */
   .tournament-wrap,.history-wrap,.elo-wrap,.frogs-wrap,.glossary-wrap,.chess960-wrap,.weakness-wrap{padding:14px}
-  .frogs-grid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}
+  .frogs-grid{grid-template-columns:repeat(auto-fill,minmax(110px,1fr))}
   .gtm-wrap{flex-direction:column}
   .blitz-card{padding:18px 16px}
   .blitz-timer{font-size:2.2rem}
-  .settings-fab{bottom:68px}
-  .settings-panel{right:8px;bottom:120px;min-width:200px}
-  .bg-with-eval{gap:4px}
-  .eval-bar-wrap{display:none}/* hide eval bar on mobile — board too narrow */
-  .eval-stat-bar-mb{display:block!important}
+  .settings-fab{bottom:68px;right:12px}
+  .settings-panel{right:8px;bottom:120px;min-width:190px}
   .elo-chart canvas{height:80px!important}
+
+  /* Lesson modal: full-width on mobile */
+  .lesson-modal{width:98%;max-height:94vh;border-radius:10px}
+  .lm-body{padding:14px 16px}
+  .lm-footer{padding:10px 16px;flex-wrap:wrap;gap:8px}
+
+  /* Top bar: tighten */
+  .topbar{padding:0 10px;gap:8px}
 }
