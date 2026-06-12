@@ -3612,6 +3612,7 @@ function onTacClick(s){
     (ST.evalTac as any).history?.push(st);
     playSound(chosen.cap?'capture':'move');
     ST.evalTac.st=applyMove(st,chosen);ST.evalTac.sel=null;drawTac();
+    trackPuzzleResult(puz,true);updateSR(puz.id,true);
     if(!ST.evalTacSolved.has(puz.id)){ST.evalTacSolved.add(puz.id);ST.streak++;onEvalTacSolved(puz.id,puz.xp);}
     // Mark daily puzzle done if this was the daily challenge
     if(ST._dailyPuzzleKey&&ALL_PUZZLES.indexOf(puz)===ST._dailyPuzzleIdx){
@@ -3635,6 +3636,7 @@ function onTacClick(s){
   } else if(chosen){
     (ST.evalTac as any).history?.push(st);
     playSound('lose');
+    trackPuzzleResult(puz,false);updateSR(puz.id,false);
     ST.evalTac.sel=null;ST.streak=0;drawTac();
     setEvalFB('t-fb','ferr','❌ Legal move but not the winning tactic. Think: can you attack two pieces at once? Look for checks, captures, threats.');
     shake('t-board');updateEvalTopStats();
@@ -3948,6 +3950,8 @@ async function onBotClick(s){
   if(!bm){endBot('w','You won!','No legal moves for the bot.');return;}
   const ns2=applyMove(ns,bm);
   ST.evalBot.history.push({...bm,color:'b',n:mn});ST.evalBot.states.push(ns2);ST.evalBot.st=ns2;
+  const _botPieceGlyph=(UNI as any)[ns.board[bm.from]]||'';
+  if(_botPieceGlyph)animatePiece('bg-board',bm.from,bm.to,_botPieceGlyph,()=>{});
   updateBotLog();drawBot([],bm);
   if(isMate(ns2)){endBot('b',ST.evalBot.bot.name+' won!','You were checkmated. Review the game log and identify where things went wrong.');return;}
   if(isDraw(ns2)){endBot('d','Draw!','');return;}
