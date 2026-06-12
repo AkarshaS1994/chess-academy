@@ -2176,7 +2176,7 @@ const LEVEL_ICO={1:'ico-lv1',2:'ico-lv2',3:'ico-lv3'};
 function renderLearnPath(){
   const el=document.getElementById('lesson-path');el.innerHTML='';
   [1,2,3].forEach(lv=>{
-    const lvLocked=lv>1&&!(ST.stageUnlocked&&ST.stageUnlocked[lv]);
+    const lvLocked=lv>1&&!ST.qzRes?.[lv-1];
     const mods=MODS.filter(m=>m.level===lv);
     const grp=document.createElement('div');grp.className='level-group';
     grp.innerHTML=`<div class="level-header"><span class="level-badge-large ${LEVEL_BAD[lv]}">${LEVEL_NAMES[lv]}</span><div class="level-line"></div>${lvLocked?`<span class="lv-lock-tag">🔒 Pass Level ${lv-1} quiz to unlock</span>`:''}</div><div class="lesson-nodes" id="ln-${lv}"></div>`;
@@ -3613,7 +3613,9 @@ document.querySelectorAll('.nav-item[data-v="tactics"]').forEach(n=>n.addEventLi
 
 function mkPieceSVG(piece:string,sz:number):string{
   const isW=piece[0]==='w';const t=piece[1];
-  const f=isW?'#fffff4':'#0d0600';const s=isW?'#3a1a08':'#c8a95a';const sw=isW?Math.max(1.2,sz/30):Math.max(0.7,sz/38);
+  // White: bright white fill + thick dark outline (max contrast on tan/gold light squares)
+  // Black: near-black fill + thick light ivory outline (max contrast on brown dark squares)
+  const f=isW?'#ffffff':'#141008';const s=isW?'#1a0e04':'#ede4c8';const sw=Math.max(2.5,sz/18);
   const shapes:Record<string,string>={
     P:`<circle cx="22.5" cy="9" r="4.5" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
 <path d="M19 14.5 C17.5 17 16.5 21 16.5 25.5 L28.5 25.5 C28.5 21 27.5 17 26 14.5 C24.5 16 20.5 16 19 14.5Z" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
@@ -4285,6 +4287,8 @@ function toggleMute() {
 function addDragSupport(boardId: string, clickHandler: (sq: string) => void) {
   const el = document.getElementById(boardId);
   if (!el) return;
+  // Ensure touch-action:none on every board so browser never tries to scroll during drag
+  el.style.touchAction = 'none';
   let dragSrc: string | null = null;
   let ghost: HTMLElement | null = null;
   let srcEl: HTMLElement | null = null;
@@ -4292,7 +4296,6 @@ function addDragSupport(boardId: string, clickHandler: (sq: string) => void) {
   let startX = 0, startY = 0;
   let hoveredSq: HTMLElement | null = null;
 
-  // pointerdown: record source — do NOT call preventDefault here, it blocks click events on mobile
   el.addEventListener('pointerdown', (e: PointerEvent) => {
     const target = (e.target as HTMLElement).closest('[data-sq]') as HTMLElement;
     if (!target) return;
@@ -4306,6 +4309,8 @@ function addDragSupport(boardId: string, clickHandler: (sq: string) => void) {
 
   el.addEventListener('pointermove', (e: PointerEvent) => {
     if (!dragSrc || !srcEl) return;
+    // Prevent any residual scroll the moment we start tracking a potential drag
+    e.preventDefault();
     const piece = srcEl.querySelector('.piece') as HTMLElement;
     if (!piece?.dataset.piece) return;
     const dx = e.clientX - startX, dy = e.clientY - startY;
@@ -4328,7 +4333,6 @@ function addDragSupport(boardId: string, clickHandler: (sq: string) => void) {
     if (isDragging && ghost) {
       ghost.style.left = e.clientX + 'px';
       ghost.style.top = e.clientY + 'px';
-      e.preventDefault(); // prevent scroll only during actual drag
 
       // Highlight the square the piece is hovering over
       el.style.pointerEvents = 'none';
