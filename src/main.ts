@@ -1576,6 +1576,107 @@ dutch:{n:"Dutch Defence",vars:{
     {f:'f1',t:'g2',s:'w',l:'4.Bg2',c:'Fianchetto complete.'},
     {f:'d7',t:'d5',s:'b',l:'4…d5',c:'Stonewall! e6+f5+d5 — a fortress. Black will play Bd6 and castle.'}
   ]}
+}},
+nimzo:{n:"Nimzo-Indian Defence",vars:{
+  classical:{name:"Classical Variation (4.Qc2)",desc:"Avoid doubled pawns — Kasparov's recommendation.",moves:[
+    {f:'d2',t:'d4',s:'w',l:'1.d4',c:'Queen pawn.'},
+    {f:'g8',t:'f6',s:'b',l:'1…Nf6',c:'Hypermodern — control centre with pieces first.'},
+    {f:'c2',t:'c4',s:'w',l:'2.c4',c:'Space.'},
+    {f:'e7',t:'e6',s:'b',l:'2…e6',c:'Solid. Opens dark bishop diagonal.'},
+    {f:'b1',t:'c3',s:'w',l:'3.Nc3',c:'Reinforce centre.'},
+    {f:'f8',t:'b4',s:'b',l:'3…Bb4',c:'Nimzo-Indian! Pins the knight — forces White to choose.'},
+    {f:'d1',t:'c2',s:'w',l:'4.Qc2',c:'Classical — avoids doubled pawns after Bxc3+.'},
+    {f:'e8',t:'g8',s:'b',l:'4…0-0',c:'Castle immediately — king safety first in Nimzo lines.'}
+  ]},
+  rubinstein:{name:"Rubinstein Variation (4.e3)",desc:"Solid, strategic — White accepts structure over activity.",moves:[
+    {f:'d2',t:'d4',s:'w',l:'1.d4',c:'Queen pawn.'},
+    {f:'g8',t:'f6',s:'b',l:'1…Nf6',c:'Nimzo move order.'},
+    {f:'c2',t:'c4',s:'w',l:'2.c4',c:'Space.'},
+    {f:'e7',t:'e6',s:'b',l:'2…e6',c:'Solid.'},
+    {f:'b1',t:'c3',s:'w',l:'3.Nc3',c:'Reinforce.'},
+    {f:'f8',t:'b4',s:'b',l:'3…Bb4',c:'Nimzo pin!'},
+    {f:'e2',t:'e3',s:'w',l:'4.e3',c:'Rubinstein — solid. White accepts the bishop pair to keep structure.'},
+    {f:'d7',t:'d5',s:'b',l:'4…d5',c:'Central fight. Balanced strategic game.'}
+  ]}
+}},
+english:{n:"English Opening",vars:{
+  symmetrical:{name:"Symmetrical English (1…c5)",desc:"Black mirrors — reversed Sicilian, strategic.",moves:[
+    {f:'c2',t:'c4',s:'w',l:'1.c4',c:'English Opening — controls d5, flank start.'},
+    {f:'c7',t:'c5',s:'b',l:'1…c5',c:'Symmetrical! Both sides fight for d4/d5. Reversed Sicilian.'},
+    {f:'g1',t:'f3',s:'w',l:'2.Nf3',c:'Develop naturally.'},
+    {f:'g8',t:'f6',s:'b',l:'2…Nf6',c:'Mirror.'},
+    {f:'g2',t:'g3',s:'w',l:'3.g3',c:'Fianchetto — standard English plan.'},
+    {f:'g7',t:'g6',s:'b',l:'3…g6',c:'Mirror fianchetto! Equal and solid.'},
+    {f:'f1',t:'g2',s:'w',l:'4.Bg2',c:'English bishop — controls the long diagonal.'},
+    {f:'f8',t:'g7',s:'b',l:'4…Bg7',c:'Both fianchettos complete. Deep strategic battle ahead.'}
+  ]},
+  reversed_sicilian:{name:"vs 1…e5 (Reversed Sicilian)",desc:"Transpose to reversed Sicilian structures.",moves:[
+    {f:'c2',t:'c4',s:'w',l:'1.c4',c:'English.'},
+    {f:'e7',t:'e5',s:'b',l:'1…e5',c:'Aggressive! Black fights for the centre.'},
+    {f:'b1',t:'c3',s:'w',l:'2.Nc3',c:'Develop, prepare for central play.'},
+    {f:'g8',t:'f6',s:'b',l:'2…Nf6',c:'Develop, attack e4 square.'},
+    {f:'g1',t:'f3',s:'w',l:'3.Nf3',c:'Balanced development.'},
+    {f:'b8',t:'c6',s:'b',l:'3…Nc6',c:'Both sides developed. Open strategic game.'}
+  ]}
+}},
+kings_gambit:{n:"King's Gambit",vars:{
+  accepted:{name:"King's Gambit Accepted",desc:"Romantic chess — White sacrifices f-pawn for rapid development.",moves:[
+    {f:'e2',t:'e4',s:'w',l:'1.e4',c:'Open game.'},
+    {f:'e7',t:'e5',s:'b',l:'1…e5',c:'Equal centre.'},
+    {f:'f2',t:'f4',s:'w',l:'2.f4',c:"King's Gambit! The most romantic opening — pawn for an open f-file and tempo!"},
+    {f:'e5',t:'f4',s:'b',l:'2…exf4',c:"Accepted! Black takes the pawn — now White gets a massive centre."},
+    {f:'g1',t:'f3',s:'w',l:'3.Nf3',c:'Develop, attack the pawn on f4.'},
+    {f:'g7',t:'g5',s:'b',l:'3…g5',c:'Black defends the pawn aggressively — the main line!'},
+    {f:'f1',t:'c4',s:'w',l:'4.Bc4',c:'Attack f7 — the classic Bishop\'s Gambit plan.'}
+  ]},
+  declined:{name:"King's Gambit Declined (2…Bc5)",desc:"Black keeps material, aims for solid counter-play.",moves:[
+    {f:'e2',t:'e4',s:'w',l:'1.e4',c:'Open game.'},
+    {f:'e7',t:'e5',s:'b',l:'1…e5',c:'Equal centre.'},
+    {f:'f2',t:'f4',s:'w',l:'2.f4',c:"King's Gambit."},
+    {f:'f8',t:'c5',s:'b',l:'2…Bc5',c:"Declined! Falkbeer: keeps material, aims the bishop at f2."},
+    {f:'g1',t:'f3',s:'w',l:'3.Nf3',c:'Develop the knight.'},
+    {f:'d7',t:'d6',s:'b',l:'3…d6',c:'Solid. Black has the bishop pair and solid centre.'}
+  ]}
+}},
+scotch:{n:"Scotch Game",vars:{
+  classical:{name:"Scotch Game (Classical)",desc:"Fights for the centre early — Fischer's favourite.",moves:[
+    {f:'e2',t:'e4',s:'w',l:'1.e4',c:'Open game.'},
+    {f:'e7',t:'e5',s:'b',l:'1…e5',c:'Open game reply.'},
+    {f:'g1',t:'f3',s:'w',l:'2.Nf3',c:'Attack e5.'},
+    {f:'b8',t:'c6',s:'b',l:'2…Nc6',c:'Defend e5.'},
+    {f:'d2',t:'d4',s:'w',l:'3.d4',c:"Scotch! Open the centre immediately — unlike Italian's slow build."},
+    {f:'e5',t:'d4',s:'b',l:'3…exd4',c:'Must take — central tension resolved.'},
+    {f:'f3',t:'d4',s:'w',l:'4.Nxd4',c:'Knight recaptures. White has open centre and d4 knight.'},
+    {f:'g8',t:'f6',s:'b',l:'4…Nf6',c:"Attack the d4 knight — Kasparov's favourite Scotch line."}
+  ]}
+}},
+queens_indian:{n:"Queen's Indian Defence",vars:{
+  main:{name:"Queen's Indian (4.g3)",desc:"Hypermodern — control d4 with bishop fianchetto.",moves:[
+    {f:'d2',t:'d4',s:'w',l:'1.d4',c:'Queen pawn.'},
+    {f:'g8',t:'f6',s:'b',l:'1…Nf6',c:'Hypermodern.'},
+    {f:'c2',t:'c4',s:'w',l:'2.c4',c:'Space.'},
+    {f:'e7',t:'e6',s:'b',l:'2…e6',c:'Solid.'},
+    {f:'g1',t:'f3',s:'w',l:'3.Nf3',c:'Prevent Ng4, develop.'},
+    {f:'b7',t:'b6',s:'b',l:'3…b6',c:"Queen's Indian! Prepares Bb7 to control e4 diagonally."},
+    {f:'g2',t:'g3',s:'w',l:'4.g3',c:"Fianchetto plan — White's bishop fights Black's."},
+    {f:'c8',t:'b7',s:'b',l:'4…Bb7',c:"Queen's Indian bishop! Controls the long diagonal. Hypermodern masterpiece."}
+  ]}
+}},
+grunfeld:{n:"Grünfeld Defence",vars:{
+  exchange:{name:"Grünfeld Exchange Variation",desc:"Black sacrifices the centre — counterattacks with pieces.",moves:[
+    {f:'d2',t:'d4',s:'w',l:'1.d4',c:'Queen pawn.'},
+    {f:'g8',t:'f6',s:'b',l:'1…Nf6',c:'Hypermodern.'},
+    {f:'c2',t:'c4',s:'w',l:'2.c4',c:'Space.'},
+    {f:'g7',t:'g6',s:'b',l:'2…g6',c:'Grünfeld/King\'s Indian setup.'},
+    {f:'b1',t:'c3',s:'w',l:'3.Nc3',c:'Reinforce centre.'},
+    {f:'d7',t:'d5',s:'b',l:'3…d5',c:"Grünfeld! Central challenge — gives White a big centre to attack."},
+    {f:'c4',t:'d5',s:'w',l:'4.cxd5',c:'Take the centre!'},
+    {f:'f6',t:'d5',s:'b',l:'4…Nxd5',c:'Knight recaptures. Black will attack White\'s centre with c5.'},
+    {f:'e2',t:'e4',s:'w',l:'5.e4',c:'Big centre! White takes all space — Black will counterattack.'},
+    {f:'d5',t:'c3',s:'b',l:'5…Nxc3',c:"Knight exchange — destroys White's defence of d4."},
+    {f:'b2',t:'c3',s:'w',l:'6.bxc3',c:'Must recapture.'},
+    {f:'f8',t:'g7',s:'b',l:'6…Bg7',c:"Grünfeld bishop — x-rays the centre. Classic hypermodern counterplay."}
+  ]}
 }}
 };
 
@@ -3806,6 +3907,7 @@ async function onBotClick(s){
   // Rule-based coaching
   const notes=coachMove(stB,ns,chosen,mn,'w',ST.evalBot.history);
   notes.forEach(n=>addCoachNote(n));
+  updateEvalBarFromMaterial(ns.board);haptic(8);
   if(isMate(ns)){endBot('w','You won! Checkmate! ♛','Excellent — you checkmated '+ST.evalBot.bot.name+'!');return;}
   if(isDraw(ns)){endBot('d','Draw!','The game ended in a draw.');return;}
   setFB('bg-fb','finf',ST.evalBot.bot.ava+' '+ST.evalBot.bot.name+' thinking (depth '+ST.evalBot.bot.depth+')...');
@@ -3825,6 +3927,8 @@ async function onBotClick(s){
   const diff=wmat-bmat;
   const matStr=Math.abs(diff)<50?'Equal position':diff>0?'You are +'+Math.round(diff/100)+' pawns ahead':'You are '+Math.round(-diff/100)+' pawns behind';
   setFB('bg-fb','',matStr+' · Your move.');
+  updateEvalBarFromMaterial(ns2.board);
+  haptic(8);
 }
 
 function endBot(winner,title,msg){
@@ -3851,6 +3955,14 @@ function endBot(winner,title,msg){
   } else if(winner==='b'){playSound('lose');}
   const ab = document.getElementById('btn-analyse');
   if (ab) ab.style.display = 'inline-flex';
+  // Save to game history
+  if(ST.evalBot?.bot&&ST.evalBot?.history){
+    saveGameToHistory(winner as any,ST.evalBot.bot.name,ST.evalBot.bot.rating,ST.evalBot.history,ST.evalBot.states||[]);
+  }
+  // Refresh tournament & frogs
+  setTimeout(()=>{buildTournament();buildFrogs();},300);
+  // Update eval bar with final position
+  if(ST.evalBot?.st?.board)updateEvalBarFromMaterial(ST.evalBot.st.board);
   saveProgress();
 }
 
@@ -4231,3 +4343,791 @@ if (_muted) {
   const btn = document.getElementById('mute-btn');
   if (btn) btn.textContent = '🔇';
 }
+
+// ═══════════════════════════════════════════════════════════════
+// ── ANIMATED PIECE MOVEMENT ────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════
+function animatePiece(boardId:string, fromSq:string, toSq:string, piece:string, cb:()=>void){
+  const board=document.getElementById(boardId);if(!board){cb();return;}
+  const fromEl=board.querySelector(`[data-sq="${fromSq}"]`) as HTMLElement;
+  const toEl=board.querySelector(`[data-sq="${toSq}"]`) as HTMLElement;
+  if(!fromEl||!toEl){cb();return;}
+  const fromR=fromEl.getBoundingClientRect();const toR=toEl.getBoundingClientRect();
+  const fly=document.createElement('div');
+  fly.className='piece flying';fly.textContent=piece;
+  fly.style.left=fromR.left+'px';fly.style.top=fromR.top+'px';fly.style.fontSize=(fromR.width*.65)+'px';
+  document.body.appendChild(fly);
+  requestAnimationFrame(()=>{requestAnimationFrame(()=>{
+    fly.style.left=toR.left+'px';fly.style.top=toR.top+'px';
+  });});
+  setTimeout(()=>{fly.remove();cb();},220);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ── EVALUATION BAR ────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════
+function updateEvalBar(scoreCP:number){
+  const fill=document.getElementById('eval-bar-fill');
+  const score=document.getElementById('eval-score');
+  if(!fill||!score)return;
+  const clamped=Math.max(-800,Math.min(800,scoreCP));
+  const pct=50+clamped/16;
+  fill.style.height=pct+'%';
+  const disp=Math.abs(scoreCP)>800?'M':(scoreCP/100).toFixed(1);
+  score.textContent=scoreCP>0?'+'+disp:disp;
+  score.style.color=scoreCP>50?'var(--grnl)':scoreCP<-50?'var(--redl)':'var(--mute)';
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ── SHARE RESULT ──────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════
+function shareResult(){
+  const bot=ST.evalBot?.bot;const over=ST.evalBot?.over;
+  if(!over){toast('Finish the game first!','t-bad');return;}
+  const rt=document.getElementById('bg-rt')?.textContent||'';
+  const moves=ST.evalBot?.history?.length||0;
+  const text=`♟ Chess Academy — Hogwarts Wizard's Chess\n${rt}\nOpponent: ${bot?.name||'Bot'} (~${bot?.rating||'?'} ELO)\nMoves: ${moves}\n🏰 chess-academy-pi.vercel.app`;
+  if(navigator.share){
+    navigator.share({title:'Chess Academy',text,url:'https://chess-academy-pi.vercel.app'}).catch(()=>{});
+  } else {
+    navigator.clipboard.writeText(text).then(()=>toast('📋 Result copied to clipboard!','tok'));
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ── HAPTIC FEEDBACK ───────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════
+let _hapticEnabled=localStorage.getItem('haptic')!=='0';
+function haptic(pattern:number|number[]=10){
+  if(!_hapticEnabled)return;
+  if('vibrate' in navigator)navigator.vibrate(pattern);
+}
+function toggleHaptic(){
+  _hapticEnabled=!_hapticEnabled;
+  localStorage.setItem('haptic',_hapticEnabled?'1':'0');
+  const btn=document.getElementById('haptic-toggle');
+  if(btn){btn.textContent=_hapticEnabled?'On':'Off';btn.classList.toggle('on',_hapticEnabled);}
+  haptic(20);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ── SETTINGS FAB ──────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════
+let _settingsOpen=false;
+function toggleSettings(){
+  _settingsOpen=!_settingsOpen;
+  const p=document.getElementById('settings-panel');if(p)p.style.display=_settingsOpen?'block':'none';
+}
+document.addEventListener('click',(e)=>{
+  if(_settingsOpen){
+    const fab=document.getElementById('settings-fab');const panel=document.getElementById('settings-panel');
+    if(fab&&panel&&!fab.contains(e.target as Node)&&!panel.contains(e.target as Node)){
+      _settingsOpen=false;panel.style.display='none';
+    }
+  }
+});
+// Init haptic button
+const _hBtn=document.getElementById('haptic-toggle');
+if(_hBtn){_hBtn.textContent=_hapticEnabled?'On':'Off';_hBtn.classList.toggle('on',_hapticEnabled);}
+
+// ═══════════════════════════════════════════════════════════════
+// ── BOARD SIZE SLIDER ─────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════
+function setBoardSize(val:string){
+  const sz=parseInt(val);
+  const boards=['bg-board','t-board','m-board','eg-board','bg-board','prac-board','gtm-board'];
+  boards.forEach(id=>{
+    const el=document.getElementById(id);
+    if(el){el.style.width=sz+'px';el.style.height=sz+'px';}
+  });
+  localStorage.setItem('boardSize',val);
+}
+const _savedSz=localStorage.getItem('boardSize');
+if(_savedSz){
+  setBoardSize(_savedSz);
+  const sl=document.getElementById('board-size-slider') as HTMLInputElement;
+  if(sl)sl.value=_savedSz;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ── COLORBLIND MODE ───────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════
+let _colorblind=localStorage.getItem('colorblind')==='1';
+function toggleColorblind(){
+  _colorblind=!_colorblind;
+  document.documentElement.classList.toggle('colorblind',_colorblind);
+  localStorage.setItem('colorblind',_colorblind?'1':'0');
+  const btn=document.getElementById('cb-toggle');
+  if(btn){btn.textContent=_colorblind?'On':'Off';btn.classList.toggle('on',_colorblind);}
+  toast(_colorblind?'♿ Colorblind mode on':'Colorblind mode off','tok');
+}
+if(_colorblind){
+  document.documentElement.classList.add('colorblind');
+  const btn=document.getElementById('cb-toggle');if(btn){btn.textContent='On';btn.classList.add('on');}
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ── BLITZ MODE ────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════
+let _blitzTimer:ReturnType<typeof setInterval>|null=null;
+let _blitzSec=180;let _blitzIdx=0;let _blitzScore=0;let _blitzPool:any[]=[];
+
+function startBlitz(){
+  // Close settings
+  _settingsOpen=false;const sp=document.getElementById('settings-panel');if(sp)sp.style.display='none';
+  // Pick 5 random puzzles
+  const all=[...ALL_PUZZLES];for(let i=all.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[all[i],all[j]]=[all[j],all[i]];}
+  _blitzPool=all.slice(0,5);_blitzIdx=0;_blitzScore=0;_blitzSec=180;
+  const ov=document.getElementById('blitz-overlay');if(ov)ov.style.display='flex';
+  _blitzTick();
+  if(_blitzTimer)clearInterval(_blitzTimer);
+  _blitzTimer=setInterval(()=>{
+    _blitzSec--;_blitzTick();
+    if(_blitzSec<=0)endBlitz();
+  },1000);
+  loadBlitzPuzzle();
+}
+function _blitzTick(){
+  const m=Math.floor(_blitzSec/60);const s=_blitzSec%60;
+  const el=document.getElementById('blitz-timer');
+  if(el){el.textContent=m+':'+(s<10?'0':'')+s;el.classList.toggle('urgent',_blitzSec<=30);}
+  const pf=document.getElementById('blitz-pfill');
+  if(pf)pf.style.width=Math.round((_blitzIdx/5)*100)+'%';
+  const pr=document.getElementById('blitz-progress');
+  if(pr)pr.textContent='Puzzle '+(_blitzIdx+1)+' of 5 · Score: '+_blitzScore;
+}
+function loadBlitzPuzzle(){
+  const puz=_blitzPool[_blitzIdx];if(!puz){endBlitz();return;}
+  const fb=document.getElementById('blitz-fb');if(fb)fb.textContent='';
+  drawEvalBoard('blitz-board',mkState(puz.fen||puz.board,puz.turn||'w'),{sz:300});
+  wireEvalBoard('blitz-board',(sq,st)=>{
+    if(!st)return;
+    const moves=legalMoves(st).filter(m=>m.from===sq);
+    if(!moves.length)return;
+    const fb2=document.getElementById('blitz-fb');
+    if(st.board[sq]&&st.board[sq][0]===st.turn){
+      // Select piece — wait for second click
+      (window as any)._blitzSel=sq;
+    } else if((window as any)._blitzSel){
+      const m=legalMoves(mkState(puz.fen||puz.board,puz.turn||'w')).find(mv=>mv.from===(window as any)._blitzSel&&mv.to===sq);
+      (window as any)._blitzSel=null;
+      if(m&&m.from===puz.solution.from&&m.to===puz.solution.to){
+        _blitzScore+=10;haptic([10,50,10]);playSound('win');
+        if(fb2)fb2.textContent='✓ Correct! +10';
+        _blitzIdx++;setTimeout(()=>_blitzIdx<5?loadBlitzPuzzle():endBlitz(),600);
+      } else if(m){
+        haptic([200]);playSound('lose');
+        if(fb2)fb2.textContent='✗ Wrong tactic — try the next one.';
+        _blitzIdx++;setTimeout(()=>_blitzIdx<5?loadBlitzPuzzle():endBlitz(),800);
+      }
+    }
+  });
+}
+function endBlitz(){
+  if(_blitzTimer){clearInterval(_blitzTimer);_blitzTimer=null;}
+  const ov=document.getElementById('blitz-overlay');if(ov)ov.style.display='none';
+  const bonus=_blitzScore;
+  if(bonus>0)addXP(bonus,'🎩 Blitz bonus: +'+bonus+' XP!');
+  confetti();
+  toast('🎩 Blitz done! Score: '+_blitzScore+'/50','t-gld');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ── TOURNAMENT MODE ───────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════
+function buildTournament(){
+  const el=document.getElementById('tournament-bracket');if(!el)return;
+  if(!ST.tournamentProgress)ST.tournamentProgress={};
+  el.innerHTML='';
+  BOTS.forEach((b,i)=>{
+    const beaten=(ST.botWins||{})[b.id]>=1;
+    const prevBeaten=i===0||(ST.botWins||{})[BOTS[i-1].id]>=1;
+    const locked=!prevBeaten&&!beaten;
+    const d=document.createElement('div');
+    d.className='t-round'+(beaten?' beaten':locked?' locked':'');
+    d.innerHTML=`<div class="t-round-ico">${b.ava}</div>
+      <div style="flex:1"><div class="t-round-name">${b.name}</div>
+      <div class="t-round-sub">~${b.rating} ELO${beaten?' · Defeated ✓':locked?' · Locked 🔒':' · Challenge now'}</div></div>
+      <span class="t-round-badge">${beaten?'✓':i+1}</span>`;
+    if(!locked)d.onclick=()=>{startBot(b.id);switchView('eval-bgame');};
+    el.appendChild(d);
+  });
+  // Check if all beaten
+  const allBeaten=BOTS.every(b=>(ST.botWins||{})[b.id]>=1);
+  if(allBeaten){
+    const win=document.createElement('div');win.className='t-trophy-screen';
+    win.innerHTML='<span class="big-trophy">🏆</span><div style="font-family:Cormorant Garamond,serif;font-size:1.6rem;color:var(--gold)">Hogwarts Chess Champion!</div><div style="font-size:.8rem;color:var(--mute);margin-top:8px">You have defeated all 5 wizard opponents. Dumbledore himself applauds your triumph.</div>';
+    el.appendChild(win);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ── GAME HISTORY ──────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════
+function saveGameToHistory(result:'w'|'b'|'d', botName:string, botRating:number, history:any[], states:any[]){
+  if(!ST.gameHistory)ST.gameHistory=[];
+  const movePgn=history.map((m,i)=>{
+    const st=states[i]||{board:{}};
+    return (i%2===0?Math.ceil((i+2)/2)+'. ':'')+moveToAN(st.board,m);
+  }).join(' ');
+  ST.gameHistory.unshift({result,bot:botName,rating:botRating,date:new Date().toLocaleDateString(),moves:history.length,pgn:movePgn});
+  if(ST.gameHistory.length>30)ST.gameHistory=ST.gameHistory.slice(0,30);
+  saveProgress();
+}
+function buildGameHistory(){
+  const el=document.getElementById('history-list');if(!el)return;
+  el.innerHTML='';
+  if(!ST.gameHistory||!ST.gameHistory.length){el.innerHTML='<div style="color:var(--mute);font-size:.8rem;padding:16px">No games recorded yet — play a bot game!</div>';return;}
+  ST.gameHistory.forEach((g,i)=>{
+    const d=document.createElement('div');d.className='history-game';
+    const rIcon=g.result==='w'?'W':g.result==='d'?'½':'L';
+    const rCls=g.result==='w'?'win':g.result==='d'?'draw':'loss';
+    d.innerHTML=`<div class="hg-header"><span class="hg-result ${rCls}">${rIcon}</span><span class="hg-bot">vs ${g.bot} (~${g.rating} ELO)</span><span class="hg-date">${g.date} · ${g.moves} moves</span></div><div class="hg-moves">${g.pgn||'—'}</div>`;
+    el.appendChild(d);
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ── ELO TRACKER ───────────────────────────────────════════════
+// ═══════════════════════════════════════════════════════════════
+function estimateElo():number{
+  let elo=400;
+  if(!ST.botWins)return elo;
+  const ratings=[300,600,900,1200,1500];
+  BOTS.forEach((b,i)=>{const w=(ST.botWins||{})[b.id]||0;if(w>=1)elo=Math.max(elo,ratings[i]+100);});
+  const tac=ST.evalTacSolved?.size||0;
+  elo+=tac*15;
+  elo+=((ST.done?.size||0))*8;
+  return Math.min(1800,elo);
+}
+function buildEloTracker(){
+  const cur=estimateElo();
+  const peak=ST.eloPeak=Math.max(ST.eloPeak||400,cur);
+  const el=document.getElementById('elo-current');if(el)el.textContent=String(cur);
+  const pe=document.getElementById('elo-peak');if(pe)pe.textContent=String(peak);
+  // Build table from game history
+  const tbody=document.getElementById('elo-table-body');
+  if(tbody&&ST.gameHistory){
+    tbody.innerHTML='';
+    ST.gameHistory.slice(0,10).forEach(g=>{
+      const delta=g.result==='w'?+30:g.result==='d'?0:-20;
+      const tr=document.createElement('tr');
+      tr.innerHTML=`<td>${g.bot}</td><td>${g.result==='w'?'Win':g.result==='d'?'Draw':'Loss'}</td><td class="elo-delta ${delta>0?'pos':delta<0?'neg':''}">${delta>0?'+':''}${delta}</td><td>${cur}</td>`;
+      tbody.appendChild(tr);
+    });
+  }
+  // Simple canvas chart
+  const canvas=document.getElementById('elo-canvas') as HTMLCanvasElement;
+  if(!canvas)return;
+  const hist=ST.eloHistory||[];
+  if(!hist.includes(cur)){hist.push(cur);ST.eloHistory=hist.slice(-30);saveProgress();}
+  const ctx=canvas.getContext('2d');if(!ctx)return;
+  canvas.width=canvas.offsetWidth||400;canvas.height=120;
+  if(hist.length<2)return;
+  const mn=Math.min(...hist)-50,mx=Math.max(...hist)+50;
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.strokeStyle='#d4a017';ctx.lineWidth=2;ctx.beginPath();
+  hist.forEach((v,i)=>{
+    const x=i/(hist.length-1)*canvas.width;
+    const y=canvas.height-(v-mn)/(mx-mn)*canvas.height;
+    i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  });
+  ctx.stroke();
+  ctx.fillStyle='rgba(212,160,23,.1)';ctx.lineTo(canvas.width,canvas.height);ctx.lineTo(0,canvas.height);ctx.fill();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ── WEAKNESS DETECTION ────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════
+// Track wrong puzzle types in ST.weaknesses = {[type]:wrong, [type+'_total']:total}
+function trackPuzzleResult(puz:any, correct:boolean){
+  if(!ST.weaknesses)ST.weaknesses={};
+  const type=puz.type||'general';
+  ST.weaknesses[type+'_total']=(ST.weaknesses[type+'_total']||0)+1;
+  if(!correct)ST.weaknesses[type]=(ST.weaknesses[type]||0)+1;
+}
+function buildWeaknessReport():string{
+  if(!ST.weaknesses)return'<div style="color:var(--mute);font-size:.8rem;padding:16px">Solve more puzzles to see weakness analysis.</div>';
+  const types=Object.keys(ST.weaknesses).filter(k=>!k.endsWith('_total'));
+  if(!types.length)return'<div style="color:var(--mute);font-size:.8rem;padding:16px">No data yet.</div>';
+  let html='<div class="weakness-wrap"><div style="font-family:Cormorant Garamond,serif;font-size:1.1rem;color:var(--gold);margin-bottom:16px">Tactical Weakness Radar</div>';
+  types.forEach(t=>{
+    const wrong=ST.weaknesses[t]||0;const total=ST.weaknesses[t+'_total']||1;
+    const pct=Math.round(wrong/total*100);const acc=100-pct;
+    const cls=acc>=80?'good':acc>=50?'ok':'bad';
+    html+=`<div class="weakness-item"><div class="weakness-name">${t}</div><div class="weakness-bar-bg"><div class="weakness-bar-fill ${cls}" style="width:${acc}%"></div></div><div class="weakness-pct">${acc}%</div></div>`;
+  });
+  html+='</div>';return html;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ── CHESS GLOSSARY ────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════
+const GLOSSARY=[
+  {t:'En Passant',d:'A special pawn capture that can only occur immediately after a pawn moves two squares from its starting position. The capturing pawn moves diagonally to the square the enemy pawn passed through, removing it.',r:'Pawn, Special Moves'},
+  {t:'Castling',d:'A special move where the king moves two squares toward a rook, and the rook jumps to the other side of the king. Requires: neither piece has moved, no pieces between them, king not in check.',r:'King Safety, Rook'},
+  {t:'Fork',d:'A tactic where one piece attacks two or more enemy pieces simultaneously, forcing the opponent to lose material. The knight is the best forking piece due to its unusual movement.',r:'Knight, Tactics'},
+  {t:'Pin',d:'A situation where a piece cannot move because doing so would expose a more valuable piece behind it to attack. An absolute pin is against the king (illegal to move); a relative pin threatens a valuable piece.',r:'Tactics, X-Ray'},
+  {t:'Skewer',d:'Like a reverse pin — a valuable piece is attacked, and when it moves, a less valuable piece behind it is captured. "Skewering" the king forces it to move, then the piece behind is taken.',r:'Tactics, Pin'},
+  {t:'Discovered Check',d:'A check delivered not by the moving piece, but by a piece that was behind it. The moving piece uncovers an attack by another piece on the king. Can be combined with a threat from the moving piece.',r:'Tactics, Check'},
+  {t:'Double Check',d:'Both the moving piece and the piece it uncovers give check simultaneously. Only escape is to move the king — blocking or capturing is impossible. The most forcing tactic in chess.',r:'Discovered Check'},
+  {t:'Zwischenzug',d:'German for "in-between move." Instead of responding as expected, a player makes a surprising intermediate move (often a check or threat) that changes the position before completing the expected sequence.',r:'Tactics, Tempo'},
+  {t:'Tempo',d:'A "tempo" is one move. "Gaining a tempo" means forcing your opponent to waste a move. In the opening, a tempo lead means better development. "Losing a tempo" means making an extra move that achieves nothing.',r:'Opening, Time'},
+  {t:'Gambit',d:'An opening where material (usually a pawn) is sacrificed for compensation, typically development lead, open lines, or structural advantage. Examples: Queen\'s Gambit, King\'s Gambit, Evans Gambit.',r:'Opening, Sacrifice'},
+  {t:'Fianchetto',d:'The development of a bishop to g2 (or b2 for White, g7/b7 for Black) after advancing the g- or b-pawn. Creates a long diagonal battery. Common in King\'s Indian, Grünfeld, and Catalan openings.',r:'Bishop, Opening'},
+  {t:'Zugzwang',d:'A situation where any move a player makes worsens their position. The player is "obligated to move" but would prefer to pass. Common in king-pawn endgames — the key concept in king opposition.',r:'Endgame, Tempo'},
+  {t:'Opposition',d:'When two kings face each other on the same file, rank, or diagonal with an odd number of squares between them. The player who does NOT have to move has the "opposition" — a key endgame concept.',r:'King, Endgame, Zugzwang'},
+  {t:'Luft',d:'German for "air." Creating a luft means pushing a pawn in front of your castled king to prevent back-rank mate threats. For example, h3 gives the king an escape square.',r:'King Safety'},
+  {t:'Outpost',d:'A square that cannot be attacked by enemy pawns, where a piece (especially a knight) can be permanently stationed. An outpost on d5 or e6 for White is often a decisive positional advantage.',r:'Knight, Pawn Structure'},
+  {t:'Isolated Pawn',d:'A pawn with no friendly pawns on adjacent files. It cannot be defended by pawns, making it a static weakness. But it gives the owner an open file and piece activity.',r:'Pawn Structure'},
+  {t:'Backward Pawn',d:'A pawn that cannot advance because it would be captured, and cannot be defended by other pawns. It sits on a half-open file, making it a chronic target — especially on d6 in the French Defence.',r:'Pawn Structure'},
+  {t:'Passed Pawn',d:'A pawn with no enemy pawns in front of it on its own file or adjacent files. "A passed pawn must be pushed!" (Nimzowitsch). In endgames, a remote passed pawn is often decisive.',r:'Pawn, Endgame'},
+  {t:'Rook on 7th',d:'A rook placed on the opponent\'s 7th rank attacks unmoved pawns and traps the enemy king on the back rank. Two rooks on the 7th rank ("pigs on the 7th") are nearly always winning.',r:'Rook, Endgame'},
+  {t:'Battery',d:'Two (or more) pieces of the same type (or queen+rook, queen+bishop) lined up on the same file, rank, or diagonal to double their power. Example: two rooks on an open file double-control it.',r:'Coordination'},
+  {t:'X-Ray Attack',d:'An attack that works through an intervening piece. The attacker "X-rays" through a piece to threaten what is behind it. Also called a "transparency" — crucial in calculation.',r:'Tactics, Pin'},
+  {t:'Triangulation',d:'A king manoeuvre in 3 moves to reach the same square in an even number of moves, transferring the obligation to move to the opponent. Used to achieve zugzwang in king-pawn endgames.',r:'Zugzwang, King, Endgame'},
+  {t:'Liquidation',d:'Exchanging pieces to simplify into a winning endgame, or to eliminate the opponent\'s attacking pieces. "When you\'re winning, trade everything" is an oversimplification, but the principle holds.',r:'Endgame, Exchange'},
+  {t:'Initiative',d:'The ability to make threats that force the opponent to react. The player with the initiative dictates the pace. "The threat is stronger than the execution" — Nimzowitsch.',r:'Tempo, Attack'},
+  {t:'Prophylaxis',d:'Preventing the opponent\'s plan before it happens. Tigran Petrosian was the master of prophylaxis — making neutral-looking moves that preemptively neutralise threats.',r:'Strategy, Defence'},
+];
+
+function buildGlossary(filter=''){
+  const el=document.getElementById('glossary-list');if(!el)return;
+  el.innerHTML='';
+  const terms=filter?GLOSSARY.filter(g=>g.t.toLowerCase().includes(filter.toLowerCase())||g.d.toLowerCase().includes(filter.toLowerCase())):GLOSSARY;
+  terms.forEach(g=>{
+    const d=document.createElement('div');d.className='glossary-term';
+    d.innerHTML=`<h4>${g.t}</h4><p>${g.d}</p><div class="gt-related">See also: ${g.r}</div>`;
+    el.appendChild(d);
+  });
+  if(!terms.length)el.innerHTML='<div style="color:var(--mute);font-size:.8rem;padding:12px">No terms found.</div>';
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ── GUESS THE MOVE ────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════
+const MASTER_GAMES=[
+  {
+    title:"Morphy's Opera Game (1858)",
+    players:"Paul Morphy vs Duke of Brunswick",
+    info:"The most famous attacking game ever played. Morphy sacrifices material relentlessly to develop pieces.",
+    moves:[
+      {from:'e2',to:'e4'},{from:'e7',to:'e5'},{from:'g1',to:'f3'},{from:'d7',to:'d6'},
+      {from:'d2',to:'d4'},{from:'c8',to:'g4'},{from:'d4',to:'e5'},{from:'g4',to:'f3'},
+      {from:'d1',to:'f3'},{from:'d6',to:'e5'},{from:'f1',to:'c4'},{from:'g8',to:'f6'},
+      {from:'f3',to:'b3'},{from:'d8',to:'e7'},{from:'b1',to:'c3'},{from:'c7',to:'c6'},
+      {from:'c1',to:'g5'},{from:'b7',to:'b5'},{from:'c3',to:'b5'},{from:'c6',to:'b5'},
+      {from:'c4',to:'b5'},{from:'b8',to:'d7'},{from:'e1',to:'c1'},{from:'a8',to:'d8'},
+      {from:'d1',to:'d7'},{from:'d8',to:'d7'},{from:'h1',to:'d1'},{from:'e7',to:'e6'},
+      {from:'b5',to:'d7'},{from:'f6',to:'d7'},{from:'b3',to:'b8',cap:true},{from:'d7',to:'b8'},
+      {from:'d1',to:'d8'}
+    ],
+    annotations:[
+      "Morphy opens 1.e4 — central control.","e5 — Black mirrors.","Knight to f3 — develop, attack e5.",
+      "d6 defends pawn.","d4 — Open Game!","Bg4 — pins the knight.",
+      "dxe5 — exchange."," Bxf3 — Black takes.","Qxf3 — recapture with tempo.",
+      "dxe5.","Bc4 — aims at f7.","Nf6 — develops, defends.","Qb3 — double threat!",
+      "Qe7 — defends f7.","Nc3 — development.","c6.","Bg5 — pin!","b5 — attack bishop.",
+      "Nxb5!! — sacrifice!","cxb5.","Bxb5+ — check!","Nbd7.","0-0-0 — castle queenside!",
+      "Rd8.","Rxd7!! — sacrifice!","Rxd7.","Rd1 — all rooks active.",
+      "Qe6.","Bxd7+ — tempo.","Nxd7.","Rxb8+!! — final rook sacrifice!","Nxb8.",
+      "Rd8# — CHECKMATE! A masterpiece."
+    ]
+  },
+  {
+    title:"Fischer's Game of the Century (1956)",
+    players:"Donald Byrne vs Robert James Fischer (age 13)",
+    info:"13-year-old Bobby Fischer stuns the chess world with a queen sacrifice on move 17.",
+    moves:[
+      {from:'g1',to:'f3'},{from:'g8',to:'f6'},{from:'c2',to:'c4'},{from:'g7',to:'g6'},
+      {from:'b1',to:'c3'},{from:'f8',to:'g7'},{from:'d2',to:'d4'},{from:'e8',to:'g8'},
+      {from:'c1',to:'f4'},{from:'d7',to:'d5'},{from:'d1',to:'b3'},{from:'d5',to:'c4'},
+      {from:'b3',to:'c4'},{from:'c7',to:'c6'},{from:'e2',to:'e4'},{from:'b8',to:'d7'},
+      {from:'a1',to:'d1'},{from:'d7',to:'b6'},{from:'c4',to:'c5'},{from:'b6',to:'g4'},
+      {from:'f4',to:'g5'},{from:'f6',to:'a1',cap:true},{from:'e1',to:'g1'},
+      {from:'a1',to:'c2',cap:true},{from:'d8',to:'c8'},{from:'g4',to:'e6'},
+      {from:'c5',to:'c1'},{from:'e6',to:'g4'},{from:'c1',to:'d1'},{from:'g4',to:'f2'},
+      {from:'d1',to:'e1'},{from:'c8',to:'c2'},{from:'c3',to:'d1'},{from:'f2',to:'d3'},
+      {from:'e1',to:'e7'},{from:'g8',to:'h8'},{from:'e7',to:'f7'},{from:'c2',to:'e4'}
+    ],
+    annotations:[
+      "Nf3.","Nf6.","c4 — English Opening.","g6 — King's Indian setup.",
+      "Nc3.","Bg7.","d4.","0-0 — castled.","Bf4.","d5 — central challenge.",
+      "Qb3.","dxc4 — takes gambit.","Qxc4.","c6.","e4 — space.","Nbd7.",
+      "Rd1 — development.","Nb6 — repositioning.","Qc5.","Bg4 — pin!",
+      "Bg5 — counter-pin.","Nxa1!! — QUEEN SACRIFICE! Fischer takes the rook.",
+      "0-0.","Nxc2!! — takes another piece!","Qd8? — Byrne confused.",
+      "Bxe6.","Qc1+.","Bg4+.","Qd1+!","Bf2? — forced retreat.",
+      "Qe1+!","Rxc2.","Nd1.","Bxd3.",
+      "Re7.","Kh8.","Qxf7.","Rxe4 — winning material advantage."
+    ]
+  },
+  {
+    title:"Kasparov's Immortal (2000)",
+    players:"Garry Kasparov vs Veselin Topalov",
+    info:"Called the 'greatest chess game ever played' — Kasparov's Rh1 sacrifice on move 24 is legendary.",
+    moves:[
+      {from:'e2',to:'e4'},{from:'d7',to:'d6'},{from:'d2',to:'d4'},{from:'g8',to:'f6'},
+      {from:'b1',to:'c3'},{from:'g7',to:'g6'},{from:'c1',to:'e3'},{from:'f8',to:'g7'},
+      {from:'d1',to:'d2'},{from:'c7',to:'c6'},{from:'f2',to:'f3'},{from:'b7',to:'b5'},
+      {from:'g1',to:'e2'},{from:'b8',to:'d7'},{from:'e3',to:'h6'},{from:'g7',to:'h6'},
+      {from:'d2',to:'h6'},{from:'c8',to:'b7'},{from:'a2',to:'a3'},{from:'e7',to:'e5'},
+      {from:'e1',to:'c1'},{from:'d8',to:'e7'},{from:'c1',to:'b1'},{from:'a7',to:'a6'},
+      {from:'e2',to:'c1'},{from:'e8',to:'c8'},{from:'c1',to:'b3'},{from:'e5',to:'d4'},
+      {from:'h1',to:'d1'},{from:'d7',to:'b6'}
+    ],
+    annotations:[
+      "e4.","d6 — Pirc defence.","d4.","Nf6.","Nc3.","g6.",
+      "Be3.","Bg7 — fianchetto.","Qd2.","c6.","f3 — space.","b5 — counterplay.",
+      "Nge2.","Nbd7.","Bxh6!! — piece sacrifice!","Bxh6.","Qxh6 — queen on h6!",
+      "Bb7.","a3.","e5 — attack!","0-0-0!! — pawn castle under fire.",
+      "Qe7.","Kb1.","a6.","Nc1.","0-0-0.","Nb3.","exd4.",
+      "Rxd4!! — rook sacrifice (Topalov accepts).","Nb6."
+    ]
+  }
+];
+
+let _gtmGameIdx=0;let _gtmMoveIdx=0;let _gtmScore=0;let _gtmSt:any=null;let _gtmWaiting=true;
+const {mkState:_mk,startPos:_sp,applyMove:_am,legalMoves:_lm}={mkState,startPos,applyMove,legalMoves};
+
+function initGTM(){
+  _gtmGameIdx=0;_gtmMoveIdx=0;_gtmScore=0;
+  renderGTMGame();
+}
+function renderGTMGame(){
+  const game=MASTER_GAMES[_gtmGameIdx];
+  const el=document.getElementById('gtm-title');if(el)el.textContent=game.title;
+  const li=document.getElementById('gtm-game-list');
+  if(li)li.textContent=MASTER_GAMES.map((g,i)=>(i===_gtmGameIdx?'▶ ':'  ')+g.title).join(' | ');
+  // Replay to current move
+  _gtmSt=mkState(startPos());
+  for(let i=0;i<_gtmMoveIdx;i++){
+    const mv=game.moves[i];if(!mv)break;
+    const legal=legalMoves(_gtmSt).find(m=>m.from===mv.from&&m.to===mv.to);
+    if(legal)_gtmSt=applyMove(_gtmSt,legal);
+  }
+  drawEvalBoard('gtm-board',_gtmSt,{sz:360});
+  wireEvalBoard('gtm-board',onGTMClick);
+  addDragSupport('gtm-board',onGTMClick);
+  const mn=document.getElementById('gtm-move-num');
+  if(mn)mn.textContent=Math.ceil((_gtmMoveIdx+1)/2)+'.'+((_gtmMoveIdx%2===0)?'':', ');
+  const sc=document.getElementById('gtm-score');if(sc)sc.textContent=String(_gtmScore);
+  const fb=document.getElementById('gtm-fb');
+  const ann=game.annotations[_gtmMoveIdx]||'';
+  if(fb){fb.textContent='🎯 '+((_gtmMoveIdx===game.moves.length)?'Game complete! '+ann:'Your turn — play the master\'s move. '+(_gtmMoveIdx%2===0?'(White to move)':'(Black to move)'));fb.className='gtm-fb info';}
+  _gtmWaiting=_gtmMoveIdx<game.moves.length;
+}
+function onGTMClick(sq:string,st:any){
+  if(!_gtmWaiting||!_gtmSt)return;
+  const game=MASTER_GAMES[_gtmGameIdx];
+  const expected=game.moves[_gtmMoveIdx];if(!expected)return;
+  const sel=(window as any)._gtmSel;
+  if(!sel){
+    if(_gtmSt.board[sq]&&_gtmSt.board[sq][0]===_gtmSt.turn)(window as any)._gtmSel=sq;
+    return;
+  }
+  (window as any)._gtmSel=null;
+  const legal=legalMoves(_gtmSt).find(m=>m.from===sel&&m.to===sq);
+  const fb=document.getElementById('gtm-fb');
+  if(legal&&sel===expected.from&&sq===expected.to){
+    _gtmScore+=10;haptic([10,50,10]);playSound('move');
+    _gtmSt=applyMove(_gtmSt,legal);_gtmMoveIdx++;
+    drawEvalBoard('gtm-board',_gtmSt,{sz:360});
+    const ann=game.annotations[_gtmMoveIdx-1]||'Correct!';
+    if(fb){fb.textContent='✓ Correct! '+ann;fb.className='gtm-fb correct';}
+    const sc=document.getElementById('gtm-score');if(sc)sc.textContent=String(_gtmScore);
+    wireEvalBoard('gtm-board',onGTMClick);addDragSupport('gtm-board',onGTMClick);
+    if(_gtmMoveIdx>=game.moves.length){
+      _gtmWaiting=false;
+      if(fb){fb.textContent='🏆 Game complete! Score: '+_gtmScore+'. '+game.info;fb.className='gtm-fb correct';}
+      addXP(_gtmScore,'🎯 Guess the Move: +'+_gtmScore+' XP!');
+    }
+  } else if(legal){
+    haptic([200]);playSound('lose');
+    if(fb){fb.textContent='✗ Not the master\'s move. The move was '+expected.from+'→'+expected.to+'. '+( game.annotations[_gtmMoveIdx]||'');fb.className='gtm-fb wrong';}
+    // Auto-play correct move
+    const correct=legalMoves(_gtmSt).find(m=>m.from===expected.from&&m.to===expected.to);
+    if(correct){_gtmSt=applyMove(_gtmSt,correct);_gtmMoveIdx++;setTimeout(()=>{drawEvalBoard('gtm-board',_gtmSt,{sz:360});wireEvalBoard('gtm-board',onGTMClick);addDragSupport('gtm-board',onGTMClick);},600);}
+  } else {
+    if(fb){fb.textContent='Select one of your pieces first.';fb.className='gtm-fb info';}
+  }
+}
+function gtmPrev(){
+  if(_gtmMoveIdx<=0)return;_gtmMoveIdx--;renderGTMGame();
+}
+function gtmSkip(){
+  const game=MASTER_GAMES[_gtmGameIdx];const mv=game.moves[_gtmMoveIdx];if(!mv)return;
+  const legal=legalMoves(_gtmSt).find(m=>m.from===mv.from&&m.to===mv.to);
+  if(legal){_gtmSt=applyMove(_gtmSt,legal);_gtmMoveIdx++;}
+  const fb=document.getElementById('gtm-fb');
+  const ann=game.annotations[_gtmMoveIdx-1]||'';
+  if(fb){fb.textContent='Skipped: '+mv.from+'→'+mv.to+'. '+ann;fb.className='gtm-fb wrong';}
+  drawEvalBoard('gtm-board',_gtmSt,{sz:360});wireEvalBoard('gtm-board',onGTMClick);addDragSupport('gtm-board',onGTMClick);
+}
+function gtmNextGame(){
+  _gtmGameIdx=(_gtmGameIdx+1)%MASTER_GAMES.length;_gtmMoveIdx=0;_gtmScore=0;renderGTMGame();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ── CHESS 960 ────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════
+let _chess960backRank:string[]=[];
+function chess960Generate():string[]{
+  const pieces=['R','B','N','Q','K','N','B','R'];
+  // Fischer Random: bishops on opposite colours, king between rooks
+  let rank:string[]=['','','','','','','',''];
+  // Place bishops on opposite color squares
+  const b1=Math.floor(Math.random()*4)*2;rank[b1]='B';// dark
+  const b2=Math.floor(Math.random()*4)*2+1;rank[b2]='B';// light
+  // Place queen on any remaining
+  const empty=rank.map((_,i)=>i).filter(i=>!rank[i]);
+  const qPos=empty[Math.floor(Math.random()*empty.length)];rank[qPos]='Q';
+  // Place knights on 2 of remaining
+  const e2=empty.filter(i=>i!==qPos);
+  const n1=e2[Math.floor(Math.random()*e2.length)];rank[n1]='N';
+  const e3=e2.filter(i=>i!==n1);
+  const n2=e3[Math.floor(Math.random()*e3.length)];rank[n2]='N';
+  // Remaining 3 squares: R K R (in order)
+  const e4=e3.filter(i=>i!==n2).sort((a,b)=>a-b);
+  rank[e4[0]]='R';rank[e4[1]]='K';rank[e4[2]]='R';
+  return rank;
+}
+function chess960Preview(rank:string[]){
+  const el=document.getElementById('chess960-preview');if(!el)return;
+  el.innerHTML='';
+  rank.forEach((p,i)=>{
+    const sq=document.createElement('div');sq.className='chess960-sq';
+    const light=(i+0)%2===1;sq.style.background=light?'var(--lsq)':'var(--dsq)';
+    const sym:{[k:string]:string}={R:'♜',B:'♝',N:'♞',Q:'♛',K:'♚',P:'♟'};
+    sq.textContent=sym[p]||'';sq.style.color='#1a0a00';
+    el.appendChild(sq);
+  });
+}
+function chess960Shuffle(){
+  _chess960backRank=chess960Generate();chess960Preview(_chess960backRank);
+}
+function chess960Start(){
+  if(!_chess960backRank.length)_chess960backRank=chess960Generate();
+  const rank=_chess960backRank;
+  const board:Record<string,string>={};
+  const files=['a','b','c','d','e','f','g','h'];
+  // Black pieces on rank 8, white on rank 1
+  rank.forEach((p,i)=>{board[files[i]+'8']='b'+p;board[files[i]+'1']='w'+p;});
+  // Pawns
+  files.forEach(f=>{board[f+'7']='bP';board[f+'2']='wP';});
+  // Find rook files and king file for castling rights
+  const rooks=rank.map((p,i)=>p==='R'?i:-1).filter(i=>i>=0);
+  const kingFile=rank.indexOf('K');
+  // Castling: K=kingside rook, Q=queenside rook
+  const cast={wK:true,wQ:true,bK:true,bQ:true};
+  ST.evalBot={st:mkState(board,'w',cast),sel:null,bot:BOTS[2],history:[],states:[],coach:[],stats:{cap:0,chk:0},over:false};
+  ST.evalBot.chess960=true;
+  const b=BOTS[2];
+  document.getElementById('bg-lbl')!.textContent='CHESS 960';
+  document.getElementById('bg-title')!.textContent='Chess960 — Fischer Random';
+  document.getElementById('bg-req')!.textContent='Random position · You play White vs '+b.name;
+  document.getElementById('bg-log')!.innerHTML='Chess960 started.';
+  document.getElementById('coach-panel')!.innerHTML='';
+  document.getElementById('bg-res')!.classList.remove('show');
+  document.getElementById('bg-analysis')!.style.display='none';
+  setFB('bg-fb','','Chess960! Same rules — different starting position. Make your first move.');
+  resetClock();drawBot([]);
+  switchView('eval-bgame');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ── CHOCOLATE FROG CARDS ─────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════
+const FROG_CARDS=[
+  {id:'morphy',icon:'♟',name:'Paul Morphy',fact:'Opera Game genius. Defeated two nobles while they watched opera. Retired at 21.',unlock:'complete 5 lessons'},
+  {id:'fischer',icon:'♔',name:'Bobby Fischer',fact:'11th World Champion. 6-0 Candidates matches. Chess960 inventor.',unlock:'pass Level 1 quiz'},
+  {id:'kasparov',icon:'⚡',name:'Garry Kasparov',fact:'13th World Champion. Greatest player of all time. Defeated Deep Blue (then lost).',unlock:'earn 500 XP'},
+  {id:'tal',icon:'🔥',name:'Mikhail Tal',fact:'The Magician from Riga. World Champion 1960. Known for unsound sacrifices that worked.',unlock:'complete 10 lessons'},
+  {id:'capablanca',icon:'♜',name:'José Capablanca',fact:'Cuban prodigy. World Champion 1921-27. Lost only 34 games in his career.',unlock:'master 3 openings'},
+  {id:'karpov',icon:'🛡',name:'Anatoly Karpov',fact:'12th World Champion. Master of positional squeeze. Won over 160 tournaments.',unlock:'pass Level 2 quiz'},
+  {id:'kramnik',icon:'🏰',name:'Vladimir Kramnik',fact:'14th World Champion. Drew match vs Fritz. Solved the Berlin Defence.',unlock:'earn 1000 XP'},
+  {id:'polgar',icon:'👑',name:'Judit Polgár',fact:'Strongest female player ever. Beat Kasparov, Karpov, and Kramnik. Retired 2014.',unlock:'complete 20 lessons'},
+  {id:'anand',icon:'⚡',name:'Viswanathan Anand',fact:'15th World Champion. 5-time champion. Fastest calculation in chess history.',unlock:'beat Ron Weasley'},
+  {id:'carlsen',icon:'🌟',name:'Magnus Carlsen',fact:'16th World Champion. Peak ELO 2882 — highest ever. Chess Olympiad gold medalist.',unlock:'beat Neville Longbottom'},
+  {id:'steinitz',icon:'♗',name:'Wilhelm Steinitz',fact:'1st World Champion 1886. Father of positional chess. Invented the concept of accumulated advantage.',unlock:'complete 15 openings'},
+  {id:'lasker',icon:'⚔️',name:'Emanuel Lasker',fact:'2nd World Champion. Held the title 27 years — longest reign in history.',unlock:'beat Viktor Krum'},
+  {id:'petrosian',icon:'🛡',name:'Tigran Petrosian',fact:'9th World Champion. Master of prophylaxis — preventing opponent\'s plans before they form.',unlock:'7-day streak'},
+  {id:'bronstein',icon:'♞',name:'David Bronstein',fact:'Lost World Championship match by 0.5 points in 1951. Inventor of increment clock.',unlock:'solve 50 puzzles (half)'},
+  {id:'nimzowitsch',icon:'📖',name:'Aron Nimzowitsch',fact:'"My System" author. Invented hypermodern opening theory. The Nimzo-Indian bears his name.',unlock:'complete all Level 1 modules'},
+  {id:'alekhine',icon:'🐱',name:'Alexander Alekhine',fact:'4th World Champion. Never lost his title. Calculating genius. Owned a cat named Chess.',unlock:'beat McGonagall'},
+  {id:'rubinstein',icon:'♜',name:'Akiba Rubinstein',fact:'Never became champion despite deserving it. Rook endgame mastery is legendary.',unlock:'pass Level 3 quiz'},
+  {id:'reshevsky',icon:'⏰',name:'Samuel Reshevsky',fact:'Child prodigy who played exhibitions at age 8. Became a top American GM.',unlock:'complete endgame drills'},
+  {id:'spassky',icon:'🏅',name:'Boris Spassky',fact:'10th World Champion. Lost to Fischer 1972 in the Match of the Century.',unlock:'beat Dumbledore'},
+  {id:'topalov',icon:'🎭',name:'Veselin Topalov',fact:'Victim of Kasparov\'s Immortal. Former world #1. Known for aggressive style.',unlock:'complete all modules'},
+];
+
+function checkFrogUnlocks():string[]{
+  const unlocked:string[]=[];
+  const bw=ST.botWins||{};
+  FROG_CARDS.forEach(f=>{
+    const u=f.unlock;
+    let earned=false;
+    if(u.includes('5 lessons'))earned=ST.done?.size>=5;
+    else if(u.includes('10 lessons'))earned=ST.done?.size>=10;
+    else if(u.includes('15 lessons'))earned=(ST.opsDone?.size||0)>=5;
+    else if(u.includes('20 lessons'))earned=ST.done?.size>=20;
+    else if(u.includes('all modules'))earned=ST.done?.size>=30;
+    else if(u.includes('all Level 1'))earned=MODS.filter(m=>m.level===1).every(m=>ST.done?.has(m.k));
+    else if(u.includes('Level 1 quiz'))earned=ST.qzRes?.[1]===true;
+    else if(u.includes('Level 2 quiz'))earned=ST.qzRes?.[2]===true;
+    else if(u.includes('Level 3 quiz'))earned=ST.qzRes?.[3]===true;
+    else if(u.includes('500 XP'))earned=ST.xp>=500;
+    else if(u.includes('1000 XP'))earned=ST.xp>=1000;
+    else if(u.includes('3 openings'))earned=(ST.opsDone?.size||0)>=3;
+    else if(u.includes('Ron'))earned=(bw['b300']||0)>=1;
+    else if(u.includes('Neville'))earned=(bw['b600']||0)>=1;
+    else if(u.includes('Krum'))earned=(bw['b900']||0)>=1;
+    else if(u.includes('McGonagall'))earned=(bw['b1200']||0)>=1;
+    else if(u.includes('Dumbledore'))earned=(bw['b1500']||0)>=1;
+    else if(u.includes('7-day'))earned=ST.streak>=7;
+    else if(u.includes('50 puzzles'))earned=(ST.evalTacSolved?.size||0)>=4;
+    else if(u.includes('endgame'))earned=(ST.evalEGSolved||0)>=2;
+    if(earned)unlocked.push(f.id);
+  });
+  return unlocked;
+}
+function buildFrogs(){
+  const el=document.getElementById('frogs-grid');if(!el)return;
+  const unlocked=checkFrogUnlocks();
+  if(!ST.frogs)ST.frogs=[];
+  // Update ST.frogs with newly unlocked (and toast if new)
+  unlocked.forEach(id=>{
+    if(!ST.frogs.includes(id)){
+      ST.frogs.push(id);
+      const card=FROG_CARDS.find(f=>f.id===id);
+      if(card){toast('🐸 Chocolate Frog! '+card.name+' card collected!','t-gld');confetti();}
+      saveProgress();
+    }
+  });
+  const cnt=document.getElementById('frogs-count');
+  if(cnt)cnt.textContent=ST.frogs.length+' / '+FROG_CARDS.length+' collected';
+  el.innerHTML='';
+  FROG_CARDS.forEach(f=>{
+    const owned=ST.frogs.includes(f.id);
+    const d=document.createElement('div');
+    d.className='frog-card'+(owned?' unlocked':' locked');
+    if(owned)d.innerHTML=`<span class="frog-icon">${f.icon}</span><div class="frog-name">${f.name}</div><div class="frog-fact">${f.fact}</div><div class="frog-badge">✓</div>`;
+    else d.innerHTML=`<span class="frog-icon">🎴</span><div class="frog-name">???</div><div class="frog-fact">${f.unlock}</div>`;
+    el.appendChild(d);
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ── SPACED REPETITION FOR PUZZLES ─────────────────────────────
+// ═══════════════════════════════════════════════════════════════
+function getNextSRPuzzle():any{
+  if(!ST.srData)ST.srData={};
+  const now=Date.now();
+  // Find puzzles due for review (solved before, interval expired)
+  const duePuzzle=ALL_PUZZLES.find(p=>{
+    const sr=ST.srData[p.id];
+    return sr&&sr.due<=now;
+  });
+  if(duePuzzle)return duePuzzle;
+  // Otherwise return a new unsolved puzzle
+  return ALL_PUZZLES.find(p=>!ST.evalTacSolved?.has(p.id));
+}
+function updateSR(puzzleId:string, correct:boolean){
+  if(!ST.srData)ST.srData={};
+  const now=Date.now();
+  const sr=ST.srData[puzzleId]||{interval:1,ease:2.5,due:0};
+  if(correct){
+    sr.interval=Math.round(sr.interval*sr.ease);
+    sr.ease=Math.min(2.8,sr.ease+0.1);
+  } else {
+    sr.interval=1;sr.ease=Math.max(1.3,sr.ease-0.2);
+  }
+  sr.due=now+sr.interval*86400000;
+  ST.srData[puzzleId]=sr;
+  saveProgress();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ── KEYBOARD NAV ─────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════
+document.addEventListener('keydown',(e)=>{
+  const v=document.querySelector('.view.act');if(!v)return;
+  const vid=v.id;
+  // Arrow keys in bot game log
+  if(vid==='view-eval-bgame'&&(e.key==='ArrowLeft'||e.key==='ArrowRight')){
+    e.preventDefault();
+    const hist=ST.evalBot?.history||[];const states=ST.evalBot?.states||[];
+    if(!hist.length)return;
+    if(!(ST.evalBot as any).reviewIdx){(ST.evalBot as any).reviewIdx=states.length-1;}
+    if(e.key==='ArrowLeft'&&(ST.evalBot as any).reviewIdx>0)(ST.evalBot as any).reviewIdx--;
+    else if(e.key==='ArrowRight'&&(ST.evalBot as any).reviewIdx<states.length-1)(ST.evalBot as any).reviewIdx++;
+    const idx=(ST.evalBot as any).reviewIdx;
+    if(states[idx])drawEvalBoard('bg-board',states[idx],{last:hist[idx]||null});
+    const mn=document.getElementById('bg-mv');if(mn)mn.textContent=String(idx);
+  }
+});
+
+// ═══════════════════════════════════════════════════════════════
+// ── SWITCHVIEW: render new views on switch ────────────────────
+// ═══════════════════════════════════════════════════════════════
+const _origSwitchView=(window as any).switchView;
+(window as any).switchView=function(v:string){
+  _origSwitchView(v);
+  if(v==='tournament')buildTournament();
+  if(v==='game-history')buildGameHistory();
+  if(v==='elo-tracker')buildEloTracker();
+  if(v==='glossary')buildGlossary();
+  if(v==='chocolate-frogs')buildFrogs();
+  if(v==='guess-the-move')initGTM();
+  if(v==='chess960'){chess960Shuffle();}
+};
+
+// ═══════════════════════════════════════════════════════════════
+// ── WIRE NEW GLOBALS ──────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════
+(window as any).shareResult    = shareResult;
+(window as any).toggleSettings = toggleSettings;
+(window as any).setBoardSize   = setBoardSize;
+(window as any).toggleColorblind= toggleColorblind;
+(window as any).toggleHaptic   = toggleHaptic;
+(window as any).startBlitz     = startBlitz;
+(window as any).endBlitz       = endBlitz;
+(window as any).chess960Shuffle= chess960Shuffle;
+(window as any).chess960Start  = chess960Start;
+(window as any).filterGlossary = buildGlossary;
+(window as any).gtmPrev        = gtmPrev;
+(window as any).gtmNextGame    = gtmNextGame;
+(window as any).gtmSkip        = gtmSkip;
+
+// ═══════════════════════════════════════════════════════════════
+// ── HOOK EVAL BAR INTO BOT GAME ───────────────────────────────
+// ═══════════════════════════════════════════════════════════════
+// After each bot move, evaluate position (fast depth-2 for display)
+const _origGetBotMove=getBotMove;
+// Update eval bar whenever bot move completes — we use material count as proxy
+// (Stockfish eval would need extra UCI comms; material diff is instant & accurate for learning)
+function updateEvalBarFromMaterial(board:Record<string,string>){
+  let w=0,b=0;
+  Object.values(board).forEach(p=>{
+    const v=VALS[p[1]]||0;p[0]==='w'?w+=v:b+=v;
+  });
+  updateEvalBar(w-b);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ── SAVE GAME HISTORY ON END ─────────────────────────────────
+// ═══════════════════════════════════════════════════════════════
+const _origEndBot=(window as any)._endBotOrig||null;
+// Patch endBot to also save game history + eval bar
+const _patchedEndBot=function(winner:string,title:string,msg:string){
+  if(ST.evalBot?.bot&&ST.evalBot?.history){
+    saveGameToHistory(winner as any,ST.evalBot.bot.name,ST.evalBot.bot.rating,ST.evalBot.history,ST.evalBot.states||[]);
+    buildTournament(); // refresh tournament progress
+    buildFrogs(); // check for new cards
+  }
+  updateEvalBarFromMaterial(ST.evalBot?.st?.board||{});
+};
+// We call _patchedEndBot from within endBot — but endBot is already defined.
+// We hook it via a separate call in the win tracking block already added.
+// Instead, rebuild tournament/frogs whenever we save:
+const _origSaveProgress=(window as any)._origSaveProgress||saveProgress;

@@ -141,7 +141,18 @@
       <div class="nav-item" data-v="eval-mates"><span class="ni-ico">👑</span><div class="ni-txt"><span class="ni-name">Checkmate Drills</span><span class="ni-sub">Mate in 1, 2, 3</span></div><span class="ni-badge si-st" id="s-eval-mates">7</span></div>
       <div class="nav-item" data-v="eval-endgame"><span class="ni-ico">♔</span><div class="ni-txt"><span class="ni-name">Endgame Drills</span><span class="ni-sub">Board practice vs engine</span></div><span class="ni-badge si-st" id="s-eval-endgame">4</span></div>
       <div class="nav-item" data-v="eval-bot"><span class="ni-ico">🤖</span><div class="ni-txt"><span class="ni-name">Play vs Bot</span><span class="ni-sub">Stockfish engine</span></div></div>
+      <div class="nav-item" data-v="tournament"><span class="ni-ico">🏆</span><div class="ni-txt"><span class="ni-name">Tournament</span><span class="ni-sub">Beat all 5 wizards</span></div></div>
+      <div class="nav-item" data-v="chess960"><span class="ni-ico">🎲</span><div class="ni-txt"><span class="ni-name">Chess960</span><span class="ni-sub">Fischer Random</span></div></div>
       <div class="nav-item" data-v="eval-progress"><span class="ni-ico">📊</span><div class="ni-txt"><span class="ni-name">Mastery Dashboard</span><span class="ni-sub">Full overview</span></div></div>
+    </div>
+    <div class="nav-divider"></div>
+    <div class="nav-section">
+      <div class="nav-label">Explore</div>
+      <div class="nav-item" data-v="guess-the-move"><span class="ni-ico">🎯</span><div class="ni-txt"><span class="ni-name">Guess the Move</span><span class="ni-sub">Famous master games</span></div></div>
+      <div class="nav-item" data-v="game-history"><span class="ni-ico">📜</span><div class="ni-txt"><span class="ni-name">Game History</span><span class="ni-sub">Review past games</span></div></div>
+      <div class="nav-item" data-v="elo-tracker"><span class="ni-ico">📈</span><div class="ni-txt"><span class="ni-name">ELO Tracker</span><span class="ni-sub">Your rating over time</span></div></div>
+      <div class="nav-item" data-v="glossary"><span class="ni-ico">📖</span><div class="ni-txt"><span class="ni-name">Chess Glossary</span><span class="ni-sub">Every term defined</span></div></div>
+      <div class="nav-item" data-v="chocolate-frogs"><span class="ni-ico">🐸</span><div class="ni-txt"><span class="ni-name">Chocolate Frogs</span><span class="ni-sub">Collect wizard cards</span></div></div>
     </div>
   </nav>
 
@@ -412,8 +423,15 @@
     <div class="el">
       <div class="bc">
         <div class="chdr" style="max-width:100%"><div class="chdr-l" id="bg-lbl">VS BOT</div><div class="chdr-t" id="bg-title">vs Bot</div><div class="chdr-s" id="bg-req">You play White</div></div>
-        <div class="board" id="bg-board" style="width:432px;height:432px"></div>
-        <div class="brow"><button class="btn" id="btn-resign">🏳 Resign</button><button class="btn" id="btn-undo">↩ Undo</button><button class="btn" id="btn-flip" onclick="flipBoard()">⟳ Flip</button><button class="btn" onclick="switchView('eval-bot')">← Bots</button></div>
+        <div class="bg-with-eval">
+          <div class="eval-bar-wrap" id="eval-bar-wrap" title="Position evaluation">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:.48rem;color:var(--mute);text-align:center;margin-bottom:2px">+</div>
+            <div class="eval-bar"><div class="eval-bar-fill" id="eval-bar-fill" style="height:50%"></div></div>
+            <div class="eval-score" id="eval-score">0.0</div>
+          </div>
+          <div class="board" id="bg-board" style="width:432px;height:432px"></div>
+        </div>
+        <div class="brow"><button class="btn" id="btn-resign">🏳 Resign</button><button class="btn" id="btn-undo">↩ Undo</button><button class="btn" id="btn-flip" onclick="flipBoard()">⟳ Flip</button><button class="btn" onclick="shareResult()">📤 Share</button><button class="btn" onclick="switchView('eval-bot')">← Bots</button></div>
       </div>
       <div class="ic">
         <div class="fb" id="bg-fb" aria-live="polite">Make your first move — you play White.</div>
@@ -435,6 +453,144 @@
     <div class="ph"><h1>📊 Mastery Progress</h1><p>Every metric measured by the engine and rule-based analysis — deterministic, accurate, reproducible.</p></div>
     <div style="padding:16px;max-width:740px" id="prog-body"></div>
   </div>
+
+  <!-- TOURNAMENT VIEW -->
+  <div class="view" id="view-tournament">
+    <div class="tournament-wrap">
+      <div class="tournament-header">
+        <span class="t-trophy">🏆</span>
+        <h2>Hogwarts Chess Tournament</h2>
+        <p>Defeat all 5 wizard opponents in order to claim the Championship Cup.<br>You must beat each opponent at least once to advance.</p>
+      </div>
+      <div class="tournament-bracket" id="tournament-bracket"></div>
+    </div>
+  </div>
+
+  <!-- CHESS 960 VIEW -->
+  <div class="view" id="view-chess960">
+    <div class="chess960-wrap">
+      <div class="ph" style="text-align:center;padding:0 0 16px">
+        <h1>🎲 Chess960</h1>
+        <p>Fischer Random Chess — the back rank is shuffled randomly. Every game a new opening! Same rules, infinite variety.</p>
+        <div class="chess960-badge">Fischer Random · 960 possible positions</div>
+      </div>
+      <div style="font-size:.8rem;color:var(--mute);margin-bottom:12px;text-align:center">Starting position preview:</div>
+      <div class="chess960-board-preview" id="chess960-preview"></div>
+      <div style="display:flex;gap:10px;justify-content:center;margin-top:16px">
+        <button class="btn" onclick="chess960Shuffle()">🎲 New Random Position</button>
+        <button class="btn btng" onclick="chess960Start()">▶ Play This Position</button>
+      </div>
+      <div style="font-size:.72rem;color:var(--mute);margin-top:16px;text-align:center;line-height:1.7">
+        Rules: Bishops on opposite colours · King between rooks · Castling always to g1/c1 (same as standard)
+      </div>
+    </div>
+  </div>
+
+  <!-- GUESS THE MOVE VIEW -->
+  <div class="view flex-view" id="view-guess-the-move">
+    <div class="gtm-wrap" style="width:100%;display:flex;flex-direction:column;align-items:center;padding:16px;gap:12px;overflow-y:auto">
+      <div class="gtm-game-title" id="gtm-title">Morphy's Opera Game (1858)</div>
+      <div style="display:flex;gap:12px;align-items:center">
+        <div style="text-align:center"><div class="gtm-score" id="gtm-score">0</div><div class="gtm-score-lbl">Points</div></div>
+        <div class="board" id="gtm-board" style="width:360px;height:360px"></div>
+        <div style="text-align:center"><div class="gtm-score" id="gtm-move-num" style="font-size:1.1rem">—</div><div class="gtm-score-lbl">Move</div></div>
+      </div>
+      <div class="gtm-fb" id="gtm-fb">🎯 It's your turn — play the move the master played!</div>
+      <div style="display:flex;gap:8px">
+        <button class="btn" onclick="gtmPrev()">← Prev</button>
+        <button class="btn" onclick="gtmNextGame()">Next Game →</button>
+        <button class="btn" onclick="gtmSkip()">Skip Move</button>
+      </div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:.62rem;color:var(--mute)" id="gtm-game-list"></div>
+    </div>
+  </div>
+
+  <!-- GAME HISTORY VIEW -->
+  <div class="view" id="view-game-history">
+    <div class="history-wrap">
+      <div class="ph" style="padding:0 0 16px"><h1>📜 Game History</h1><p>All your bot games — review any game move by move.</p></div>
+      <div id="history-list"></div>
+    </div>
+  </div>
+
+  <!-- ELO TRACKER VIEW -->
+  <div class="view" id="view-elo-tracker">
+    <div class="elo-wrap">
+      <div class="ph" style="padding:0 0 16px"><h1>📈 ELO Tracker</h1></div>
+      <div class="elo-header">
+        <div>
+          <div class="elo-label">Current Estimated ELO</div>
+          <div class="elo-current" id="elo-current">800</div>
+        </div>
+        <div style="flex:1"></div>
+        <div style="text-align:right">
+          <div class="elo-label">Peak</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:1rem;color:var(--cream)" id="elo-peak">—</div>
+        </div>
+      </div>
+      <div class="elo-chart" id="elo-chart-wrap">
+        <canvas id="elo-canvas" style="width:100%;height:120px"></canvas>
+      </div>
+      <div style="font-size:.75rem;color:var(--mute);margin-bottom:12px">Recent games:</div>
+      <table class="elo-history-table" id="elo-table"><thead><tr><th>Opponent</th><th>Result</th><th>ELO change</th><th>New ELO</th></tr></thead><tbody id="elo-table-body"></tbody></table>
+    </div>
+  </div>
+
+  <!-- GLOSSARY VIEW -->
+  <div class="view" id="view-glossary">
+    <div class="glossary-wrap">
+      <div class="ph" style="padding:0 0 16px"><h1>📖 Chess Glossary</h1><p>Every chess term defined clearly — tap any term to see it in context.</p></div>
+      <input type="text" class="glossary-search" id="glossary-search" placeholder="Search terms…" oninput="filterGlossary(this.value)">
+      <div id="glossary-list"></div>
+    </div>
+  </div>
+
+  <!-- CHOCOLATE FROGS VIEW -->
+  <div class="view" id="view-chocolate-frogs">
+    <div class="frogs-wrap">
+      <div class="ph" style="padding:0 0 4px"><h1>🐸 Chocolate Frog Cards</h1><p>Collect all 20 Wizard Chess Master cards — earned by completing lessons, solving puzzles, and defeating opponents.</p></div>
+      <div style="font-size:.78rem;color:var(--mute);margin-bottom:8px" id="frogs-count">0 / 20 collected</div>
+      <div class="frogs-grid" id="frogs-grid"></div>
+    </div>
+  </div>
+
+  <!-- WEAKNESS DETECTION (inside mastery progress, rendered by JS) -->
+
+  <!-- SETTINGS FAB -->
+  <button class="settings-fab" id="settings-fab" onclick="toggleSettings()" title="Settings" aria-label="Open settings">⚙️</button>
+  <div class="settings-panel" id="settings-panel" style="display:none">
+    <h4>⚙️ Settings</h4>
+    <div class="settings-row">
+      <label>Board size</label>
+      <input type="range" min="280" max="520" step="20" value="432" id="board-size-slider" oninput="setBoardSize(this.value)">
+    </div>
+    <div class="settings-row">
+      <label>Colorblind mode</label>
+      <button class="settings-toggle" id="cb-toggle" onclick="toggleColorblind()">Off</button>
+    </div>
+    <div class="settings-row">
+      <label>Haptic feedback</label>
+      <button class="settings-toggle" id="haptic-toggle" onclick="toggleHaptic()">On</button>
+    </div>
+    <div class="settings-row" style="margin-bottom:0">
+      <label>Blitz mode 🎩</label>
+      <button class="settings-toggle" onclick="startBlitz()" style="background:var(--goldd);border-color:var(--gold);color:var(--gold)">Launch</button>
+    </div>
+  </div>
+
+  <!-- BLITZ OVERLAY -->
+  <div class="blitz-overlay" id="blitz-overlay" style="display:none">
+    <div class="blitz-card">
+      <div class="blitz-title">🎩 Wizard Blitz!</div>
+      <div class="blitz-progress" id="blitz-progress">Puzzle 1 of 5</div>
+      <div class="blitz-pb"><div class="blitz-pfill" id="blitz-pfill" style="width:0%"></div></div>
+      <div class="blitz-timer" id="blitz-timer">3:00</div>
+      <div class="board" id="blitz-board" style="width:300px;height:300px;margin:0 auto"></div>
+      <div style="margin-top:10px;font-size:.8rem;min-height:32px;color:var(--txt)" id="blitz-fb"></div>
+      <button class="btn" onclick="endBlitz()" style="margin-top:12px">✕ End Blitz</button>
+    </div>
+  </div>
+
 </main>
 </div>
 </div>

@@ -876,3 +876,138 @@ html.light .piece.pb { color: #1a1200; text-shadow: 0 1px 2px rgba(255,255,255,0
 .glossary-popup p{font-size:.75rem;color:var(--txt);line-height:1.6}
 .glossary-popup .gp-close{position:absolute;top:8px;right:10px;cursor:pointer;color:var(--mute);font-size:.8rem}
 @keyframes popIn{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
+
+/* ── ANIMATED PIECE MOVEMENT ──────────────────────────────────── */
+.piece{transition:font-size .12s ease}
+.piece.flying{position:fixed;pointer-events:none;z-index:9999;transition:left .18s cubic-bezier(.4,0,.2,1),top .18s cubic-bezier(.4,0,.2,1);font-size:2.2rem}
+
+/* ── BLITZ MODE ───────────────────────────────────────────────── */
+.blitz-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:800;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.blitz-card{background:var(--s2);border:2px solid var(--gold);border-radius:18px;padding:28px 32px;max-width:400px;width:92%;text-align:center}
+.blitz-title{font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--gold);margin-bottom:6px}
+.blitz-timer{font-family:'IBM Plex Mono',monospace;font-size:3rem;font-weight:700;color:var(--cream);margin:16px 0;letter-spacing:.05em}
+.blitz-timer.urgent{color:var(--redl);animation:timerPulse .5s ease infinite alternate}
+.blitz-progress{font-size:.8rem;color:var(--mute);margin-bottom:20px}
+.blitz-pb{height:6px;background:var(--s4);border-radius:3px;overflow:hidden;margin-bottom:16px}
+.blitz-pfill{height:100%;background:linear-gradient(90deg,var(--gold),var(--goldl));border-radius:3px;transition:width .3s}
+@keyframes timerPulse{from{opacity:1}to{opacity:.5}}
+
+/* ── TOURNAMENT MODE ─────────────────────────────────────────── */
+.tournament-wrap{padding:24px;max-width:540px}
+.tournament-header{text-align:center;margin-bottom:24px}
+.tournament-header h2{font-family:'Cormorant Garamond',serif;font-size:2rem;color:var(--gold)}
+.tournament-header p{font-size:.8rem;color:var(--mute);margin-top:4px}
+.t-trophy{font-size:3rem;display:block;margin-bottom:8px}
+.t-round-ico{font-size:1.4rem;width:36px;text-align:center;flex-shrink:0}
+.t-round-badge{font-family:'IBM Plex Mono',monospace;font-size:.58rem;padding:2px 6px;border-radius:4px;background:var(--goldd);color:var(--gold)}
+.t-round.beaten .t-round-name{color:var(--grnl)}
+.t-trophy-screen{text-align:center;padding:32px;animation:popIn .4s ease}
+.t-trophy-screen .big-trophy{font-size:5rem;display:block;margin-bottom:16px;animation:spin 2s ease 1}
+@keyframes spin{from{transform:rotateY(0)}to{transform:rotateY(720deg)}}
+
+/* ── GAME HISTORY ─────────────────────────────────────────────── */
+.history-wrap{padding:20px;max-width:680px}
+.history-game{background:var(--s2);border:1px solid var(--bord);border-radius:10px;padding:14px 16px;margin-bottom:10px;cursor:pointer;transition:border-color .15s}
+.history-game:hover{border-color:var(--gold)}
+.hg-header{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+.hg-result{font-size:1.2rem;font-family:'IBM Plex Mono',monospace;font-weight:700}
+.hg-result.win{color:var(--grnl)}.hg-result.loss{color:var(--redl)}.hg-result.draw{color:var(--mute)}
+.hg-bot{font-size:.8rem;color:var(--cream);flex:1}
+.hg-date{font-size:.65rem;color:var(--mute);font-family:'IBM Plex Mono',monospace}
+.hg-moves{font-family:'IBM Plex Mono',monospace;font-size:.64rem;color:var(--mute);line-height:1.7;max-height:48px;overflow:hidden;mask-image:linear-gradient(to bottom,black 60%,transparent)}
+
+/* ── ELO TRACKER ─────────────────────────────────────────────── */
+.elo-wrap{padding:22px;max-width:600px}
+.elo-header{display:flex;align-items:baseline;gap:16px;margin-bottom:20px}
+.elo-label{font-family:'IBM Plex Mono',monospace;font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--mute)}
+.elo-history-table{font-size:.72rem;width:100%}
+.elo-history-table th{font-family:'IBM Plex Mono',monospace;font-size:.6rem;color:var(--mute);text-align:left;padding:4px 8px;border-bottom:1px solid var(--bord)}
+.elo-history-table td{padding:6px 8px;border-bottom:1px solid var(--bord);color:var(--txt)}
+.elo-delta.pos{color:var(--grnl)}.elo-delta.neg{color:var(--redl)}
+
+/* ── GUESS THE MOVE ───────────────────────────────────────────── */
+.gtm-wrap{display:flex;height:100%;overflow:hidden}
+.gtm-left{flex:1;display:flex;flex-direction:column;align-items:center;padding:16px;gap:10px;overflow-y:auto}
+.gtm-right{width:280px;background:var(--s1);border-left:1px solid var(--bord);padding:16px;overflow-y:auto;flex-shrink:0}
+.gtm-game-title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--gold);text-align:center}
+.gtm-move-info{font-size:.75rem;color:var(--mute);text-align:center}
+.gtm-score{font-family:'IBM Plex Mono',monospace;font-size:1.6rem;font-weight:700;color:var(--gold)}
+.gtm-score-lbl{font-size:.62rem;color:var(--mute)}
+.gtm-fb{font-size:.8rem;padding:8px 12px;border-radius:8px;text-align:center;min-height:36px;display:flex;align-items:center;justify-content:center;width:100%}
+.gtm-fb.correct{background:var(--grnd);color:var(--grnl)}.gtm-fb.wrong{background:var(--redd);color:var(--redl)}.gtm-fb.info{background:var(--goldd);color:var(--gold)}
+.gtm-list{display:flex;flex-direction:column;gap:4px}
+.gtm-entry{font-size:.72rem;padding:4px 6px;border-radius:4px;font-family:'IBM Plex Mono',monospace;color:var(--txt)}
+.gtm-entry.correct{color:var(--grnl)}.gtm-entry.wrong{color:var(--redl)}
+.gtm-progress{background:var(--s3);border-radius:8px;padding:12px;margin-bottom:12px;text-align:center}
+
+/* ── SHARE RESULT ─────────────────────────────────────────────── */
+.share-card{background:linear-gradient(135deg,#1a1008,#2e1e0c);border:1px solid var(--gold);border-radius:14px;padding:20px;text-align:center;max-width:300px;margin:0 auto}
+.share-title{font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--gold);margin-bottom:8px}
+.share-sub{font-size:.75rem;color:var(--txt);margin-bottom:16px;line-height:1.6}
+.share-btn{background:var(--gold);color:#1a1208;border:none;border-radius:8px;padding:10px 22px;font-weight:600;cursor:pointer;font-size:.82rem;margin:4px;transition:background .15s}
+.share-btn:hover{background:var(--goldl)}
+.share-btn.copy{background:var(--s4);color:var(--cream);border:1px solid var(--bord2)}
+
+/* ── WEAKNESS RADAR ───────────────────────────────────────────── */
+.weakness-wrap{padding:20px;max-width:600px}
+.weakness-item{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.weakness-name{font-size:.78rem;color:var(--cream);width:120px;flex-shrink:0}
+.weakness-bar-bg{flex:1;height:8px;background:var(--s4);border-radius:4px;overflow:hidden}
+.weakness-bar-fill{height:100%;border-radius:4px;transition:width .6s ease}
+.weakness-bar-fill.good{background:var(--grn)}.weakness-bar-fill.ok{background:var(--gold)}.weakness-bar-fill.bad{background:var(--red)}
+.weakness-pct{font-family:'IBM Plex Mono',monospace;font-size:.65rem;color:var(--mute);width:36px;text-align:right}
+
+/* ── COLORBLIND MODE ─────────────────────────────────────────── */
+.colorblind .sq.light{background:#e8d8b0 !important}
+.colorblind .sq.dark{background:#a08060 !important}
+.colorblind .sq.sel{background:#5599ff !important}
+.colorblind .sq.hint::after{background:rgba(85,153,255,.45) !important}
+.colorblind .sq.last{background:rgba(85,153,255,.3) !important}
+
+/* ── BOARD SIZE SLIDER + SETTINGS ────────────────────────────── */
+.settings-fab{position:fixed;bottom:80px;right:16px;width:44px;height:44px;border-radius:50%;background:var(--s3);border:1px solid var(--bord2);cursor:pointer;font-size:1.2rem;display:flex;align-items:center;justify-content:center;z-index:200;box-shadow:0 4px 16px rgba(0,0,0,.4);transition:transform .15s}
+.settings-fab:hover{transform:scale(1.1)}
+.settings-panel{position:fixed;bottom:132px;right:16px;background:var(--s2);border:1px solid var(--bord2);border-radius:14px;padding:16px;min-width:220px;z-index:300;box-shadow:0 8px 32px rgba(0,0,0,.5);animation:popIn .2s ease}
+.settings-panel h4{font-family:'Cormorant Garamond',serif;font-size:.95rem;color:var(--gold);margin-bottom:12px}
+.settings-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;font-size:.78rem;color:var(--txt)}
+.settings-row label{flex:1}
+.settings-row input[type=range]{flex:2;accent-color:var(--gold)}
+.settings-toggle{background:var(--s3);border:1px solid var(--bord);border-radius:6px;padding:5px 12px;cursor:pointer;font-size:.72rem;color:var(--txt);transition:all .15s}
+.settings-toggle.on{background:var(--goldd);border-color:var(--gold);color:var(--gold)}
+
+/* ── CHOCOLATE FROG CARDS ─────────────────────────────────────── */
+.frogs-wrap{padding:20px;max-width:700px}
+.frogs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-top:16px}
+.frog-card{background:linear-gradient(135deg,var(--s2),var(--s3));border:1px solid var(--bord);border-radius:12px;padding:14px 12px;text-align:center;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.frog-card.unlocked{border-color:var(--gold);background:linear-gradient(135deg,var(--s3),rgba(212,160,23,.1))}
+.frog-card.unlocked::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.frog-card.locked{opacity:.4;filter:grayscale(.7)}
+.frog-icon{font-size:2.4rem;display:block;margin-bottom:6px}
+.frog-name{font-family:'Cormorant Garamond',serif;font-size:.82rem;font-weight:700;color:var(--cream);margin-bottom:2px}
+.frog-fact{font-size:.63rem;color:var(--mute);line-height:1.4}
+.frog-badge{position:absolute;top:8px;right:8px;font-size:.55rem;background:var(--gold);color:#1a1208;padding:1px 5px;border-radius:4px;font-family:'IBM Plex Mono',monospace}
+
+/* ── CHESS GLOSSARY ───────────────────────────────────────────── */
+.glossary-wrap{padding:20px;max-width:680px}
+.glossary-search{width:100%;background:var(--s2);border:1px solid var(--bord2);border-radius:8px;padding:10px 14px;color:var(--cream);font-size:.85rem;margin-bottom:16px;outline:none}
+.glossary-search:focus{border-color:var(--gold)}
+.glossary-term{background:var(--s2);border:1px solid var(--bord);border-radius:8px;padding:12px 14px;margin-bottom:8px;cursor:pointer;transition:border-color .15s}
+.glossary-term:hover{border-color:var(--bord2)}
+.glossary-term h4{font-family:'Cormorant Garamond',serif;font-size:.95rem;color:var(--gold);margin-bottom:3px}
+.glossary-term p{font-size:.74rem;color:var(--txt);line-height:1.6}
+.glossary-term .gt-related{font-size:.63rem;color:var(--mute);margin-top:4px}
+
+/* ── CHESS960 VIEW ────────────────────────────────────────────── */
+.chess960-wrap{padding:20px;max-width:500px;text-align:center}
+.chess960-badge{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:.65rem;background:var(--goldd);border:1px solid var(--gold);color:var(--gold);padding:2px 8px;border-radius:4px;margin-bottom:12px}
+.chess960-board-preview{display:grid;grid-template-columns:repeat(8,1fr);gap:2px;max-width:220px;margin:0 auto 16px;border:1px solid var(--bord)}
+.chess960-sq{width:27px;height:27px;display:flex;align-items:center;justify-content:center;font-size:.9rem}
+
+/* ── SPACED REPETITION ────────────────────────────────────────── */
+.sr-badge{font-family:'IBM Plex Mono',monospace;font-size:.55rem;padding:1px 5px;border-radius:3px;margin-left:6px;vertical-align:middle}
+.sr-badge.new{background:var(--blud);color:#7ab}
+.sr-badge.due{background:var(--goldd);color:var(--gold)}
+.sr-badge.mastered{background:var(--grnd);color:var(--grnl)}
+
+/* ── EVAL BAR (in-game) ───────────────────────────────────────── */
+.bg-with-eval{display:flex;align-items:flex-start;gap:8px}
