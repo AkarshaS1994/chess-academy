@@ -2356,6 +2356,15 @@ function markLessonDone(){
   }
   setTimeout(closeLesson,600);
   renderLearnPath();
+  updateHomeStats();
+  // Refresh the "continue" card so it advances to the next lesson
+  const nxt=MODS.find(m2=>!ST.done.has(m2.k))||MODS[MODS.length-1];
+  const ccTitle=document.getElementById('cc-title');const ccDesc=document.getElementById('cc-desc');
+  if(ccTitle)ccTitle.textContent=nxt.name;if(ccDesc)ccDesc.textContent=nxt.desc;
+  const ccFill=document.getElementById('cc-fill');const pct2=Math.round(ST.done.size/MODS.length*100);
+  if(ccFill)ccFill.style.width=pct2+'%';
+  const ccPct=document.getElementById('cc-pct');if(ccPct)ccPct.textContent=pct2+'% complete';
+  const cc2=document.getElementById('continue-card');if(cc2)cc2.onclick=()=>openLesson(nxt.k);
   saveProgress(); // auto-save on lesson completion
 }
 
@@ -4170,45 +4179,61 @@ function addDragSupport(boardId: string, clickHandler: (sq: string) => void) {
   let dragSrc: string | null = null;
   let ghost: HTMLElement | null = null;
   let srcEl: HTMLElement | null = null;
+  let isDragging = false;
 
   el.addEventListener('pointerdown', (e: PointerEvent) => {
     const target = (e.target as HTMLElement).closest('[data-sq]') as HTMLElement;
     if (!target) return;
     const piece = target.querySelector('.piece') as HTMLElement;
-    if (!piece) return;
+    if (!piece || !piece.textContent?.trim()) return;
     dragSrc = target.dataset.sq!;
     srcEl = target;
+    isDragging = false;
+
+    const sz = parseInt(piece.style.fontSize) || 40;
+    const ghostSz = Math.max(48, sz * 1.2);
+
     ghost = document.createElement('div');
     ghost.className = 'drag-ghost';
     ghost.textContent = piece.textContent || '';
-    ghost.style.cssText = `position:fixed;pointer-events:none;font-size:${piece.style.fontSize};z-index:9999;transform:translate(-50%,-50%);left:${e.clientX}px;top:${e.clientY}px`;
+    ghost.style.cssText = `position:fixed;pointer-events:none;font-size:${ghostSz}px;z-index:9999;transform:translate(-50%,-50%);left:${e.clientX}px;top:${e.clientY}px;opacity:0.92;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.6))`;
     document.body.appendChild(ghost);
-    target.style.opacity = '0.3';
+    target.style.opacity = '0.25';
     try { el.setPointerCapture(e.pointerId); } catch {}
     e.preventDefault();
   }, { passive: false });
 
   el.addEventListener('pointermove', (e: PointerEvent) => {
     if (!ghost) return;
+    isDragging = true;
     ghost.style.left = e.clientX + 'px';
     ghost.style.top = e.clientY + 'px';
     e.preventDefault();
   }, { passive: false });
 
   el.addEventListener('pointerup', (e: PointerEvent) => {
-    if (!ghost || !dragSrc) return;
+    if (!ghost) { dragSrc = null; return; }
     ghost.remove(); ghost = null;
     if (srcEl) { srcEl.style.opacity = ''; srcEl = null; }
-    el.querySelectorAll('[data-sq]').forEach((s: Element) => { (s as HTMLElement).style.opacity = ''; });
+    const src = dragSrc; dragSrc = null;
+
+    if (!isDragging || !src) return;
+    isDragging = false;
+
     el.style.pointerEvents = 'none';
     const dropEl = document.elementFromPoint(e.clientX, e.clientY)?.closest('[data-sq]') as HTMLElement | null;
     el.style.pointerEvents = '';
     const dropSq = dropEl?.dataset.sq;
-    const src = dragSrc; dragSrc = null;
     if (dropSq && dropSq !== src) {
       clickHandler(src);
       setTimeout(() => clickHandler(dropSq), 10);
     }
+  });
+
+  el.addEventListener('pointercancel', () => {
+    if (ghost) { ghost.remove(); ghost = null; }
+    if (srcEl) { srcEl.style.opacity = ''; srcEl = null; }
+    dragSrc = null; isDragging = false;
   });
 }
 

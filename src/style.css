@@ -776,7 +776,10 @@ html.light .piece.pb { color: #1a1200; text-shadow: 0 1px 2px rgba(255,255,255,0
 .theme-toggle:hover { background: var(--s2); }
 
 /* ── DRAG GHOST ──────────────────────────────────────────────── */
-.drag-ghost { user-select: none; line-height: 1; pointer-events: none; }
+.drag-ghost{user-select:none;line-height:1;pointer-events:none;font-family:'Segoe UI Symbol','Apple Color Emoji','Noto Chess',serif}
+
+/* Prevent touch scroll interfering with piece drag */
+.board{touch-action:none}
 
 /* ── SKIP LINK ───────────────────────────────────────────────── */
 .skip-link {
@@ -1015,25 +1018,36 @@ html.light .piece.pb { color: #1a1200; text-shadow: 0 1px 2px rgba(255,255,255,0
 
 /* ── MOBILE RESPONSIVENESS ────────────────────────────────────── */
 @media(max-width:768px){
-  /* Allow vertical scroll on mobile — prevent horizontal overflow from causing Desktop Site prompt */
-  html,body{overflow-x:hidden;overflow-y:auto;height:auto}
-  .app{height:auto;min-height:100svh;overflow-x:hidden}
+  /* Keep app at full screen height so CSS grid 1fr works correctly.
+     DO NOT set height:auto on html/body/app — that collapses 1fr to 0. */
+  html,body{overflow:hidden;height:100%}
+  .app{height:100svh;overflow:hidden}
+
+  /* Let content area scroll to show stacked board + panel */
+  .body{overflow:hidden}
+  .content{overflow-y:auto!important;overflow-x:hidden}
+
+  /* Override flex-view height:100% so stacked content isn't clipped */
+  .flex-view.act{height:auto!important}
+  .view-wrap,.view.act,.openings-wrap,.eval-wrap,.eg-wrap,.tact-wrap,.challenge-wrap{height:auto!important;overflow:visible!important}
 
   /* Stack board + info panel vertically instead of side-by-side */
-  .el{display:flex;flex-direction:column;height:auto;overflow:visible;width:100%}
+  .el{display:flex!important;flex-direction:column;height:auto;overflow:visible;width:100%}
   .bc{overflow:visible;width:100%;max-width:100vw;padding:10px 8px}
-  .ic{min-width:0;max-width:100%;width:100%;border-left:none;border-top:1px solid var(--bord);height:auto;max-height:none;overflow-y:visible}
+  .ic{min-width:0!important;max-width:100%;width:100%;border-left:none;border-top:1px solid var(--bord);height:auto;max-height:none;overflow-y:visible}
 
   /* Board must never exceed screen width */
-  .board,.bg-with-eval{max-width:calc(100vw - 16px)}
+  .board,.bg-with-eval{max-width:calc(100vw - 16px)!important}
 
-  /* Eval bar: hide on mobile (board too narrow), use text fallback */
+  /* Eval bar: hide on mobile — too narrow to be useful */
   .bg-with-eval{gap:0;flex-direction:column;align-items:center}
   .eval-bar-wrap{display:none}
   .eval-stat-bar-mb{display:block!important}
 
-  /* View wrap: allow scrolling */
-  .view-wrap,.view.act{height:auto;overflow:visible}
+  /* Openings layout: single column */
+  .openings-wrap,.op-content{display:flex!important;flex-direction:column}
+  .op-list{max-height:200px;overflow-y:auto}
+  .info-zone{max-height:none;border-top:1px solid var(--bord);border-left:none}
 
   /* New view content: less padding */
   .tournament-wrap,.history-wrap,.elo-wrap,.frogs-wrap,.glossary-wrap,.chess960-wrap,.weakness-wrap{padding:14px}
