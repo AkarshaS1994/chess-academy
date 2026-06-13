@@ -3592,41 +3592,38 @@ document.querySelectorAll('.nav-item[data-v="tactics"]').forEach(n=>n.addEventLi
 
 function mkPieceSVG(piece:string,sz:number):string{
   const isW=piece[0]==='w';const t=piece[1];
-  // Chess.com-quality Staunton pieces
-  // White: ivory white fill, very dark outline
-  // Black: dark walnut fill, cream outline
-  const f=isW?'#fffff0':'#2d1401';
-  const s=isW?'#1a0800':'#ede0c0';
-  const hi=isW?'rgba(255,255,255,0.6)':'rgba(255,220,140,0.18)';
-  const sw=Math.max(1.3,sz/20);
-  // All pieces share a two-tier base at bottom (y=33–43)
+  // Radial gradient per piece type (unique gid = no cross-piece conflict)
+  // Top-left light source exactly like chess.com's 3D Staunton effect
+  const gid=`cg${piece}`;
+  const defs=isW
+    ?`<defs><radialGradient id="${gid}" cx="38%" cy="28%" r="72%"><stop offset="0%" stop-color="#ffffff"/><stop offset="60%" stop-color="#e8dcc8"/><stop offset="100%" stop-color="#c8aa78"/></radialGradient></defs>`
+    :`<defs><radialGradient id="${gid}" cx="38%" cy="28%" r="72%"><stop offset="0%" stop-color="#7a5438"/><stop offset="55%" stop-color="#2e1808"/><stop offset="100%" stop-color="#140804"/></radialGradient></defs>`;
+  const f=`url(#${gid})`;
+  // White: dark brown outline pops on both square colors
+  // Black: warm cream outline pops on dark squares
+  const s=isW?'#1a0e00':'#e0c890';
+  const sw=Math.max(3,sz/12);  // thick enough to be visible at 35–54 px
   const base=`<rect x="11.5" y="33" width="22" height="4" rx="2" fill="${f}" stroke="${s}" stroke-width="${sw}"/><rect x="9" y="37" width="27" height="5.5" rx="2.5" fill="${f}" stroke="${s}" stroke-width="${sw}"/>`;
   const shapes:Record<string,string>={
-    // PAWN — ball head, shouldered body, base
     P:`<circle cx="22.5" cy="10" r="5.5" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
 <path d="M17,16 C15.5,18.5 14.5,22 14,26.5 Q14,27.5 14,28 L31,28 Q31,27.5 31,26.5 C30.5,22 29.5,18.5 28,16 Q25.5,18 22.5,18 Q19.5,18 17,16Z" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
 <rect x="12" y="28" width="21" height="5" rx="2" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
 ${base}`,
-    // KNIGHT — horse-head profile facing left, eye and nostril detail
     N:`<path d="M21,10.5 C18,9 15,10.5 13.5,13 C12,15.5 12.5,18.5 14,21 C12.5,22.5 12,25 12.5,27.5 L12.5,33 L32.5,33 L32.5,27 C34,24.5 34,20.5 32,17.5 C33.5,15.5 33.5,12.5 31.5,11 C29.5,9.5 27,9.5 25,10.5 Q23,10 21,10.5Z" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
 <circle cx="18.5" cy="16.5" r="2.5" fill="${s}"/>
 <circle cx="18.5" cy="16.5" r="1.1" fill="${f}"/>
-<path d="M15,21 Q17,19.5 19,21" stroke="${s}" stroke-width="1.2" fill="none" stroke-linecap="round"/>
-<path d="M21,10.5 C20.5,9 22,8 23.5,9" stroke="${hi}" stroke-width="2" fill="none" stroke-linecap="round"/>
+<path d="M15,21 Q17,19.5 19,21" stroke="${s}" stroke-width="1.5" fill="none" stroke-linecap="round"/>
 ${base}`,
-    // BISHOP — diamond tip, round head, tapered body
     B:`<path d="M22.5,3 L24.5,7.5 L22.5,11 L20.5,7.5 Z" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
 <circle cx="22.5" cy="13" r="5" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
 <path d="M17.5,18 C16,21 15,24.5 15,28.5 L30,28.5 C30,24.5 29,21 27.5,18 Z" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
-<line x1="20" y1="20.5" x2="25" y2="20.5" stroke="${s}" stroke-width="1.3"/>
+<line x1="20" y1="20.5" x2="25" y2="20.5" stroke="${s}" stroke-width="1.8"/>
 <rect x="12" y="28.5" width="21" height="4.5" rx="2" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
 ${base}`,
-    // ROOK — three merlons, thick shaft, base
     R:`<path d="M11,9 L11,15.5 L15.5,15.5 L15.5,11 L20.5,11 L20.5,15.5 L24.5,15.5 L24.5,11 L29.5,11 L29.5,15.5 L34,15.5 L34,9 Z" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
 <rect x="13" y="15.5" width="19" height="13" rx="1" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
 <rect x="11.5" y="28.5" width="22" height="4.5" rx="2" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
 ${base}`,
-    // QUEEN — crown with 5 orbs, full bell body, base
     Q:`<circle cx="22.5" cy="7" r="3.5" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
 <circle cx="10" cy="12.5" r="2.5" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
 <circle cx="35" cy="12.5" r="2.5" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
@@ -3635,14 +3632,13 @@ ${base}`,
 <path d="M7,14.5 Q10.5,19.5 13.5,24.5 L13.5,29.5 L31.5,29.5 L31.5,24.5 Q34.5,19.5 38,14.5 Q33.5,17.5 29.5,13 Q25.5,18 22.5,10 Q19.5,18 15.5,13 Q11.5,17.5 7,14.5Z" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
 <rect x="11.5" y="29.5" width="22" height="4" rx="2" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
 ${base}`,
-    // KING — cross, tapered body, base
     K:`<rect x="21" y="3.5" width="3.5" height="11" rx="1.5" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
 <rect x="17.5" y="7" width="10" height="3.5" rx="1.5" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
 <path d="M14.5,14.5 C14.5,18.5 16.5,23 18,27 L18,30 L27,30 L27,27 C28.5,23 30.5,18.5 30.5,14.5 Z" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
 <rect x="11.5" y="30" width="22" height="3" rx="1.5" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
 ${base}`,
   };
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45" width="${sz}" height="${sz}" style="display:block;pointer-events:none">${shapes[t]||''}</svg>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45" width="${sz}" height="${sz}" style="display:block;pointer-events:none">${defs}${shapes[t]||''}</svg>`;
 }
 function drawEvalBoard(id,st,{sel=null,last=null,hints=[],sz=0}={}){
   const el=document.getElementById(id);if(!el)return;el.innerHTML='';
@@ -4347,16 +4343,24 @@ function addDragSupport(boardId: string, clickHandler: (sq: string) => void) {
     // Only start drag after 8px movement to allow normal taps/clicks
     if (!isDragging && Math.sqrt(dx * dx + dy * dy) > 8) {
       isDragging = true;
-      const svg = piece.querySelector('svg');
-      const sz = svg ? parseInt(svg.getAttribute('width') || '40') : 40;
-      const ghostSz = Math.max(52, Math.round(sz * 1.3));
+      // Fire click on source to select it — board redraws showing valid-move dots immediately
+      // (chess.com shows hints the moment you pick up a piece)
+      const src = dragSrc!;
+      clickHandler(src);
+      // Re-find srcEl — board may have been redrawn by clickHandler
+      srcEl = el.querySelector(`[data-sq="${src}"]`) as HTMLElement | null;
+      if (!srcEl) { isDragging = false; dragSrc = null; return; }
+      const freshPiece = srcEl.querySelector('.piece') as HTMLElement;
+      const pieceName = freshPiece?.dataset.piece || piece.dataset.piece;
+      const svg2 = freshPiece?.querySelector('svg');
+      const sz = svg2 ? parseInt(svg2.getAttribute('width') || '40') : 40;
+      const ghostSz = Math.max(56, Math.round(sz * 1.4));
       ghost = document.createElement('div');
       ghost.className = 'drag-ghost';
-      ghost.innerHTML = mkPieceSVG(piece.dataset.piece, ghostSz);
-      // Position ghost with piece centre slightly above cursor — natural pickup feel
-      ghost.style.cssText = `position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-62%);left:${e.clientX}px;top:${e.clientY}px;opacity:0.95;filter:drop-shadow(0 8px 20px rgba(0,0,0,.85)) drop-shadow(0 0 8px rgba(200,169,90,.4))`;
+      ghost.innerHTML = mkPieceSVG(pieceName!, ghostSz);
+      ghost.style.cssText = `position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-62%);left:${e.clientX}px;top:${e.clientY}px;opacity:1;filter:drop-shadow(0 10px 22px rgba(0,0,0,.9)) drop-shadow(0 0 8px rgba(200,169,90,.5))`;
       document.body.appendChild(ghost);
-      srcEl.style.opacity = '0.18';
+      srcEl.style.opacity = '0.2';
     }
 
     if (isDragging && ghost) {
@@ -4388,8 +4392,11 @@ function addDragSupport(boardId: string, clickHandler: (sq: string) => void) {
     el.style.pointerEvents = '';
     const dropSq = dropEl?.dataset.sq;
     if (dropSq && dropSq !== src) {
+      // Source was already selected on drag-start; just fire the destination click
+      clickHandler(dropSq);
+    } else if (!dropSq || dropSq === src) {
+      // Dropped back on source or off-board — deselect by clicking source again
       clickHandler(src);
-      setTimeout(() => clickHandler(dropSq), 10);
     }
   });
 
