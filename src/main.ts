@@ -2422,44 +2422,13 @@ function markLessonDone(){
 
 // ── OPENING BOARD ─────────────────────────────────────────────
 function renderBoard(){
-  const el=document.getElementById('board');el.innerHTML='';
-  const bzone=el.closest('.board-zone')||el.parentElement;
-  // Measure board-zone width directly
-  const bcr=bzone?bzone.getBoundingClientRect():{width:360};
-  const avail=Math.max(bcr.width>20?bcr.width-20:320, 280);
-  const sqSz=Math.max(36,Math.min(56,Math.floor(avail/8)));
-  el.style.width=(sqSz*8)+'px';el.style.height=(sqSz*8)+'px';
-  const files=['a','b','c','d','e','f','g','h'];
-  const op=OPS[ST.curOp],vr=op&&op.vars[ST.curVar];
-  if(!vr){return;}
+  const op=OPS[ST.curOp],vr=op&&op.vars[ST.curVar];if(!vr)return;
   const mvs=vr.moves,cm=ST.step<mvs.length?mvs[ST.step]:null;
-  for(let r=8;r>=1;r--){
-    for(let fi=0;fi<8;fi++){
-      const f=files[fi],sq=f+r,isLt=(fi+r)%2===1;
-      const d=document.createElement('div');
-      d.className='sq '+(isLt?'lt':'dk');
-      d.style.cssText=`width:${sqSz}px;height:${sqSz}px`;
-      d.dataset.sq=sq;
-      if(ST.board[sq]){
-        const pc=ST.board[sq];const s=document.createElement('span');
-        s.className='piece '+(pc[0]==='w'?'pw':'pb');
-        s.style.fontSize=Math.round(sqSz*0.78)+'px';
-        s.textContent=UNI[pc]||'';d.appendChild(s);
-      }
-      if(r===1){const c=document.createElement('span');c.className='cff';c.textContent=f;d.appendChild(c);}
-      if(fi===0){const c=document.createElement('span');c.className='crr';c.textContent=r;d.appendChild(c);}
-      if(cm){
-        if(ST.sel===sq)d.classList.add('ssel');
-        // When hint active: highlight both FROM (pulsing) and TO (green target)
-        if(ST.hint&&sq===cm.f)d.classList.add('shn');
-        if(ST.hint&&sq===cm.t)d.classList.add('shl');
-        // When piece selected: highlight target square
-        if(!ST.hint&&ST.sel===cm.f&&sq===cm.t)d.classList.add('shl');
-      }
-      d.addEventListener('click',()=>onSq(sq));
-      el.appendChild(d);
-    }
-  }
+  // Map opening-lab state to drawEvalBoard params so all boards share identical rendering
+  const sel=ST.hint&&cm?cm.f:(ST.sel||null);
+  const hints:string[]=cm&&(ST.hint||(ST.sel&&ST.sel===cm.f))?[cm.t]:[];
+  drawEvalBoard('board',ST.board,{sel,hints});
+  wireEvalBoard('board',onSq);
   addDragSupport('board',onSq);
 }
 
@@ -3718,7 +3687,7 @@ function loadTac(arg){
   );
   const undoBtn=document.getElementById('btn-tundo');
   if(undoBtn)undoBtn.onclick=undoTac;
-  switchView('eval-tboard');setTimeout(drawTac,150);
+  switchView('eval-tboard');requestAnimationFrame(()=>requestAnimationFrame(()=>drawTac()));
 }
 
 function drawTac(hints=[]){
@@ -3822,7 +3791,7 @@ function loadMate(id){
   setFB('m-fb','','Find and play checkmate in '+p.n+(p.n===1?' move':' moves')+'.');
   document.getElementById('m-res').classList.remove('show');
   document.getElementById('btn-mnext').style.display='none';
-  switchView('eval-mboard');setTimeout(drawMate,150);
+  switchView('eval-mboard');requestAnimationFrame(()=>requestAnimationFrame(()=>drawMate()));
 }
 
 function drawMate(hints=[]){
@@ -3918,7 +3887,7 @@ function loadDrill(id){
     ()=>{if(ST.evalEg.drill)setEvalFB('eg-fb','finf','💡 '+ST.evalEg.drill.hint);},
     ()=>{if(ST.evalEg.drill)loadDrill(ST.evalEg.drill.id);}
   );
-  switchView('eval-egboard');setTimeout(drawEg,150);
+  switchView('eval-egboard');requestAnimationFrame(()=>requestAnimationFrame(drawEg));
 }
 
 function drawEg(hints=[]){
@@ -4034,8 +4003,8 @@ function startBot(id){
   document.getElementById('bg-analysis').style.display='none';
   setFB('bg-fb','','Make your first move — you play White.');
   resetClock();
-  drawBot();switchView('eval-bgame');
-  startClock('w');
+  switchView('eval-bgame');
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{drawBot();startClock('w');}));
 }
 
 function drawBot(hints=[],last=null){
@@ -5011,7 +4980,7 @@ const {mkState:_mk,startPos:_sp,applyMove:_am,legalMoves:_lm}={mkState,startPos,
 
 function initGTM(){
   _gtmGameIdx=0;_gtmMoveIdx=0;_gtmScore=0;
-  renderGTMGame();
+  requestAnimationFrame(()=>requestAnimationFrame(()=>renderGTMGame()));
 }
 function renderGTMGame(){
   const game=MASTER_GAMES[_gtmGameIdx];
