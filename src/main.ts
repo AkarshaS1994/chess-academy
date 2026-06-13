@@ -5345,10 +5345,16 @@ const _origSwitchView=(window as any).switchView;
 (window as any).endBlitz       = endBlitz;
 (window as any).chess960Shuffle= chess960Shuffle;
 (window as any).chess960Start  = chess960Start;
-(window as any).filterGlossary = buildGlossary;
-(window as any).gtmPrev        = gtmPrev;
-(window as any).gtmNextGame    = gtmNextGame;
-(window as any).gtmSkip        = gtmSkip;
+(window as any).filterGlossary       = buildGlossary;
+(window as any).gtmPrev              = gtmPrev;
+(window as any).gtmNextGame          = gtmNextGame;
+(window as any).gtmSkip              = gtmSkip;
+(window as any).startTacticPractice  = startTacticPractice;
+(window as any).loadDrill            = loadDrill;
+(window as any).markTacticLearned    = markTacticLearned;
+(window as any).markEndgameLearned   = markEndgameLearned;
+(window as any).filterModules        = filterModules;
+(window as any)._doImport            = _doImport;
 
 // ═══════════════════════════════════════════════════════════════
 // ── HOOK EVAL BAR INTO BOT GAME ───────────────────────────────
