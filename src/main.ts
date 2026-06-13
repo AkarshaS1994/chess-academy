@@ -2256,6 +2256,7 @@ function openLesson(k){
     });
   }
 
+  wireLessonSteppers(bodyEl);
   document.getElementById('lesson-overlay').classList.add('show');
 }
 
@@ -2272,10 +2273,41 @@ function addLMTab(tabsEl,bodyEl,name,id,html,active){
 }
 
 function buildConceptsHTML(data){
-  return `<div class="cg">${data.map(c=>`<div class="cc"><div class="cc-h"><span class="cc-ic">${c.i||''}</span><span class="cc-nm">${c.n}</span></div><div class="cc-tx">${c.t}</div></div>`).join('')}</div>`;
+  if(!data||!data.length)return'';
+  const stepsHtml=data.map((c,i)=>`<div class="ls-step${i===0?' on':''}"><div class="cc"><div class="cc-h"><span class="cc-ic">${c.i||'📌'}</span><span class="cc-nm">${c.n}</span></div><div class="cc-tx">${c.t}</div></div></div>`).join('');
+  const dotsHtml=data.map((_,i)=>`<span class="ls-dot${i===0?' on':''}"></span>`).join('');
+  const foot=data.length>1?`<div class="ls-footer"><button class="btn ls-back" disabled>← Back</button><div style="display:flex;flex-direction:column;align-items:center;gap:4px"><span class="ls-counter">1 / ${data.length}</span><div class="ls-dots">${dotsHtml}</div></div><button class="btn btn-grn ls-next">Continue →</button></div>`:'';
+  return `<div class="ls-stepper">${stepsHtml}${foot}</div>`;
 }
 function buildRulesHTML(data){
-  return `<div class="rl">${data.map(r=>`<div class="ri"><div class="rn">${r.n}</div><div class="rt"><strong>${r.s}</strong><span>${r.t}</span></div></div>`).join('')}</div>`;
+  if(!data||!data.length)return'';
+  const stepsHtml=data.map((r,i)=>`<div class="ls-step${i===0?' on':''}"><div class="ri"><div class="rn">${r.n}</div><div class="rt"><strong>${r.s}</strong><span>${r.t}</span></div></div></div>`).join('');
+  const dotsHtml=data.map((_,i)=>`<span class="ls-dot${i===0?' on':''}"></span>`).join('');
+  const foot=data.length>1?`<div class="ls-footer"><button class="btn ls-back" disabled>← Back</button><div style="display:flex;flex-direction:column;align-items:center;gap:4px"><span class="ls-counter">1 / ${data.length}</span><div class="ls-dots">${dotsHtml}</div></div><button class="btn btn-grn ls-next">Continue →</button></div>`:'';
+  return `<div class="ls-stepper rl">${stepsHtml}${foot}</div>`;
+}
+function wireLessonSteppers(root:HTMLElement){
+  root.querySelectorAll<HTMLElement>('.ls-stepper').forEach(st=>{
+    const steps=st.querySelectorAll<HTMLElement>('.ls-step');
+    if(steps.length<=1)return;
+    const counter=st.querySelector<HTMLElement>('.ls-counter');
+    const dots=st.querySelectorAll<HTMLElement>('.ls-dot');
+    const nextBtn=st.querySelector<HTMLButtonElement>('.ls-next');
+    const backBtn=st.querySelector<HTMLButtonElement>('.ls-back');
+    if(!nextBtn||!backBtn)return;
+    let cur=0;
+    const render=(i:number)=>{
+      steps.forEach((s,j)=>s.classList.toggle('on',j===i));
+      dots.forEach((d,j)=>{d.classList.toggle('on',j===i);d.classList.toggle('done',j<i);});
+      if(counter)counter.textContent=`${i+1} / ${steps.length}`;
+      backBtn.disabled=i===0;
+      nextBtn.textContent=i===steps.length-1?'✓ Done':'Continue →';
+      nextBtn.className='btn '+(i===steps.length-1?'btn-grn':'btn-grn')+' ls-next';
+    };
+    render(0);
+    nextBtn.onclick=()=>{if(cur<steps.length-1){cur++;render(cur);}};
+    backBtn.onclick=()=>{if(cur>0){cur--;render(cur);}};
+  });
 }
 function buildTipsHTML(m){
   return `<div class="tip-box"><h4>✅ Key Insight</h4><p>Understanding ${m.name.toLowerCase()} is one of the most important steps in your chess development. Study each concept until it becomes second nature.</p></div>
@@ -3671,9 +3703,13 @@ function loadTac(arg){
   ST.evalTac=freshTac;
   document.getElementById('t-lbl').textContent=p.type.toUpperCase();
   document.getElementById('t-title').textContent=p.title;
-  document.getElementById('t-req').textContent=(p.side==='w'?'White':'Black')+' to play — '+p.desc;
   document.getElementById('t-pat').textContent=p.type;
   document.getElementById('t-pdesc').textContent=p.desc;
+  // Who-to-move pill
+  const tm=document.getElementById('t-tomove');
+  if(tm){const isW=p.side==='w';tm.innerHTML=`<span class="tm-dot ${isW?'tm-w':'tm-b'}"></span><span class="tm-txt">${isW?'White':'Black'} to play</span>`;}
+  // Streak chip
+  const sc=document.getElementById('t-streak');if(sc)sc.textContent='🔥 '+ST.streak;
   setEvalFB('t-fb','','👆 Click a piece then its destination square.');
   document.getElementById('t-res').classList.remove('show');
   document.getElementById('btn-tnext').style.display='none';
@@ -3724,6 +3760,7 @@ function onTacClick(s){
       const dc=document.getElementById('daily-card');
       if(dc){dc.className='daily-card done';dc.querySelector('.dc-status')!.textContent='✅ Completed today';}
     }
+    flashBoard('t-board','good');
     setFB('t-fb','fgld','🏆 '+puz.explain);
     const stars=ST.evalTac.attempts<=1?'⭐⭐⭐':ST.evalTac.attempts<=3?'⭐⭐':'⭐';
     document.getElementById('t-stars').textContent=stars;
@@ -3732,7 +3769,12 @@ function onTacClick(s){
     document.getElementById('t-res').classList.add('show');
     const nxt=ALL_PUZZLES.find(x=>!ST.evalTacSolved.has(x.id));
     const nb=document.getElementById('btn-tnext');nb.style.display='inline-flex';
-    nb.onclick=nxt?()=>loadTac(nxt.id):()=>switchView('eval-puzzles');nb.textContent=nxt?'Next →':'All Puzzles';
+    // Update streak chip
+    const sc=document.getElementById('t-streak');if(sc)sc.textContent='🔥 '+ST.streak;
+    // Auto-advance after 2s; cancel if user clicks Next manually
+    let _autoTimer:any=setTimeout(()=>{if(nxt)loadTac(nxt.id);else switchView('eval-puzzles');},2000);
+    nb.onclick=()=>{clearTimeout(_autoTimer);if(nxt)loadTac(nxt.id);else switchView('eval-puzzles');};
+    nb.textContent=nxt?'Next →':'All Puzzles';
     confetti();toast('✓ Correct! +'+puz.xp+' XP','tgld');
     updateEvalTopStats();buildTacGrid();
   } else if(chosen){
@@ -3740,8 +3782,10 @@ function onTacClick(s){
     playSound('lose');
     trackPuzzleResult(puz,false);updateSR(puz.id,false);
     ST.evalTac.sel=null;ST.streak=0;drawTac();
-    setEvalFB('t-fb','ferr','❌ Legal move but not the winning tactic. Think: can you attack two pieces at once? Look for checks, captures, threats.');
-    shake('t-board');updateEvalTopStats();
+    setEvalFB('t-fb','ferr','❌ Not the best move — try again. Look for checks, forks, and captures.');
+    shake('t-board');flashBoard('t-board','bad');
+    const sc2=document.getElementById('t-streak');if(sc2)sc2.textContent='🔥 0';
+    updateEvalTopStats();
   } else {
     ST.evalTac.sel=null;drawTac();
     setEvalFB('t-fb','ferr','❌ Illegal move — select a valid piece and destination.');
@@ -3785,8 +3829,9 @@ function loadMate(id){
   ST.evalMate={st:mkState({...p.pos},p.side),sel:null,puz:p,step:0};
   document.getElementById('mn').textContent=p.n;
   document.getElementById('m-title').textContent=p.title;
-  document.getElementById('m-req').textContent=p.req;
   document.getElementById('m-ptype').textContent=p.type;
+  const mtm=document.getElementById('m-tomove');
+  if(mtm){const isW=p.side==='w';mtm.innerHTML=`<span class="tm-dot ${isW?'tm-w':'tm-b'}"></span><span class="tm-txt">${isW?'White':'Black'} to play</span>`;}
   document.getElementById('m-pdesc').textContent=p.info;
   setFB('m-fb','','Find and play checkmate in '+p.n+(p.n===1?' move':' moves')+'.');
   document.getElementById('m-res').classList.remove('show');
@@ -3818,7 +3863,7 @@ function onMateClick(s){
   ST.evalMate.st=ns;ST.evalMate.sel=null;ST.evalMate.step++;
   drawMate();
   if(isMate(ns)){
-    playSound('win');
+    flashBoard('m-board','good');playSound('win');
     ST.evalMateSolved++;ST.evalMateStreak++;onEvalMateSolved(puz.xp);
     setFB('m-fb','fgld','♛ Checkmate! '+puz.explain);
     document.getElementById('m-rt').textContent='Checkmate! ♛';
@@ -3837,8 +3882,8 @@ function onMateClick(s){
     setFB('m-fb','fok','✓ Check! Keep going — find the next forcing move.');
   } else if(ST.evalMate.step>=puz.moves.length){
     playSound('lose');
-    setFB('m-fb','ferr','❌ Not checkmate yet — the king escaped. The sequence must deliver forced mate. Try again.');
-    ST.evalMateStreak=0;shake('m-board');
+    setFB('m-fb','ferr','❌ Not checkmate yet — the king escaped. Try again.');
+    ST.evalMateStreak=0;shake('m-board');flashBoard('m-board','bad');
   } else {
     setFB('m-fb','','Move played. Find the next step towards checkmate.');
   }
@@ -3990,7 +4035,7 @@ function buildBotGrid(){
 function startBot(id){
   const b=BOTS.find(x=>x.id===id);if(!b)return;
   const initPos={a8:'bR',b8:'bN',c8:'bB',d8:'bQ',e8:'bK',f8:'bB',g8:'bN',h8:'bR',a7:'bP',b7:'bP',c7:'bP',d7:'bP',e7:'bP',f7:'bP',g7:'bP',h7:'bP',a2:'wP',b2:'wP',c2:'wP',d2:'wP',e2:'wP',f2:'wP',g2:'wP',h2:'wP',a1:'wR',b1:'wN',c1:'wB',d1:'wQ',e1:'wK',f1:'wB',g1:'wN',h1:'wR'};
-  ST.evalBot={st:mkState(initPos,'w'),sel:null,bot:b,history:[],states:[],coach:[],stats:{cap:0,chk:0},over:false};
+  ST.evalBot={st:mkState(initPos,'w'),sel:null,bot:b,history:[],states:[],coach:[],quality:[],stats:{cap:0,chk:0},over:false};
   document.getElementById('bg-lbl').textContent='VS '+b.name.toUpperCase();
   document.getElementById('bg-title').textContent='You vs '+b.name;
   document.getElementById('bg-req').textContent='You play White · '+b.name+' ('+b.rating+' ELO, depth '+b.depth+') plays Black';
@@ -4037,9 +4082,16 @@ async function onBotClick(s){
   ST.evalBot.states.push(ns);ST.evalBot.st=ns;ST.evalBot.sel=null;
   document.getElementById('bg-mv').textContent=Math.ceil(ST.evalBot.history.length/2);
   document.getElementById('bg-cap').textContent=ST.evalBot.stats.cap;
-  updateBotLog();drawBot([],chosen);
-  // Rule-based coaching
+  // Rule-based coaching + quality label
   const notes=coachMove(stB,ns,chosen,mn,'w',ST.evalBot.history);
+  const hasBlunder=notes.some(n=>n.t==='warn'&&(n.msg||'').includes('free'));
+  const hasMistake=notes.some(n=>n.t==='warn');
+  const hasGood=notes.some(n=>n.t==='good'&&(n.msg||'').includes('!'));
+  const qSym=hasBlunder?'??':hasMistake?'?':hasGood?'!':'';
+  const moveIdx=ST.evalBot.history.length-1;
+  if(!ST.evalBot.quality)ST.evalBot.quality=[];
+  ST.evalBot.quality[moveIdx]=qSym;
+  updateBotLog();drawBot([],chosen);
   notes.forEach(n=>addCoachNote(n));
   updateEvalBarFromMaterial(ns.board);haptic(8);
   if(isMate(ns)){endBot('w','You won! Checkmate! ♛','Excellent — you checkmated '+ST.evalBot.bot.name+'!');return;}
@@ -4105,11 +4157,14 @@ function endBot(winner,title,msg){
 function addCoachNote(n){
   ST.evalBot.coach.push(n);
   const el=document.getElementById('coach-panel');
-  const d=document.createElement('div');d.className='cnote';
+  const d=document.createElement('div');
+  const cls=n.t==='warn'?'cn-warn':n.t==='good'?'cn-good':'cn-tip';
+  d.className='cnote '+cls;
   const icon=n.t==='warn'?'⚠️':n.t==='good'?'✓':n.t==='tip'?'💡':'📌';
+  const label=n.t==='warn'?'Warning':n.t==='good'?'Good':n.t==='tip'?'Tip':'Note';
   const hpHtml=n.hp?`<span class="hp-quip">${n.hp}</span>`:'';
   const body=n.msg?`${n.msg}${hpHtml}`:hpHtml;
-  d.innerHTML=`<div class="cnlbl">${icon} ${n.t==='warn'?'Warning':n.t==='good'?'Good':n.t==='tip'?'Tip':'Note'}</div>${body}`;
+  d.innerHTML=`<div class="cnlbl ${cls}">${icon} ${label}</div>${body}`;
   el.prepend(d);while(el.children.length>6)el.removeChild(el.lastChild);
 }
 
@@ -4117,13 +4172,17 @@ function updateBotLog(){
   const el=document.getElementById('bg-log');
   const pairs=[];
   const states=ST.evalBot.states;
+  const qual=ST.evalBot.quality||[];
   for(let i=0;i<ST.evalBot.history.length;i+=2){
     const w=ST.evalBot.history[i],b=ST.evalBot.history[i+1];
     const wBoard=states[i]?states[i].board:ST.evalBot.st.board;
     const bBoard=states[i+1]?states[i+1].board:ST.evalBot.st.board;
     const wAN=moveToAN(wBoard,w);
     const bAN=b?moveToAN(bBoard,b):'';
-    pairs.push(`<span class="mw">${Math.ceil((i+2)/2)}. ${wAN}</span>${bAN?` <span class="mb">${bAN}</span>`:''}`);
+    const wQ=qual[i]||'';
+    const wCls=wQ==='??'?'mq-b':wQ==='?'?'mq-m':wQ==='!'?'mq-g':'';
+    const wQHtml=wQ?`<span class="${wCls}" style="font-size:.75rem">${wQ}</span>`:'';
+    pairs.push(`<span class="mw">${Math.ceil((i+2)/2)}. ${wAN}${wQHtml}</span>${bAN?` <span class="mb">${bAN}</span>`:''}`);
   }
   el.innerHTML=pairs.join('<br>');el.scrollTop=el.scrollHeight;
 }
@@ -4184,6 +4243,12 @@ function buildProgress(){
 // toast() provided by academy
 // setFB unified above
 function shake(id){const el=document.getElementById(id);if(!el)return;el.style.animation='none';el.offsetHeight;el.style.animation='shake .3s ease';}
+function flashBoard(id:string,type:'good'|'bad'){
+  const el=document.getElementById(id);if(!el)return;
+  const ov=document.createElement('div');ov.className='board-flash-ov';
+  ov.style.background=type==='good'?'rgba(61,148,101,.38)':'rgba(192,72,64,.38)';
+  el.appendChild(ov);setTimeout(()=>ov.remove(),600);
+}
 function setEng(thinking){
   const dot=document.getElementById('edot'),txt=document.getElementById('etxt');
   if(!dot||!txt)return;

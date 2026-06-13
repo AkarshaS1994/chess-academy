@@ -1118,3 +1118,40 @@ html.light .piece.pb { color: #1a1200; text-shadow: 0 1px 2px rgba(255,255,255,0
   .ob-level{padding:10px 12px;gap:10px}
   .ob-levels{gap:6px}
 }
+
+/* ── PUZZLE / BOARD QUALITY UX ──────────────────────────────── */
+@keyframes board-overlay-fade{0%{opacity:0}20%{opacity:1}100%{opacity:0}}
+.board-flash-ov{position:absolute;inset:0;border-radius:3px;pointer-events:none;animation:board-overlay-fade .55s ease forwards;z-index:8}
+
+/* Who-to-move pill */
+.puz-meta-bar{display:flex;align-items:center;gap:8px;justify-content:space-between;width:100%;max-width:400px;margin:4px 0 6px}
+.to-move-pill{display:inline-flex;align-items:center;gap:6px;padding:4px 11px;background:var(--s3);border:1px solid var(--bord);border-radius:20px}
+.tm-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+.tm-dot.tm-w{background:#fff;box-shadow:0 0 0 1.5px rgba(0,0,0,.35)}
+.tm-dot.tm-b{background:#141008;box-shadow:0 0 0 1.5px #ede4c8}
+.tm-txt{font-family:'IBM Plex Mono',monospace;font-size:.64rem;color:var(--cream);letter-spacing:.04em}
+.puz-streak-chip{font-family:'IBM Plex Mono',monospace;font-size:.68rem;color:var(--gold);background:var(--goldd);border:1px solid rgba(212,160,23,.22);border-radius:12px;padding:3px 9px}
+
+/* Move quality colours in bot log */
+.mq-b{color:var(--redl)!important;font-weight:700}
+.mq-m{color:#e8804a!important}
+.mq-i{color:var(--gold)!important}
+.mq-g{color:var(--grnl)!important}
+
+/* Coach note type colours */
+.cnote.cn-warn{border-left-color:var(--redl)}
+.cnote.cn-good{border-left-color:var(--grnl)}
+.cnote.cn-tip{border-left-color:var(--gold)}
+.cnlbl.cn-warn{color:var(--redl)}
+.cnlbl.cn-good{color:var(--grnl)}
+.cnlbl.cn-tip{color:var(--gold)}
+
+/* Step-by-step lesson stepper */
+.ls-step{display:none;animation:fadeIn .18s ease}
+.ls-step.on{display:block}
+.ls-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:14px;padding-top:12px;border-top:1px solid var(--bord)}
+.ls-counter{font-family:'IBM Plex Mono',monospace;font-size:.61rem;color:var(--mute);white-space:nowrap}
+.ls-dots{display:flex;gap:5px;align-items:center}
+.ls-dot{width:7px;height:7px;border-radius:50%;background:var(--s4);transition:background .14s}
+.ls-dot.on{background:var(--gold);width:18px;border-radius:4px}
+.ls-dot.done{background:var(--grnl)}

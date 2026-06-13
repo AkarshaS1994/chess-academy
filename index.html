@@ -355,8 +355,12 @@
   <div class="view flex-view" id="view-eval-tboard">
     <div class="el">
       <div class="bc">
-        <div class="chdr" style="max-width:100%"><div class="chdr-l" id="t-lbl">FORK</div><div class="chdr-t" id="t-title">Knight Fork</div><div class="chdr-s" id="t-req">White to play</div></div>
-        <div class="board" id="t-board"></div>
+        <div class="chdr" style="max-width:100%"><div class="chdr-l" id="t-lbl">FORK</div><div class="chdr-t" id="t-title">Knight Fork</div></div>
+        <div class="puz-meta-bar">
+          <div class="to-move-pill" id="t-tomove"><span class="tm-dot tm-w"></span><span class="tm-txt">White to play</span></div>
+          <span class="puz-streak-chip" id="t-streak">🔥 0</span>
+        </div>
+        <div class="board" id="t-board" style="position:relative"></div>
         <div class="brow"><button class="btn" id="btn-thint">💡 Hint</button><button class="btn" id="btn-treset">↺ Reset</button><button class="btn" id="btn-tundo">↩ Undo</button><button class="btn" id="btn-tnext" style="display:none">Next →</button><button class="btn" onclick="switchView('eval-puzzles')">← All</button></div>
       </div>
       <div class="ic">
@@ -380,8 +384,11 @@
   <div class="view flex-view" id="view-eval-mboard">
     <div class="el">
       <div class="bc">
-        <div class="chdr" style="max-width:100%"><div class="chdr-l">CHECKMATE IN <span id="mn">1</span></div><div class="chdr-t" id="m-title">Find checkmate</div><div class="chdr-s" id="m-req">White to play</div></div>
-        <div class="board" id="m-board"></div>
+        <div class="chdr" style="max-width:100%"><div class="chdr-l">CHECKMATE IN <span id="mn">1</span></div><div class="chdr-t" id="m-title">Find checkmate</div></div>
+        <div class="puz-meta-bar">
+          <div class="to-move-pill" id="m-tomove"><span class="tm-dot tm-w"></span><span class="tm-txt">White to play</span></div>
+        </div>
+        <div class="board" id="m-board" style="position:relative"></div>
         <div class="brow"><button class="btn" id="btn-mhint">💡 Hint</button><button class="btn" id="btn-mnext" style="display:none">Next →</button><button class="btn" onclick="switchView('eval-mates')">← All</button></div>
       </div>
       <div class="ic">
