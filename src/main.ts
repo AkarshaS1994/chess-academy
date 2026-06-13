@@ -3520,36 +3520,14 @@ function markEndgameLearned(id){
   toast('✓ Endgame concept learned! +25 XP','t-ok');
 }
 function startTacticPractice(tacticId){
-  // Find puzzles matching this tactic
   const typeMap={fork:'Fork',pin:'Pin',hanging:'Hanging',skewer:'Skewer',
     discovered:'Discovered',dblcheck:'Discovered'};
   const typeName=typeMap[tacticId]||tacticId;
   const pool=ALL_PUZZLES.filter(p=>(p.type||'').toLowerCase().includes(typeName.toLowerCase()));
   const puzzles=pool.length>0?pool:ALL_PUZZLES;
-  // Switch to eval-puzzles and filter the grid
-  switchView('eval-puzzles');
-  setTimeout(()=>{
-    const el=document.getElementById('tac-grid');
-    if(!el)return;
-    el.innerHTML='';
-    // Header
-    const hdr=document.createElement('div');
-    hdr.style.cssText='grid-column:1/-1;padding:8px 4px 4px;font-family:IBM Plex Mono,monospace;font-size:.65rem;color:var(--mute)';
-    hdr.textContent=(pool.length>0?puzzles.length+' puzzles for '+typeName:'All puzzles')+'  — click to practice';
-    el.appendChild(hdr);
-    puzzles.forEach(p=>{
-      const done=ST.evalTacSolved&&ST.evalTacSolved.has(p.id);
-      const c=document.createElement('div');
-      c.className='gc'+(done?' done':'');
-      const diff=(p.diff||'easy').toLowerCase();
-      c.innerHTML='<div class="gc-d d'+diff[0]+'">'+diff.toUpperCase()+' +'+p.xp+'XP</div>'+
-        '<div class="gc-t">'+p.title+'</div>'+
-        '<div class="gc-s">'+(p.desc||'')+'</div>'+
-        '<div class="gc-st">'+(done?'✓ Solved':'Unsolved')+'</div>';
-      c.addEventListener('click',()=>loadTac(p));
-      el.appendChild(c);
-    });
-  },100);
+  // Launch the first unsolved puzzle directly — no extra click needed
+  const target=puzzles.find(p=>!(ST.evalTacSolved&&ST.evalTacSolved.has(p.id)))||puzzles[0];
+  if(target)loadTac(target);
 }
 
 function _wireBoardButtons(hintId, resetId, hintFn, resetFn) {
@@ -3614,38 +3592,55 @@ document.querySelectorAll('.nav-item[data-v="tactics"]').forEach(n=>n.addEventLi
 
 function mkPieceSVG(piece:string,sz:number):string{
   const isW=piece[0]==='w';const t=piece[1];
-  // White: bright white fill + thick dark outline (max contrast on tan/gold light squares)
-  // Black: near-black fill + thick light ivory outline (max contrast on brown dark squares)
-  const f=isW?'#ffffff':'#141008';const s=isW?'#1a0e04':'#ede4c8';const sw=Math.max(2.5,sz/18);
+  // Chess.com-quality Staunton pieces
+  // White: ivory white fill, very dark outline
+  // Black: dark walnut fill, cream outline
+  const f=isW?'#fffff0':'#2d1401';
+  const s=isW?'#1a0800':'#ede0c0';
+  const hi=isW?'rgba(255,255,255,0.6)':'rgba(255,220,140,0.18)';
+  const sw=Math.max(1.3,sz/20);
+  // All pieces share a two-tier base at bottom (y=33–43)
+  const base=`<rect x="11.5" y="33" width="22" height="4" rx="2" fill="${f}" stroke="${s}" stroke-width="${sw}"/><rect x="9" y="37" width="27" height="5.5" rx="2.5" fill="${f}" stroke="${s}" stroke-width="${sw}"/>`;
   const shapes:Record<string,string>={
-    P:`<circle cx="22.5" cy="9" r="4.5" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
-<path d="M19 14.5 C17.5 17 16.5 21 16.5 25.5 L28.5 25.5 C28.5 21 27.5 17 26 14.5 C24.5 16 20.5 16 19 14.5Z" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
-<rect x="12" y="25.5" width="21" height="4" rx="1.5" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
-<rect x="10" y="29.5" width="25" height="4" rx="2" fill="${f}" stroke="${s}" stroke-width="${sw}"/>`,
-    N:`<path d="M22 10 C19 8 15.5 10 15.5 14 C15.5 18 18 20 19.5 21.5 L15 32 L30 32 L30 26 C32.5 24.5 34 21 33 17 C32 13.5 27.5 11 25 10.5 C24 10 23 10 22 10Z" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
-<circle cx="20.5" cy="15.5" r="1.8" fill="${s}"/>
-<path d="M19.5 21 C18 20 17 18.5 18 16.5" stroke="${s}" stroke-width="1" fill="none" stroke-linecap="round"/>
-<rect x="12" y="32" width="21" height="3.5" rx="1.5" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
-<rect x="10" y="35.5" width="25" height="4" rx="2" fill="${f}" stroke="${s}" stroke-width="${sw}"/>`,
-    B:`<circle cx="22.5" cy="6" r="2.5" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
-<path d="M22.5 9 C19.5 11 17 15 17 20 C17 25 19.5 27 22.5 27.5 C25.5 27 28 25 28 20 C28 15 25.5 11 22.5 9Z" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
-<path d="M19.5 17 L25.5 17" stroke="${s}" stroke-width="1.2" fill="none" stroke-linecap="round"/>
-<rect x="12" y="27.5" width="21" height="3.5" rx="1.5" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
-<rect x="10" y="31" width="25" height="4" rx="2" fill="${f}" stroke="${s}" stroke-width="${sw}"/>`,
-    R:`<path d="M13 8 L13 13 L16.5 13 L16.5 10.5 L20 10.5 L20 13 L25 13 L25 10.5 L28.5 10.5 L28.5 13 L32 13 L32 8Z" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
-<rect x="14.5" y="13" width="16" height="13" rx="1" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
-<rect x="12" y="26" width="21" height="4" rx="1.5" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
-<rect x="10" y="30" width="25" height="4" rx="2" fill="${f}" stroke="${s}" stroke-width="${sw}"/>`,
-    Q:`<circle cx="22.5" cy="7" r="3" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
-<circle cx="11.5" cy="11.5" r="2.5" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
-<circle cx="33.5" cy="11.5" r="2.5" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
-<path d="M8.5 13 L15.5 24 L22.5 17 L29.5 24 L36.5 13 L31 26 L14 26Z" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
-<rect x="12" y="26" width="21" height="4" rx="1.5" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
-<rect x="10" y="30" width="25" height="4" rx="2" fill="${f}" stroke="${s}" stroke-width="${sw}"/>`,
-    K:`<path d="M21.5 5 L23.5 5 L23.5 9 L27.5 9 L27.5 11 L23.5 11 L23.5 15 L21.5 15 L21.5 11 L17.5 11 L17.5 9 L21.5 9Z" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
-<path d="M15.5 15 L29.5 15 L31 26 L14 26Z" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
-<rect x="12" y="26" width="21" height="4" rx="1.5" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
-<rect x="10" y="30" width="25" height="4" rx="2" fill="${f}" stroke="${s}" stroke-width="${sw}"/>`,
+    // PAWN — ball head, shouldered body, base
+    P:`<circle cx="22.5" cy="10" r="5.5" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
+<path d="M17,16 C15.5,18.5 14.5,22 14,26.5 Q14,27.5 14,28 L31,28 Q31,27.5 31,26.5 C30.5,22 29.5,18.5 28,16 Q25.5,18 22.5,18 Q19.5,18 17,16Z" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
+<rect x="12" y="28" width="21" height="5" rx="2" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
+${base}`,
+    // KNIGHT — horse-head profile facing left, eye and nostril detail
+    N:`<path d="M21,10.5 C18,9 15,10.5 13.5,13 C12,15.5 12.5,18.5 14,21 C12.5,22.5 12,25 12.5,27.5 L12.5,33 L32.5,33 L32.5,27 C34,24.5 34,20.5 32,17.5 C33.5,15.5 33.5,12.5 31.5,11 C29.5,9.5 27,9.5 25,10.5 Q23,10 21,10.5Z" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
+<circle cx="18.5" cy="16.5" r="2.5" fill="${s}"/>
+<circle cx="18.5" cy="16.5" r="1.1" fill="${f}"/>
+<path d="M15,21 Q17,19.5 19,21" stroke="${s}" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+<path d="M21,10.5 C20.5,9 22,8 23.5,9" stroke="${hi}" stroke-width="2" fill="none" stroke-linecap="round"/>
+${base}`,
+    // BISHOP — diamond tip, round head, tapered body
+    B:`<path d="M22.5,3 L24.5,7.5 L22.5,11 L20.5,7.5 Z" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
+<circle cx="22.5" cy="13" r="5" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
+<path d="M17.5,18 C16,21 15,24.5 15,28.5 L30,28.5 C30,24.5 29,21 27.5,18 Z" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
+<line x1="20" y1="20.5" x2="25" y2="20.5" stroke="${s}" stroke-width="1.3"/>
+<rect x="12" y="28.5" width="21" height="4.5" rx="2" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
+${base}`,
+    // ROOK — three merlons, thick shaft, base
+    R:`<path d="M11,9 L11,15.5 L15.5,15.5 L15.5,11 L20.5,11 L20.5,15.5 L24.5,15.5 L24.5,11 L29.5,11 L29.5,15.5 L34,15.5 L34,9 Z" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
+<rect x="13" y="15.5" width="19" height="13" rx="1" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
+<rect x="11.5" y="28.5" width="22" height="4.5" rx="2" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
+${base}`,
+    // QUEEN — crown with 5 orbs, full bell body, base
+    Q:`<circle cx="22.5" cy="7" r="3.5" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
+<circle cx="10" cy="12.5" r="2.5" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
+<circle cx="35" cy="12.5" r="2.5" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
+<circle cx="15.5" cy="9" r="2.5" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
+<circle cx="29.5" cy="9" r="2.5" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
+<path d="M7,14.5 Q10.5,19.5 13.5,24.5 L13.5,29.5 L31.5,29.5 L31.5,24.5 Q34.5,19.5 38,14.5 Q33.5,17.5 29.5,13 Q25.5,18 22.5,10 Q19.5,18 15.5,13 Q11.5,17.5 7,14.5Z" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
+<rect x="11.5" y="29.5" width="22" height="4" rx="2" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
+${base}`,
+    // KING — cross, tapered body, base
+    K:`<rect x="21" y="3.5" width="3.5" height="11" rx="1.5" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
+<rect x="17.5" y="7" width="10" height="3.5" rx="1.5" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
+<path d="M14.5,14.5 C14.5,18.5 16.5,23 18,27 L18,30 L27,30 L27,27 C28.5,23 30.5,18.5 30.5,14.5 Z" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
+<rect x="11.5" y="30" width="22" height="3" rx="1.5" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
+${base}`,
   };
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45" width="${sz}" height="${sz}" style="display:block;pointer-events:none">${shapes[t]||''}</svg>`;
 }
