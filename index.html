@@ -141,6 +141,7 @@
       <div class="nav-item" data-v="eval-mates"><span class="ni-ico">👑</span><div class="ni-txt"><span class="ni-name">Checkmate Drills</span><span class="ni-sub">Mate in 1, 2, 3</span></div><span class="ni-badge si-st" id="s-eval-mates">7</span></div>
       <div class="nav-item" data-v="eval-endgame"><span class="ni-ico">♔</span><div class="ni-txt"><span class="ni-name">Endgame Drills</span><span class="ni-sub">Board practice vs engine</span></div><span class="ni-badge si-st" id="s-eval-endgame">4</span></div>
       <div class="nav-item" data-v="eval-bot"><span class="ni-ico">🤖</span><div class="ni-txt"><span class="ni-name">Play vs Bot</span><span class="ni-sub">Stockfish engine</span></div></div>
+      <div class="nav-item" data-v="coach"><span class="ni-ico">🎓</span><div class="ni-txt"><span class="ni-name">Play Coach</span><span class="ni-sub">Live coaching as you play</span></div></div>
       <div class="nav-item" data-v="tournament"><span class="ni-ico">🏆</span><div class="ni-txt"><span class="ni-name">Tournament</span><span class="ni-sub">Beat all 5 wizards</span></div></div>
       <div class="nav-item" data-v="chess960"><span class="ni-ico">🎲</span><div class="ni-txt"><span class="ni-name">Chess960</span><span class="ni-sub">Fischer Random</span></div></div>
       <div class="nav-item" data-v="eval-progress"><span class="ni-ico">📊</span><div class="ni-txt"><span class="ni-name">Mastery Dashboard</span><span class="ni-sub">Full overview</span></div></div>
@@ -434,6 +435,10 @@
     <div class="el">
       <div class="bc">
         <div class="chdr" style="max-width:100%"><div class="chdr-l" id="bg-lbl">VS BOT</div><div class="chdr-t" id="bg-title">vs Bot</div><div class="chdr-s" id="bg-req">You play White</div></div>
+        <div id="coach-bubble-row" style="display:none">
+          <div class="coab-ava" id="coab-ava">🎓</div>
+          <div class="coab-speeches"><div class="coab-speech" id="coab-speech">Let's begin!</div></div>
+        </div>
         <div class="bg-with-eval">
           <div class="eval-bar-wrap" id="eval-bar-wrap" title="Position evaluation">
             <div style="font-family:'IBM Plex Mono',monospace;font-size:.48rem;color:var(--mute);text-align:center;margin-bottom:2px">+</div>
@@ -463,6 +468,12 @@
   <div class="view flex-view" id="view-eval-progress">
     <div class="ph"><h1>📊 Mastery Progress</h1><p>Every metric measured by the engine and rule-based analysis — deterministic, accurate, reproducible.</p></div>
     <div style="padding:16px;max-width:740px" id="prog-body"></div>
+  </div>
+
+  <!-- PLAY COACH VIEW -->
+  <div class="view" id="view-coach">
+    <div class="ph"><h1>🎓 Play Coach</h1><p>Play a real game against the engine. Your coach watches every move and gives live tips, praise, and warnings — just like chess.com's coach mode.</p></div>
+    <div class="coach-grid" id="coach-grid"></div>
   </div>
 
   <!-- TOURNAMENT VIEW -->

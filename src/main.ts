@@ -987,7 +987,30 @@ const BOTS=[
    hp:'The greatest wizard of the age. Defeating Dumbledore earns you a place in chess history.'},
 ];
 
-// ═══════════════════════════════════════════════════════════════
+// ── COACHES ──────────────────────────────────────────────────────
+const COACHES=[
+  {id:'aria',name:'Coach Aria',title:'Beginner Friendly',ava:'👩‍🏫',
+   rating:'600–900',botId:'b600',
+   greeting:"Hi! Every mistake is a lesson. I'll explain what happened and how to improve.",
+   onGood:["Nice move! You're thinking ahead.","Well done — piece safety covered!","That's the spirit, keep it up!","Great! You found the right idea."],
+   onBad:["Careful — did you check if any pieces are undefended?","Hmm, look again — your opponent might have a free capture.","Remember: before moving, ask 'what does my opponent threaten?'"],
+   onTip:["Control the centre with pawns or pieces.","Develop a new piece each move in the opening.","Castle early to keep your king safe.","Don't move the same piece twice in the opening unless you have to."],
+  },
+  {id:'viktor',name:'Coach Viktor',title:'Tactical Trainer',ava:'🧑‍🏫',
+   rating:'900–1200',botId:'b900',
+   greeting:"Tactics decide games. I'll call out every hanging piece, fork, and missed shot.",
+   onGood:["Sharp! You found the tactic.","Precise move — good calculation.","Excellent — you kept the pressure on.","That's the move! Well seen."],
+   onBad:["You missed a tactic there — always scan for loose pieces.","That allows a fork or pin — look for your opponent's threats.","Think: can they capture anything for free after this?"],
+   onTip:["After every opponent move, ask: can I capture something?","Checks limit the opponent's options — use them wisely.","Look for the knight fork square before anything else.","An undefended piece is a hanging piece — yours or theirs."],
+  },
+  {id:'priya',name:'Coach Priya',title:'Strategic Coach',ava:'👩‍💻',
+   rating:'1200+',botId:'b1200',
+   greeting:"Chess is about plans, not just individual moves. Let's think strategically.",
+   onGood:["Strong positional move.","That improves your piece activity significantly.","Excellent — you're playing with a long-term plan.","Good structural decision."],
+   onBad:["That weakens your pawn structure — consider the long-term consequences.","You've given up the initiative — try to stay active.","Think about which pieces are improved by this move."],
+   onTip:["Improve your worst-placed piece — it's always the right plan.","Pawns can't go back — think before you push them.","An open file for your rook is worth more than material.","Active pieces beat passive ones every time."],
+  },
+];
 
 // ═══════════════════════════════════════════════════════════════════
 // ACADEMY — Curriculum, openings, quiz, XP, achievements, skill system
@@ -3592,17 +3615,12 @@ document.querySelectorAll('.nav-item[data-v="tactics"]').forEach(n=>n.addEventLi
 
 function mkPieceSVG(piece:string,sz:number):string{
   const isW=piece[0]==='w';const t=piece[1];
-  // Radial gradient per piece type (unique gid = no cross-piece conflict)
-  // Top-left light source exactly like chess.com's 3D Staunton effect
-  const gid=`cg${piece}`;
-  const defs=isW
-    ?`<defs><radialGradient id="${gid}" cx="38%" cy="28%" r="72%"><stop offset="0%" stop-color="#ffffff"/><stop offset="60%" stop-color="#e8dcc8"/><stop offset="100%" stop-color="#c8aa78"/></radialGradient></defs>`
-    :`<defs><radialGradient id="${gid}" cx="38%" cy="28%" r="72%"><stop offset="0%" stop-color="#7a5438"/><stop offset="55%" stop-color="#2e1808"/><stop offset="100%" stop-color="#140804"/></radialGradient></defs>`;
-  const f=`url(#${gid})`;
-  // White: dark brown outline pops on both square colors
-  // Black: warm cream outline pops on dark squares
-  const s=isW?'#1a0e00':'#e0c890';
-  const sw=Math.max(3,sz/12);  // thick enough to be visible at 35–54 px
+  // Solid fills — no gradients, no ID conflicts, always visible
+  // White pieces: pure white body + very dark outline (pops on any square)
+  // Black pieces: near-black body + cream outline (pops on dark squares)
+  const f=isW?'#ffffff':'#1a1200';
+  const s=isW?'#1a0e00':'#e8d090';
+  const sw=Math.max(3,sz/12);
   const base=`<rect x="11.5" y="33" width="22" height="4" rx="2" fill="${f}" stroke="${s}" stroke-width="${sw}"/><rect x="9" y="37" width="27" height="5.5" rx="2.5" fill="${f}" stroke="${s}" stroke-width="${sw}"/>`;
   const shapes:Record<string,string>={
     P:`<circle cx="22.5" cy="10" r="5.5" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
@@ -3638,7 +3656,7 @@ ${base}`,
 <rect x="11.5" y="30" width="22" height="3" rx="1.5" fill="${f}" stroke="${s}" stroke-width="${sw}"/>
 ${base}`,
   };
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45" width="${sz}" height="${sz}" style="display:block;pointer-events:none">${defs}${shapes[t]||''}</svg>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45" width="${sz}" height="${sz}" style="display:block;pointer-events:none">${shapes[t]||''}</svg>`;
 }
 function drawEvalBoard(id,st,{sel=null,last=null,hints=[],sz=0}={}){
   const el=document.getElementById(id);if(!el)return;el.innerHTML='';
@@ -4002,6 +4020,54 @@ function updateEgLog(){
 // ═══════════════════════════════════════════════════════════════
 // BOT GAME
 // ═══════════════════════════════════════════════════════════════
+// ── PLAY COACH ────────────────────────────────────────────────────
+function buildCoachGrid(){
+  const el=document.getElementById('coach-grid');if(!el)return;el.innerHTML='';
+  COACHES.forEach(c=>{
+    const card=document.createElement('div');card.className='coach-card';
+    card.innerHTML=`<div class="coac-ava-lg">${c.ava}</div>
+<div class="coac-name">${c.name}</div>
+<div class="coac-title">${c.title}</div>
+<div class="coac-rating">~${c.rating} ELO</div>
+<div class="coac-greet">"${c.greeting}"</div>
+<button class="btn btn-grn" style="margin-top:8px;width:100%" onclick="startCoach('${c.id}')">Play with ${c.name.split(' ')[1]}</button>`;
+    el.appendChild(card);
+  });
+}
+
+function updateCoachBubble(text:string){
+  const speech=document.getElementById('coab-speech');if(!speech)return;
+  speech.style.opacity='0';
+  setTimeout(()=>{speech.textContent=text;speech.style.transition='opacity .22s ease';speech.style.opacity='1';},160);
+}
+
+function _showCoachBubble(coach:any){
+  const row=document.getElementById('coach-bubble-row');
+  const ava=document.getElementById('coab-ava');
+  const fb=document.getElementById('bg-fb');
+  const lbl=document.getElementById('bg-lbl');
+  if(ava)ava.textContent=coach.ava;
+  if(row)row.style.display='flex';
+  if(fb)fb.style.display='none';
+  if(lbl)lbl.textContent='🎓 COACH';
+  updateCoachBubble(coach.greeting);
+}
+
+function _hideCoachBubble(){
+  const row=document.getElementById('coach-bubble-row');
+  const fb=document.getElementById('bg-fb');
+  if(row)row.style.display='none';
+  if(fb)fb.style.display='';
+}
+
+function startCoach(id:string){
+  const coach=COACHES.find(c=>c.id===id);if(!coach)return;
+  (ST as any).coachModeData=coach;
+  startBot(coach.botId);
+  // Show bubble after view switch + board draw
+  requestAnimationFrame(()=>requestAnimationFrame(()=>_showCoachBubble(coach)));
+}
+
 function buildBotGrid(){
   const el=document.getElementById('bot-grid');el.innerHTML='';
   // Add engine note
@@ -4038,6 +4104,8 @@ function startBot(id){
   document.getElementById('bg-res').classList.remove('show');
   document.getElementById('bg-analysis').style.display='none';
   setFB('bg-fb','','Make your first move — you play White.');
+  // Clear coach bubble if starting a plain bot game (not via startCoach)
+  if(!(ST as any).coachModeData)_hideCoachBubble();
   resetClock();
   switchView('eval-bgame');
   requestAnimationFrame(()=>requestAnimationFrame(()=>{drawBot();startClock('w');}));
@@ -4084,6 +4152,14 @@ async function onBotClick(s){
   ST.evalBot.quality[moveIdx]=qSym;
   updateBotLog();drawBot([],chosen);
   notes.forEach(n=>addCoachNote(n));
+  // Coach bubble: pick a line based on move quality
+  const _cm=(ST as any).coachModeData;
+  if(_cm){
+    const pool=hasMistake?_cm.onBad:hasGood?_cm.onGood:_cm.onTip;
+    const base=pool[Math.floor(Math.random()*pool.length)];
+    const extra=notes.length>0&&notes[0].msg?' '+notes[0].msg:'';
+    updateCoachBubble(base+extra);
+  }
   updateEvalBarFromMaterial(ns.board);haptic(8);
   if(isMate(ns)){endBot('w','You won! Checkmate! ♛','Excellent — you checkmated '+ST.evalBot.bot.name+'!');return;}
   if(isDraw(ns)){endBot('d','Draw!','The game ended in a draw.');return;}
@@ -4309,10 +4385,20 @@ function toggleMute() {
 }
 
 // ── DRAG SUPPORT ──────────────────────────────────────────────────
+// Abort-controller map: ensures only one drag listener set per board at a time.
+// Every redraw calls addDragSupport again — without this, listeners stack up and
+// clickHandler fires N times (select then deselect immediately = drag never works).
+const _dragAC = new Map<string, AbortController>();
+
 function addDragSupport(boardId: string, clickHandler: (sq: string) => void) {
   const el = document.getElementById(boardId);
   if (!el) return;
-  // Ensure touch-action:none on every board so browser never tries to scroll during drag
+  // Kill any existing drag listeners for this board before adding new ones
+  _dragAC.get(boardId)?.abort();
+  const ac = new AbortController();
+  _dragAC.set(boardId, ac);
+  const sig = ac.signal;
+  // Ensure touch-action:none so browser never scrolls during drag
   el.style.touchAction = 'none';
   let dragSrc: string | null = null;
   let ghost: HTMLElement | null = null;
@@ -4330,7 +4416,9 @@ function addDragSupport(boardId: string, clickHandler: (sq: string) => void) {
     srcEl = target;
     startX = e.clientX; startY = e.clientY;
     isDragging = false;
-  }, { passive: true });
+    // Capture pointer so pointermove keeps firing even when leaving the board
+    el.setPointerCapture(e.pointerId);
+  }, { signal: sig });
 
   el.addEventListener('pointermove', (e: PointerEvent) => {
     if (!dragSrc || !srcEl) return;
@@ -4377,7 +4465,7 @@ function addDragSupport(boardId: string, clickHandler: (sq: string) => void) {
         if (overEl && overEl !== srcEl) { overEl.classList.add('ssel'); hoveredSq = overEl; }
       }
     }
-  }, { passive: false });
+  }, { passive: false, signal: sig });
 
   el.addEventListener('pointerup', (e: PointerEvent) => {
     hoveredSq?.classList.remove('ssel'); hoveredSq = null;
@@ -4398,14 +4486,14 @@ function addDragSupport(boardId: string, clickHandler: (sq: string) => void) {
       // Dropped back on source or off-board — deselect by clicking source again
       clickHandler(src);
     }
-  });
+  }, { signal: sig });
 
   el.addEventListener('pointercancel', () => {
     hoveredSq?.classList.remove('ssel'); hoveredSq = null;
     if (ghost) { ghost.remove(); ghost = null; }
     if (srcEl) { srcEl.style.opacity = ''; srcEl = null; }
     dragSrc = null; isDragging = false;
-  });
+  }, { signal: sig });
 }
 
 // ── BOARD FLIP ────────────────────────────────────────────────────
@@ -5333,6 +5421,7 @@ const _origSwitchView=(window as any).switchView;
   if(v==='guess-the-move')initGTM();
   if(v==='chess960')chess960Shuffle();
   if(v==='eval-progress')buildProgress();
+  if(v==='coach'){buildCoachGrid();(ST as any).coachModeData=null;}
 };
 
 // ═══════════════════════════════════════════════════════════════
@@ -5352,6 +5441,7 @@ const _origSwitchView=(window as any).switchView;
 (window as any).gtmNextGame          = gtmNextGame;
 (window as any).gtmSkip              = gtmSkip;
 (window as any).startTacticPractice  = startTacticPractice;
+(window as any).startCoach           = startCoach;
 (window as any).loadDrill            = loadDrill;
 (window as any).markTacticLearned    = markTacticLearned;
 (window as any).markEndgameLearned   = markEndgameLearned;
